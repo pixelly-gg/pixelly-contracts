@@ -29,13 +29,13 @@ module.exports = {
   },
   networks: {
     mainnet: {
-      url: `https://evm-cronos.crypto.org`,
-      chainId: 25,
+      url: `https://rpc.tenet.org`,
+      chainId: 1559,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     testnet: {
-      url: `https://matic-mumbai.chainstacklabs.com`,
-      chainId: 80001,
+      url: `https://rpc.testnet.tenet.org`,
+      chainId: 155,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     rinkeby: {
