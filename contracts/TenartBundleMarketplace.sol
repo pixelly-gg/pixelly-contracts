@@ -13,7 +13,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-interface IAgoraAddressRegistry {
+interface ITenartAddressRegistry {
     function auction() external view returns (address);
 
     function marketplace() external view returns (address);
@@ -21,7 +21,7 @@ interface IAgoraAddressRegistry {
     function tokenRegistry() external view returns (address);
 }
 
-interface IAgoraMarketplace {
+interface ITenartMarketplace {
     function validateItemSold(
         address,
         uint256,
@@ -32,11 +32,11 @@ interface IAgoraMarketplace {
     function getPrice(address) external view returns (int256);
 }
 
-interface IAgoraTokenRegistry {
+interface ITenartTokenRegistry {
     function enabled(address) external returns (bool);
 }
 
-contract AgoraBundleMarketplace is
+contract TenartBundleMarketplace is
     OwnableUpgradeable,
     ReentrancyGuardUpgradeable
 {
@@ -124,7 +124,7 @@ contract AgoraBundleMarketplace is
     address payable public feeReceipient;
 
     /// @notice Address registry
-    IAgoraAddressRegistry public addressRegistry;
+    ITenartAddressRegistry public addressRegistry;
 
     modifier onlyContract() {
         require(
@@ -203,7 +203,7 @@ contract AgoraBundleMarketplace is
         require(
             _payToken == address(0) ||
                 (tokenRegistry != address(0) &&
-                    IAgoraTokenRegistry(tokenRegistry).enabled(_payToken)),
+                    ITenartTokenRegistry(tokenRegistry).enabled(_payToken)),
             "invalid pay token"
         );
 
@@ -285,7 +285,7 @@ contract AgoraBundleMarketplace is
         require(
             _payToken == address(0) ||
                 (tokenRegistry != address(0) &&
-                    IAgoraTokenRegistry(tokenRegistry).enabled(_payToken)),
+                    ITenartTokenRegistry(tokenRegistry).enabled(_payToken)),
             "invalid pay token"
         );
 
@@ -362,14 +362,14 @@ contract AgoraBundleMarketplace is
             );
             require(
                 feeTransferSuccess,
-                "AgoraMarketplace: Fee transfer failed"
+                "TenartMarketplace: Fee transfer failed"
             );
             (bool ownerTransferSuccess, ) = owner.call{
                 value: price.sub(feeAmount)
             }("");
             require(
                 ownerTransferSuccess,
-                "AgoraMarketplace: Owner transfer failed"
+                "TenartMarketplace: Owner transfer failed"
             );
         } else {
             IERC20Upgradeable(_payToken).safeTransferFrom(
@@ -401,7 +401,7 @@ contract AgoraBundleMarketplace is
                     bytes("")
                 );
             }
-            IAgoraMarketplace(addressRegistry.marketplace()).validateItemSold(
+            ITenartMarketplace(addressRegistry.marketplace()).validateItemSold(
                 listing.nfts[i],
                 listing.tokenIds[i],
                 owner,
@@ -419,7 +419,7 @@ contract AgoraBundleMarketplace is
             _msgSender(),
             _bundleID,
             _payToken,
-            IAgoraMarketplace(addressRegistry.marketplace()).getPrice(
+            ITenartMarketplace(addressRegistry.marketplace()).getPrice(
                 _payToken
             ),
             price
@@ -506,7 +506,7 @@ contract AgoraBundleMarketplace is
                     bytes("")
                 );
             }
-            IAgoraMarketplace(addressRegistry.marketplace()).validateItemSold(
+            ITenartMarketplace(addressRegistry.marketplace()).validateItemSold(
                 listing.nfts[i],
                 listing.tokenIds[i],
                 owners[bundleID],
@@ -524,7 +524,7 @@ contract AgoraBundleMarketplace is
             _creator,
             _bundleID,
             address(offer.payToken),
-            IAgoraMarketplace(addressRegistry.marketplace()).getPrice(
+            ITenartMarketplace(addressRegistry.marketplace()).getPrice(
                 address(offer.payToken)
             ),
             offer.price
@@ -556,11 +556,11 @@ contract AgoraBundleMarketplace is
     }
 
     /**
-     @notice Update AgoraAddressRegistry contract
+     @notice Update TenartAddressRegistry contract
      @dev Only admin
      */
     function updateAddressRegistry(address _registry) external onlyOwner {
-        addressRegistry = IAgoraAddressRegistry(_registry);
+        addressRegistry = ITenartAddressRegistry(_registry);
     }
 
     /**

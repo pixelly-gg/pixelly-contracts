@@ -7,8 +7,8 @@ import "@openzeppelin/contracts/GSN/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./library/ERC2981PerTokenRoyalties.sol";
 
-contract AgoraNFT is
-    ERC721("AgoraNFT", "ANFT"),
+contract TenartNFT is
+    ERC721("TenartNFT", "ANFT"),
     ERC2981PerTokenRoyalties,
     Ownable
 {

@@ -12,57 +12,57 @@ async function main(network) {
   } = require("../constants");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("AgoraMarketplace")
+    await ethers.getContractFactory("TenartMarketplace")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D"); //Replace by the right address, deployed before
 
   const auctionImpl = await (
-    await ethers.getContractFactory("AgoraAuction")
+    await ethers.getContractFactory("TenartAuction")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D"); //Replace by the right address, deployed before
 
   const bundleMarketplaceImpl = await (
-    await ethers.getContractFactory("AgoraBundleMarketplace")
+    await ethers.getContractFactory("TenartBundleMarketplace")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D");
 
   ////////////
   const RoyaltiesRegistry = await ethers.getContractFactory(
-    "AgoraRoyaltyRegistry"
+    "TenartRoyaltyRegistry"
   );
   const royaltiesRegistry = await RoyaltiesRegistry.deploy();
 
   await royaltiesRegistry.deployed();
-  console.log("AgoraRoyaltyRegistry deployed at", royaltiesRegistry.address);
+  console.log("TenartRoyaltyRegistry deployed at", royaltiesRegistry.address);
   ///////////
 
   ////////
   const AddressRegistry = await ethers.getContractFactory(
-    "AgoraAddressRegistry"
+    "TenartAddressRegistry"
   );
   const addressRegistry = await AddressRegistry.deploy();
 
   await addressRegistry.deployed();
 
-  console.log("AgoraAddressRegistry deployed to", addressRegistry.address);
-  const AGORA_ADDRESS_REGISTRY = addressRegistry.address;
+  console.log("TenartAddressRegistry deployed to", addressRegistry.address);
+  const TENART_ADDRESS_REGISTRY = addressRegistry.address;
   ////////
 
   ////////////
-  const AgoraNFT = await ethers.getContractFactory("AgoraNFT");
-  const agoraNFT = await AgoraNFT.deploy(
+  const TenartNFT = await ethers.getContractFactory("TenartNFT");
+  const tenartNFT = await TenartNFT.deploy(
     TREASURY_ADDRESS,
     "2000000000000000000"
   );
 
-  await agoraNFT.deployed();
-  console.log("AgoraNFT deployed at", agoraNFT.address);
+  await tenartNFT.deployed();
+  console.log("TenartNFT deployed at", tenartNFT.address);
   ///////////
 
   ////////
 
-  await marketplaceImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
-  await bundleMarketplaceImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
-  await auctionImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
+  await marketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await bundleMarketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
 
-  await addressRegistry.updateAgoraNFT(agoraNFT.address);
+  await addressRegistry.updateTenartNFT(tenartNFT.address);
   await addressRegistry.updateAuction(auctionImpl.address);
   await addressRegistry.updateMarketplace(marketplaceImpl.address);
   await addressRegistry.updateBundleMarketplace(

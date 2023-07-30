@@ -4,11 +4,11 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface IAgoraAddressRegistry {
+interface ITenartAddressRegistry {
     function tokenRegistry() external view returns (address);
 }
 
-interface IAgoraTokenRegistry {
+interface ITenartTokenRegistry {
     function enabled(address) external returns (bool);
 }
 
@@ -18,11 +18,11 @@ interface IOracle {
     function latestAnswer() external view returns (int256);
 }
 
-contract AgoraPriceFeed is Ownable {
+contract TenartPriceFeed is Ownable {
     /// @notice keeps track of oracles for each tokens
     mapping(address => address) public oracles;
 
-    /// @notice Agora address registry contract
+    /// @notice Tenart address registry contract
     address public addressRegistry;
 
     /// @notice wrapped ETH contract
@@ -43,8 +43,8 @@ contract AgoraPriceFeed is Ownable {
         external
         onlyOwner
     {
-        IAgoraTokenRegistry tokenRegistry = IAgoraTokenRegistry(
-            IAgoraAddressRegistry(addressRegistry).tokenRegistry()
+        ITenartTokenRegistry tokenRegistry = ITenartTokenRegistry(
+            ITenartAddressRegistry(addressRegistry).tokenRegistry()
         );
         require(tokenRegistry.enabled(_token), "invalid token");
         require(oracles[_token] == address(0), "oracle already set");

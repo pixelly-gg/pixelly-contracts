@@ -7,13 +7,13 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.s
 
 /**
  * @title VestingContractWithFeeSharing
- * @notice It vests the AGO tokens to an owner over a linear schedule.
+ * @notice It vests the TART tokens to an owner over a linear schedule.
  * Other tokens can be withdrawn at any time.
  */
 contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    IERC20 public immutable agoraToken;
+    IERC20 public immutable tenartToken;
 
     // Number of unlock periods
     uint256 public immutable NUMBER_UNLOCK_PERIODS;
@@ -44,15 +44,15 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
      * @param _vestingBetweenPeriodsInBlocks period length between each halving in blocks
      * @param _startBlock block number for start (must be same as TokenDistributor)
      * @param _numberUnlockPeriods number of unlock periods (e.g., 4)
-     * @param _maxAmountToWithdraw maximum amount in AGO to withdraw per period
-     * @param _agoraToken address of the AGO token
+     * @param _maxAmountToWithdraw maximum amount in TART to withdraw per period
+     * @param _tenartToken address of the TART token
      */
     constructor(
         uint256 _vestingBetweenPeriodsInBlocks,
         uint256 _startBlock,
         uint256 _numberUnlockPeriods,
         uint256 _maxAmountToWithdraw,
-        address _agoraToken
+        address _tenartToken
     ) public {
         VESTING_BETWEEN_PERIODS_IN_BLOCKS = _vestingBetweenPeriodsInBlocks;
         START_BLOCK = _startBlock;
@@ -62,11 +62,11 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
         maxAmountToWithdrawForNextPeriod = _maxAmountToWithdraw;
 
         nextBlockForUnlock = _startBlock + _vestingBetweenPeriodsInBlocks;
-        agoraToken = IERC20(_agoraToken);
+        tenartToken = IERC20(_tenartToken);
     }
 
     /**
-     * @notice Unlock AGO tokens
+     * @notice Unlock TART tokens
      * @dev It includes protection for overstaking
      */
     function unlockLooksRareToken() external nonReentrant onlyOwner {
@@ -76,7 +76,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
             "Unlock: Too early"
         );
 
-        uint256 balanceToWithdraw = agoraToken.balanceOf(address(this));
+        uint256 balanceToWithdraw = tenartToken.balanceOf(address(this));
 
         if (numberPastUnlocks < NUMBER_UNLOCK_PERIODS) {
             // Adjust next block for unlock
@@ -96,8 +96,8 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
             }
         }
 
-        // Transfer AGO to owner
-        agoraToken.safeTransfer(msg.sender, balanceToWithdraw);
+        // Transfer TART to owner
+        tenartToken.safeTransfer(msg.sender, balanceToWithdraw);
 
         emit TokensUnlocked(balanceToWithdraw);
     }
@@ -111,7 +111,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
         nonReentrant
         onlyOwner
     {
-        require(_currency != address(agoraToken), "Owner: Cannot withdraw AGO");
+        require(_currency != address(tenartToken), "Owner: Cannot withdraw TART");
 
         uint256 balanceToWithdraw = IERC20(_currency).balanceOf(address(this));
 

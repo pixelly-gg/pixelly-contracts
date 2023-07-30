@@ -11,15 +11,15 @@ const {
 
 const { expect } = require("chai");
 
-const AgoraAddressRegistry = artifacts.require("AgoraAddressRegistry");
-const AgoraNFT = artifacts.require("AgoraNFT");
-const AgoraAuction = artifacts.require("MockAgoraAuction");
-const AgoraMarketplace = artifacts.require("AgoraMarketplace");
-const AgoraBundleMarketplace = artifacts.require("AgoraBundleMarketplace");
-const AgoraNFTFactory = artifacts.require("AgoraNFTFactory");
-const AgoraArtFactory = artifacts.require("AgoraArtFactory");
-const AgoraTokenRegistry = artifacts.require("AgoraTokenRegistry");
-const AgoraPriceFeed = artifacts.require("AgoraPriceFeed");
+const TenartAddressRegistry = artifacts.require("TenartAddressRegistry");
+const TenartNFT = artifacts.require("TenartNFT");
+const TenartAuction = artifacts.require("MockTenartAuction");
+const TenartMarketplace = artifacts.require("TenartMarketplace");
+const TenartBundleMarketplace = artifacts.require("TenartBundleMarketplace");
+const TenartNFTFactory = artifacts.require("TenartNFTFactory");
+const TenartArtFactory = artifacts.require("TenartArtFactory");
+const TenartTokenRegistry = artifacts.require("TenartTokenRegistry");
+const TenartPriceFeed = artifacts.require("TenartPriceFeed");
 const MockERC20 = artifacts.require("MockERC20");
 
 const PLATFORM_FEE = "2";
@@ -44,80 +44,80 @@ contract("Overall Test", function([
   const mintFee = ether(MINT_FEE);
 
   beforeEach(async function() {
-    this.agoraAddressRegistry = await AgoraAddressRegistry.new();
-    this.agoraNFT = await AgoraNFT.new(platformFeeRecipient, platformFee);
+    this.tenartAddressRegistry = await TenartAddressRegistry.new();
+    this.tenartNFT = await TenartNFT.new(platformFeeRecipient, platformFee);
 
-    this.agoraAuction = await AgoraAuction.new();
-    await this.agoraAuction.initialize(platformFeeRecipient);
-    await this.agoraAuction.updateAddressRegistry(
-      this.agoraAddressRegistry.address
+    this.tenartAuction = await TenartAuction.new();
+    await this.tenartAuction.initialize(platformFeeRecipient);
+    await this.tenartAuction.updateAddressRegistry(
+      this.tenartAddressRegistry.address
     );
 
-    this.agoraMarketplace = await AgoraMarketplace.new();
-    await this.agoraMarketplace.initialize(
+    this.tenartMarketplace = await TenartMarketplace.new();
+    await this.tenartMarketplace.initialize(
       platformFeeRecipient,
       marketPlatformFee
     );
 
-    await this.agoraMarketplace.updateAddressRegistry(
-      this.agoraAddressRegistry.address
+    await this.tenartMarketplace.updateAddressRegistry(
+      this.tenartAddressRegistry.address
     );
 
-    this.agoraBundleMarketplace = await AgoraBundleMarketplace.new();
-    await this.agoraBundleMarketplace.initialize(
+    this.tenartBundleMarketplace = await TenartBundleMarketplace.new();
+    await this.tenartBundleMarketplace.initialize(
       platformFeeRecipient,
       marketPlatformFee
     );
-    await this.agoraBundleMarketplace.updateAddressRegistry(
-      this.agoraAddressRegistry.address
+    await this.tenartBundleMarketplace.updateAddressRegistry(
+      this.tenartAddressRegistry.address
     );
 
-    this.agoraNFTFactory = await AgoraNFTFactory.new(
-      this.agoraAuction.address,
-      this.agoraMarketplace.address,
-      this.agoraBundleMarketplace.address,
+    this.tenartNFTFactory = await TenartNFTFactory.new(
+      this.tenartAuction.address,
+      this.tenartMarketplace.address,
+      this.tenartBundleMarketplace.address,
       mintFee,
       platformFeeRecipient,
       platformFee
     );
-    this.agoraTokenRegistry = await AgoraTokenRegistry.new();
+    this.tenartTokenRegistry = await TenartTokenRegistry.new();
 
     this.mockERC20 = await MockERC20.new("wETH", "wETH", ether("1000000"));
 
-    this.agoraTokenRegistry.add(this.mockERC20.address);
+    this.tenartTokenRegistry.add(this.mockERC20.address);
 
-    this.agoraPriceFeed = await AgoraPriceFeed.new(
-      this.agoraAddressRegistry.address,
+    this.tenartPriceFeed = await TenartPriceFeed.new(
+      this.tenartAddressRegistry.address,
       this.mockERC20.address
     );
 
-    this.agoraArtFactory = await AgoraArtFactory.new(
-      this.agoraMarketplace.address,
-      this.agoraBundleMarketplace.address,
+    this.tenartArtFactory = await TenartArtFactory.new(
+      this.tenartMarketplace.address,
+      this.tenartBundleMarketplace.address,
       mintFee,
       platformFeeRecipient,
       platformFee
     );
 
-    await this.agoraAddressRegistry.updateAgoraNFT(this.agoraNFT.address);
-    await this.agoraAddressRegistry.updateAuction(this.agoraAuction.address);
-    await this.agoraAddressRegistry.updateMarketplace(
-      this.agoraMarketplace.address
+    await this.tenartAddressRegistry.updateTenartNFT(this.tenartNFT.address);
+    await this.tenartAddressRegistry.updateAuction(this.tenartAuction.address);
+    await this.tenartAddressRegistry.updateMarketplace(
+      this.tenartMarketplace.address
     );
-    await this.agoraAddressRegistry.updateBundleMarketplace(
-      this.agoraBundleMarketplace.address
+    await this.tenartAddressRegistry.updateBundleMarketplace(
+      this.tenartBundleMarketplace.address
     );
-    await this.agoraAddressRegistry.updateNFTFactory(
-      this.agoraNFTFactory.address
+    await this.tenartAddressRegistry.updateNFTFactory(
+      this.tenartNFTFactory.address
     );
-    await this.agoraAddressRegistry.updateTokenRegistry(
-      this.agoraTokenRegistry.address
+    await this.tenartAddressRegistry.updateTokenRegistry(
+      this.tenartTokenRegistry.address
     );
-    await this.agoraAddressRegistry.updatePriceFeed(
-      this.agoraPriceFeed.address
+    await this.tenartAddressRegistry.updatePriceFeed(
+      this.tenartPriceFeed.address
     );
-    await this.agoraAddressRegistry.updateArtFactory(
-      this.agoraArtFactory.address
+    await this.tenartAddressRegistry.updateArtFactory(
+      this.tenartArtFactory.address
     );
   });
 
@@ -130,7 +130,7 @@ contract("Overall Test", function([
             A buyer then buys that NFT
             `);
 
-      let balance = await this.agoraNFT.platformFee();
+      let balance = await this.tenartNFT.platformFee();
       console.log(`
             Platform Fee: ${weiToEther(balance)}`);
 
@@ -146,7 +146,7 @@ contract("Overall Test", function([
 
       console.log(`
             Now minting...`);
-      let result = await this.agoraNFT.mint(
+      let result = await this.tenartNFT.mint(
         artist,
         "http://artist.com/art.jpeg",
         { from: artist, value: ether(PLATFORM_FEE) }
@@ -195,8 +195,8 @@ contract("Overall Test", function([
 
       console.log(`
             The artist approves the nft to the market`);
-      await this.agoraNFT.setApprovalForAll(
-        this.agoraMarketplace.address,
+      await this.tenartNFT.setApprovalForAll(
+        this.tenartMarketplace.address,
         true,
         { from: artist }
       );
@@ -204,8 +204,8 @@ contract("Overall Test", function([
       console.log(`
             The artist lists the nft in the market with price 20 wETH and 
             starting time 2021-09-22 10:00:00 GMT`);
-      await this.agoraMarketplace.listItem(
-        this.agoraNFT.address,
+      await this.tenartMarketplace.listItem(
+        this.tenartNFT.address,
         new BN("1"),
         new BN("1"),
         this.mockERC20.address,
@@ -214,8 +214,8 @@ contract("Overall Test", function([
         { from: artist }
       );
 
-      let listing = await this.agoraMarketplace.listings(
-        this.agoraNFT.address,
+      let listing = await this.tenartMarketplace.listings(
+        this.tenartNFT.address,
         new BN("1"),
         artist
       );
@@ -231,15 +231,15 @@ contract("Overall Test", function([
       await this.mockERC20.mint(buyer, ether("50"));
 
       console.log(`
-            Buyer approves AgoraMarketplace to transfer up to 50 wETH`);
-      await this.mockERC20.approve(this.agoraMarketplace.address, ether("50"), {
+            Buyer approves TenartMarketplace to transfer up to 50 wETH`);
+      await this.mockERC20.approve(this.tenartMarketplace.address, ether("50"), {
         from: buyer,
       });
 
       console.log(`
             Buyer buys the nft for 20 wETHs`);
-      result = await this.agoraMarketplace.buyItem(
-        this.agoraNFT.address,
+      result = await this.tenartMarketplace.buyItem(
+        this.tenartNFT.address,
         new BN("1"),
         this.mockERC20.address,
         artist,
@@ -250,7 +250,7 @@ contract("Overall Test", function([
             *Event ItemSold should be emitted with correct values: 
             seller = ${artist}, 
             buyer = ${buyer}, 
-            nft = ${this.agoraNFT.address},
+            nft = ${this.tenartNFT.address},
             tokenId = 1,
             quantity =1,
             payToken = ${this.mockERC20.address},
@@ -259,7 +259,7 @@ contract("Overall Test", function([
       expectEvent.inLogs(result.logs, "ItemSold", {
         seller: artist,
         buyer: buyer,
-        nft: this.agoraNFT.address,
+        nft: this.tenartNFT.address,
         tokenId: new BN("1"),
         quantity: new BN("1"),
         payToken: this.mockERC20.address,
@@ -272,7 +272,7 @@ contract("Overall Test", function([
             *The wETH balance of buyer now should be 30 wETHs`);
       expect(weiToEther(balance) * 1).to.be.equal(30);
 
-      let nftOwner = await this.agoraNFT.ownerOf(new BN("1"));
+      let nftOwner = await this.tenartNFT.ownerOf(new BN("1"));
       console.log(`
             The owner of the nft now should be the buyer`);
       expect(nftOwner).to.be.equal(buyer);
@@ -282,8 +282,8 @@ contract("Overall Test", function([
             *The wETH balance of the artist should be 19 wETHs`);
       expect(weiToEther(balance) * 1).to.be.equal(19);
 
-      listing = await this.agoraMarketplace.listings(
-        this.agoraNFT.address,
+      listing = await this.tenartMarketplace.listings(
+        this.tenartNFT.address,
         new BN("1"),
         artist
       );
@@ -304,7 +304,7 @@ contract("Overall Test", function([
             He/She then put it on an auction with reserve price of 20 wETHs
             Bidder1, bidder2, bidder3 then bid the auction with 20 wETHs, 25 wETHs, and 30 wETHs respectively`);
 
-      let balance = await this.agoraNFT.platformFee();
+      let balance = await this.tenartNFT.platformFee();
       console.log(`
             Platform Fee: ${weiToEther(balance)}`);
 
@@ -320,7 +320,7 @@ contract("Overall Test", function([
 
       console.log(`
             Now minting...`);
-      let result = await this.agoraNFT.mint(
+      let result = await this.tenartNFT.mint(
         artist,
         "http://artist.com/art.jpeg",
         { from: artist, value: ether(PLATFORM_FEE) }
@@ -369,18 +369,18 @@ contract("Overall Test", function([
 
       console.log(`
             The artist approves the nft to the market`);
-      await this.agoraNFT.setApprovalForAll(this.agoraAuction.address, true, {
+      await this.tenartNFT.setApprovalForAll(this.tenartAuction.address, true, {
         from: artist,
       });
 
       console.log(`
             Let's mock that the current time: 2021-09-25 09:00:00`);
-      await this.agoraAuction.setTime(new BN("1632560400"));
+      await this.tenartAuction.setTime(new BN("1632560400"));
 
       console.log(`
             The artist auctions his nfts with reserve price of 20 wETHs`);
-      result = await this.agoraAuction.createAuction(
-        this.agoraNFT.address,
+      result = await this.tenartAuction.createAuction(
+        this.tenartNFT.address,
         new BN("1"),
         this.mockERC20.address,
         ether("20"),
@@ -392,11 +392,11 @@ contract("Overall Test", function([
 
       console.log(`
             *Event AuctionCreated should be emitted with correct values: 
-            nftAddress = ${this.agoraNFT.address}, 
+            nftAddress = ${this.tenartNFT.address}, 
             tokenId = 1, 
             payToken = ${this.mockERC20.address}`);
       expectEvent.inLogs(result.logs, "AuctionCreated", {
-        nftAddress: this.agoraNFT.address,
+        nftAddress: this.tenartNFT.address,
         tokenId: new BN("1"),
         payToken: this.mockERC20.address,
       });
@@ -406,8 +406,8 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder1, ether("50"));
 
       console.log(`
-            Bidder1 approves AgoraAuction to transfer up to 50 wETH`);
-      await this.mockERC20.approve(this.agoraAuction.address, ether("50"), {
+            Bidder1 approves TenartAuction to transfer up to 50 wETH`);
+      await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder1,
       });
 
@@ -416,8 +416,8 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder2, ether("50"));
 
       console.log(`
-            Bidder2 approves AgoraAuction to transfer up to 50 wETH`);
-      await this.mockERC20.approve(this.agoraAuction.address, ether("50"), {
+            Bidder2 approves TenartAuction to transfer up to 50 wETH`);
+      await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder2,
       });
 
@@ -426,19 +426,19 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder3, ether("50"));
 
       console.log(`
-            Bidder3 approves AgoraAuction to transfer up to 50 wETH`);
-      await this.mockERC20.approve(this.agoraAuction.address, ether("50"), {
+            Bidder3 approves TenartAuction to transfer up to 50 wETH`);
+      await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder3,
       });
 
       console.log(`
             Let's mock that the current time: 2021-09-25 10:30:00`);
-      await this.agoraAuction.setTime(new BN("1632565800"));
+      await this.tenartAuction.setTime(new BN("1632565800"));
 
       console.log(`
             Bidder1 place a bid of 20 wETHs`);
-      await this.agoraAuction.placeBid(
-        this.agoraNFT.address,
+      await this.tenartAuction.placeBid(
+        this.tenartNFT.address,
         new BN("1"),
         ether("20"),
         { from: bidder1 }
@@ -451,8 +451,8 @@ contract("Overall Test", function([
 
       console.log(`
             Bidder2 place a bid of 25 wETHs`);
-      await this.agoraAuction.placeBid(
-        this.agoraNFT.address,
+      await this.tenartAuction.placeBid(
+        this.tenartNFT.address,
         new BN("1"),
         ether("25"),
         { from: bidder2 }
@@ -470,8 +470,8 @@ contract("Overall Test", function([
 
       console.log(`
             Bidder3 place a bid of 30 wETHs`);
-      await this.agoraAuction.placeBid(
-        this.agoraNFT.address,
+      await this.tenartAuction.placeBid(
+        this.tenartNFT.address,
         new BN("1"),
         ether("30"),
         { from: bidder3 }
@@ -489,12 +489,12 @@ contract("Overall Test", function([
 
       console.log(`
             Let's mock that the current time: 2021-09-30 11:00:00 so the auction has ended`);
-      await this.agoraAuction.setTime(new BN("1632999600"));
+      await this.tenartAuction.setTime(new BN("1632999600"));
 
       console.log(`
             The artist tries to make the auction complete`);
-      result = await this.agoraAuction.resultAuction(
-        this.agoraNFT.address,
+      result = await this.tenartAuction.resultAuction(
+        this.tenartNFT.address,
         new BN("1"),
         { from: artist }
       );
@@ -509,21 +509,21 @@ contract("Overall Test", function([
       balance = await this.mockERC20.balanceOf(artist);
       expect(weiToEther(balance) * 1).to.be.equal(29.75);
 
-      let nftOwner = await this.agoraNFT.ownerOf(new BN("1"));
+      let nftOwner = await this.tenartNFT.ownerOf(new BN("1"));
       console.log(`
             *The owner of the nft now should be the bidder3`);
       expect(nftOwner).to.be.equal(bidder3);
 
       console.log(`
             *Event AuctionResulted should be emitted with correct values: 
-            nftAddress = ${this.agoraNFT.address}, 
+            nftAddress = ${this.tenartNFT.address}, 
             tokenId = 1,
             winner = ${bidder3} ,
             payToken = ${this.mockERC20.address},
             unitPrice = 0,
             winningBid = 30`);
       expectEvent.inLogs(result.logs, "AuctionResulted", {
-        nftAddress: this.agoraNFT.address,
+        nftAddress: this.tenartNFT.address,
         tokenId: new BN("1"),
         winner: bidder3,
         payToken: this.mockERC20.address,
@@ -539,7 +539,7 @@ contract("Overall Test", function([
             He/She then put them on the marketplace as bundle price of 20 wETHs
             A buyer then buys them for 20 wETHs`);
 
-      let balance = await this.agoraNFT.platformFee();
+      let balance = await this.tenartNFT.platformFee();
       console.log(`
             Platform Fee: ${weiToEther(balance)}`);
 
@@ -555,7 +555,7 @@ contract("Overall Test", function([
 
       console.log(`
             Now minting the first NFT...`);
-      let result = await this.agoraNFT.mint(
+      let result = await this.tenartNFT.mint(
         artist,
         "http://artist.com/art.jpeg",
         { from: artist, value: ether(PLATFORM_FEE) }
@@ -578,7 +578,7 @@ contract("Overall Test", function([
 
       console.log(`
             Now minting the second NFT...`);
-      result = await this.agoraNFT.mint(artist, "http://artist.com/art2.jpeg", {
+      result = await this.tenartNFT.mint(artist, "http://artist.com/art2.jpeg", {
         from: artist,
         value: ether(PLATFORM_FEE),
       });
@@ -628,8 +628,8 @@ contract("Overall Test", function([
 
       console.log(`
             The artist approves the nft to the market`);
-      await this.agoraNFT.setApprovalForAll(
-        this.agoraBundleMarketplace.address,
+      await this.tenartNFT.setApprovalForAll(
+        this.tenartBundleMarketplace.address,
         true,
         { from: artist }
       );
@@ -637,9 +637,9 @@ contract("Overall Test", function([
       console.log(`
             The artist lists the 2 nfts in the bundle market with price 20 wETH and 
             starting time 2021-09-22 10:00:00 GMT`);
-      await this.agoraBundleMarketplace.listItem(
+      await this.tenartBundleMarketplace.listItem(
         "mynfts",
-        [this.agoraNFT.address, this.agoraNFT.address],
+        [this.tenartNFT.address, this.tenartNFT.address],
         [new BN("1"), new BN("2")],
         [new BN("1"), new BN("1")],
         this.mockERC20.address,
@@ -648,7 +648,7 @@ contract("Overall Test", function([
         { from: artist }
       );
 
-      let listing = await this.agoraBundleMarketplace.getListing(
+      let listing = await this.tenartBundleMarketplace.getListing(
         artist,
         "mynfts"
       );
@@ -656,8 +656,8 @@ contract("Overall Test", function([
       console.log(`
             *The nfts should be on the bundle marketplace listing`);
       expect(listing.nfts.length).to.be.equal(2);
-      expect(listing.nfts[0]).to.be.equal(this.agoraNFT.address);
-      expect(listing.nfts[1]).to.be.equal(this.agoraNFT.address);
+      expect(listing.nfts[0]).to.be.equal(this.tenartNFT.address);
+      expect(listing.nfts[1]).to.be.equal(this.tenartNFT.address);
       expect(listing.tokenIds[0].toString()).to.be.equal("1");
       expect(listing.tokenIds[1].toString()).to.be.equal("2");
       expect(listing.quantities[0].toString()).to.be.equal("1");
@@ -671,16 +671,16 @@ contract("Overall Test", function([
       await this.mockERC20.mint(buyer, ether("50"));
 
       console.log(`
-            The buyer approves AgoraBundleMarketplace to transfer up to 50 wETH`);
+            The buyer approves TenartBundleMarketplace to transfer up to 50 wETH`);
       await this.mockERC20.approve(
-        this.agoraBundleMarketplace.address,
+        this.tenartBundleMarketplace.address,
         ether("50"),
         { from: buyer }
       );
 
       console.log(`
             The buyer buys the nft for 20 wETHs`);
-      result = await this.agoraBundleMarketplace.buyItem(
+      result = await this.tenartBundleMarketplace.buyItem(
         "mynfts",
         this.mockERC20.address,
         { from: buyer }
@@ -705,9 +705,9 @@ contract("Overall Test", function([
 
       console.log(`
             *The two nfts now should belong to buyer`);
-      let nftOwner = await this.agoraNFT.ownerOf(new BN("1"));
+      let nftOwner = await this.tenartNFT.ownerOf(new BN("1"));
       expect(nftOwner).to.be.equal(buyer);
-      nftOwner = await this.agoraNFT.ownerOf(new BN("2"));
+      nftOwner = await this.tenartNFT.ownerOf(new BN("2"));
       expect(nftOwner).to.be.equal(buyer);
 
       console.log(`

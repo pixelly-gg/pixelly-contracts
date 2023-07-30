@@ -5,7 +5,7 @@ async function main(network) {
   const [deployer] = await ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   console.log(`Deployer's address: `, deployerAddress);
-  const AGORA_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
+  const TENART_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
 
   const {
     TREASURY_ADDRESS,
@@ -15,19 +15,19 @@ async function main(network) {
   } = require("../constants");
 
   const tokenRegistry = await (
-    await ethers.getContractFactory("AgoraTokenRegistry")
+    await ethers.getContractFactory("TenartTokenRegistry")
   ).attach("0x9B415beb6e7D669431737Dc4E7C9bCc760CA01C3");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("AgoraMarketplace")
+    await ethers.getContractFactory("TenartMarketplace")
   ).attach("0x2d42C870AD85D4318887aff39b642C33E9e332c7");
 
   const auctionImpl = await (
-    await ethers.getContractFactory("AgoraAuction")
+    await ethers.getContractFactory("TenartAuction")
   ).attach("0xF0E1Be2656e0d0DaC726f4677d42D4Bd15773A3d");
 
   const royaltiesImpl = await (
-    await ethers.getContractFactory("AgoraRoyaltyRegistry")
+    await ethers.getContractFactory("TenartRoyaltyRegistry")
   ).attach("0x88869D56F0E6BB5C8F89a97390D71E4C413030eD");
 
   console.log(

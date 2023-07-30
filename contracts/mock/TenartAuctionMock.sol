@@ -2,9 +2,9 @@
 
 pragma solidity 0.6.12;
 
-import "../AgoraAuction.sol";
+import "../TenartAuction.sol";
 
-contract AgoraAuctionMock is AgoraAuction {
+contract TenartAuctionMock is TenartAuction {
     uint256 public nowOverride;
 
     constructor(address payable _platformReserveAddress) public {}

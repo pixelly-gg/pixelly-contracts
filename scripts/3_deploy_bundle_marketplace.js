@@ -6,10 +6,10 @@ const {
 } = require("./constants");
 
 async function main() {
-  const Marketplace = await ethers.getContractFactory("AgoraBundleMarketplace");
+  const Marketplace = await ethers.getContractFactory("TenartBundleMarketplace");
   const marketplaceImpl = await Marketplace.deploy();
   await marketplaceImpl.deployed();
-  console.log("AgoraBundleMarketplace deployed to:", marketplaceImpl.address);
+  console.log("TenartBundleMarketplace deployed to:", marketplaceImpl.address);
 
   const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
     "AdminUpgradeabilityProxy"
@@ -36,7 +36,7 @@ async function main() {
   );
 
   const marketplace = await ethers.getContractAt(
-    "AgoraBundleMarketplace",
+    "TenartBundleMarketplace",
     marketplaceProxy.address
   );
   await marketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);

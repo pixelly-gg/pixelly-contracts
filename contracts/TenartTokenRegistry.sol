@@ -4,7 +4,7 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AgoraTokenRegistry is Ownable {
+contract TenartTokenRegistry is Ownable {
     /// @dev Events of the contract
     event TokenAdded(address token);
     event TokenRemoved(address token);

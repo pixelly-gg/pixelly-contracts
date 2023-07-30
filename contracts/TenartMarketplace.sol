@@ -13,8 +13,8 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-interface IAgoraAddressRegistry {
-    function agoraNFT() external view returns (address);
+interface ITenartAddressRegistry {
+    function tenartNFT() external view returns (address);
 
     function bundleMarketplace() external view returns (address);
 
@@ -35,7 +35,7 @@ interface IAgoraAddressRegistry {
     function royaltyRegistry() external view returns (address);
 }
 
-interface IAgoraAuction {
+interface ITenartAuction {
     function auctions(address, uint256)
         external
         view
@@ -49,7 +49,7 @@ interface IAgoraAuction {
         );
 }
 
-interface IAgoraBundleMarketplace {
+interface ITenartBundleMarketplace {
     function validateItemSold(
         address,
         uint256,
@@ -57,21 +57,21 @@ interface IAgoraBundleMarketplace {
     ) external;
 }
 
-interface IAgoraNFTFactory {
+interface ITenartNFTFactory {
     function exists(address) external view returns (bool);
 }
 
-interface IAgoraTokenRegistry {
+interface ITenartTokenRegistry {
     function enabled(address) external view returns (bool);
 }
 
-interface IAgoraPriceFeed {
+interface ITenartPriceFeed {
     function wETH() external view returns (address);
 
     function getPrice(address) external view returns (int256, uint8);
 }
 
-interface IAgoraRoyaltyRegistry {
+interface ITenartRoyaltyRegistry {
     function royaltyInfo(
         address _collection,
         uint256 _tokenId,
@@ -79,7 +79,7 @@ interface IAgoraRoyaltyRegistry {
     ) external view returns (address, uint256);
 }
 
-contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract TenartMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using SafeMath for uint256;
     using AddressUpgradeable for address payable;
     using SafeERC20Upgradeable for IERC20Upgradeable;
@@ -213,7 +213,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     mapping(address => CollectionRoyalty) public collectionRoyalties;
 
     /// @notice Address registry
-    IAgoraAddressRegistry public addressRegistry;
+    ITenartAddressRegistry public addressRegistry;
 
     modifier onlyMarketplace() {
         require(
@@ -457,7 +457,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             feeAmount
         );
 
-        IAgoraRoyaltyRegistry royaltyRegistry = IAgoraRoyaltyRegistry(
+        ITenartRoyaltyRegistry royaltyRegistry = ITenartRoyaltyRegistry(
             addressRegistry.royaltyRegistry()
         );
 
@@ -501,7 +501,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 bytes("")
             );
         }
-        IAgoraBundleMarketplace(addressRegistry.bundleMarketplace())
+        ITenartBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, listedItem.quantity);
 
         emit ItemSold(
@@ -538,7 +538,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             "invalid nft address"
         );
 
-        IAgoraAuction auction = IAgoraAuction(addressRegistry.auction());
+        ITenartAuction auction = ITenartAuction(addressRegistry.auction());
 
         (, , , uint256 startTime, , bool resulted) = auction.auctions(
             _nftAddress,
@@ -703,7 +703,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         offer.payToken.safeTransferFrom(_creator, feeReceipient, feeAmount);
 
-        IAgoraRoyaltyRegistry royaltyRegistry = IAgoraRoyaltyRegistry(
+        ITenartRoyaltyRegistry royaltyRegistry = ITenartRoyaltyRegistry(
             addressRegistry.royaltyRegistry()
         );
 
@@ -744,7 +744,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 bytes("")
             );
         }
-        IAgoraBundleMarketplace(addressRegistry.bundleMarketplace())
+        ITenartBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, offer.quantity);
 
         emit ItemSold(
@@ -796,7 +796,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             feeAmount
         );
 
-        IAgoraRoyaltyRegistry royaltyRegistry = IAgoraRoyaltyRegistry(
+        ITenartRoyaltyRegistry royaltyRegistry = ITenartRoyaltyRegistry(
             addressRegistry.royaltyRegistry()
         );
 
@@ -869,7 +869,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint16 _royalty
     ) external {
         require(_royalty <= 10000, "invalid royalty");
-        require(_isAgoraNFT(_nftAddress), "invalid nft address");
+        require(_isTenartNFT(_nftAddress), "invalid nft address");
 
         _validOwner(_nftAddress, _tokenId, _msgSender(), 1);
 
@@ -896,7 +896,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             _royalty == 0 || _feeRecipient != address(0),
             "invalid fee recipient address"
         );
-        require(!_isAgoraNFT(_nftAddress), "invalid nft address");
+        require(!_isTenartNFT(_nftAddress), "invalid nft address");
 
         if (collectionRoyalties[_nftAddress].creator == address(0)) {
             collectionRoyalties[_nftAddress] = CollectionRoyalty(
@@ -915,17 +915,17 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
     }
 
-    function _isAgoraNFT(address _nftAddress) internal view returns (bool) {
+    function _isTenartNFT(address _nftAddress) internal view returns (bool) {
         return
-            addressRegistry.agoraNFT() == _nftAddress ||
-            IAgoraNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
-            IAgoraNFTFactory(addressRegistry.privateFactory()).exists(
+            addressRegistry.tenartNFT() == _nftAddress ||
+            ITenartNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
+            ITenartNFTFactory(addressRegistry.privateFactory()).exists(
                 _nftAddress
             ) ||
-            IAgoraNFTFactory(addressRegistry.artFactory()).exists(
+            ITenartNFTFactory(addressRegistry.artFactory()).exists(
                 _nftAddress
             ) ||
-            IAgoraNFTFactory(addressRegistry.privateArtFactory()).exists(
+            ITenartNFTFactory(addressRegistry.privateArtFactory()).exists(
                 _nftAddress
             );
     }
@@ -937,7 +937,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     function getPrice(address _payToken) public view returns (int256) {
         int256 unitPrice;
         uint8 decimals;
-        IAgoraPriceFeed priceFeed = IAgoraPriceFeed(
+        ITenartPriceFeed priceFeed = ITenartPriceFeed(
             addressRegistry.priceFeed()
         );
 
@@ -979,11 +979,11 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     /**
-     @notice Update AgoraAddressRegistry contract
+     @notice Update TenartAddressRegistry contract
      @dev Only admin
      */
     function updateAddressRegistry(address _registry) external onlyOwner {
-        addressRegistry = IAgoraAddressRegistry(_registry);
+        addressRegistry = ITenartAddressRegistry(_registry);
     }
 
     /**
@@ -1016,7 +1016,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(
             _payToken == address(0) ||
                 (addressRegistry.tokenRegistry() != address(0) &&
-                    IAgoraTokenRegistry(addressRegistry.tokenRegistry())
+                    ITenartTokenRegistry(addressRegistry.tokenRegistry())
                         .enabled(_payToken)),
             "invalid pay token"
         );
@@ -1045,7 +1045,7 @@ contract AgoraMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     function _noAuctionLive(address _nftAddress, uint256 _tokenId) internal {
-        IAgoraAuction auction = IAgoraAuction(addressRegistry.auction());
+        ITenartAuction auction = ITenartAuction(addressRegistry.auction());
 
         (, , , uint256 startTime, , bool resulted) = auction.auctions(
             _nftAddress,

@@ -10,13 +10,13 @@ const {
 
 const { expect } = require("chai");
 
-const AgoraNFT = artifacts.require("AgoraNFT");
-const AgoraAuction = artifacts.require("AgoraAuctionMock");
-const AgoraAuctionReal = artifacts.require("AgoraAuction");
+const TenartNFT = artifacts.require("TenartNFT");
+const TenartAuction = artifacts.require("TenartAuctionMock");
+const TenartAuctionReal = artifacts.require("TenartAuction");
 const BiddingContractMock = artifacts.require("BiddingContractMock");
 const MockERC20 = artifacts.require("MockERC20");
 
-contract("AgoraAuction", (accounts) => {
+contract("TenartAuction", (accounts) => {
   const [
     admin,
     smartContract,
@@ -38,7 +38,7 @@ contract("AgoraAuction", (accounts) => {
   const randomTokenURI = "rand";
 
   beforeEach(async () => {
-    this.token = await AgoraNFT.new({ from: admin });
+    this.token = await TenartNFT.new({ from: admin });
 
     this.mockToken = await MockERC20.new(
       "Mock ERC20",
@@ -47,7 +47,7 @@ contract("AgoraAuction", (accounts) => {
       { from: minter }
     );
 
-    this.auction = await AgoraAuction.new(platformFeeAddress, { from: admin });
+    this.auction = await TenartAuction.new(platformFeeAddress, { from: admin });
 
     await this.token.setApprovalForAll(this.auction.address, true, {
       from: minter,
@@ -60,8 +60,8 @@ contract("AgoraAuction", (accounts) => {
   describe("Contract deployment", () => {
     it("Reverts when platform fee recipient is zero", async () => {
       await expectRevert(
-        AgoraAuction.new(constants.ZERO_ADDRESS, { from: admin }),
-        "AgoraAuction: Invalid Platform Fee Recipient"
+        TenartAuction.new(constants.ZERO_ADDRESS, { from: admin }),
+        "TenartAuction: Invalid Platform Fee Recipient"
       );
     });
   });
@@ -83,7 +83,7 @@ contract("AgoraAuction", (accounts) => {
             "10",
             { from: minter }
           ),
-          "AgoraAuction.createAuction: End time passed. Nobody can bid."
+          "TenartAuction.createAuction: End time passed. Nobody can bid."
         );
       });
 
@@ -98,7 +98,7 @@ contract("AgoraAuction", (accounts) => {
             "0",
             { from: minter }
           ),
-          "AgoraAuction.createAuction: End time must be greater than start"
+          "TenartAuction.createAuction: End time must be greater than start"
         );
       });
 
@@ -122,7 +122,7 @@ contract("AgoraAuction", (accounts) => {
             "3",
             { from: minter }
           ),
-          "AgoraAuction.createAuction: Cannot relist"
+          "TenartAuction.createAuction: Cannot relist"
         );
       });
 
@@ -148,7 +148,7 @@ contract("AgoraAuction", (accounts) => {
             "3",
             { from: minter }
           ),
-          "AgoraAuction.createAuction: Not owner and or contract not approved"
+          "TenartAuction.createAuction: Not owner and or contract not approved"
         );
       });
 
@@ -225,7 +225,7 @@ contract("AgoraAuction", (accounts) => {
             from: bidder,
             value: ether("0.2"),
           }),
-          "AgoraAuction.placeBid: No contracts permitted"
+          "TenartAuction.placeBid: No contracts permitted"
         );
       });
 
@@ -235,7 +235,7 @@ contract("AgoraAuction", (accounts) => {
             from: bidder,
             value: 1,
           }),
-          "AgoraAuction.placeBid: Bidding outside of the auction window"
+          "TenartAuction.placeBid: Bidding outside of the auction window"
         );
       });
 
@@ -245,7 +245,7 @@ contract("AgoraAuction", (accounts) => {
             from: bidder,
             value: 1,
           }),
-          "AgoraAuction.placeBid: Bidding outside of the auction window"
+          "TenartAuction.placeBid: Bidding outside of the auction window"
         );
       });
 
@@ -256,7 +256,7 @@ contract("AgoraAuction", (accounts) => {
             from: bidder,
             value: 1,
           }),
-          "AgoraAuction.placeBid: Bidding outside of the auction window"
+          "TenartAuction.placeBid: Bidding outside of the auction window"
         );
       });
 
@@ -283,7 +283,7 @@ contract("AgoraAuction", (accounts) => {
             from: bidder,
             value: ether("0.2"),
           }),
-          "AgoraAuction.placeBid: Failed to outbid highest bidder"
+          "TenartAuction.placeBid: Failed to outbid highest bidder"
         );
       });
     });
@@ -467,7 +467,7 @@ contract("AgoraAuction", (accounts) => {
     it("fails with withdrawing a bid which does not exist", async () => {
       await expectRevert(
         this.auction.withdrawBid(this.token.address, 999, { from: bidder2 }),
-        "AgoraAuction.withdrawBid: You are not the highest bidder"
+        "TenartAuction.withdrawBid: You are not the highest bidder"
       );
     });
 
@@ -476,7 +476,7 @@ contract("AgoraAuction", (accounts) => {
         this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {
           from: bidder2,
         }),
-        "AgoraAuction.withdrawBid: You are not the highest bidder"
+        "TenartAuction.withdrawBid: You are not the highest bidder"
       );
     });
 
@@ -487,7 +487,7 @@ contract("AgoraAuction", (accounts) => {
         this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {
           from: bidder,
         }),
-        "AgoraAuction.withdrawBid: Cannot withdraw until lock time has passed"
+        "TenartAuction.withdrawBid: Cannot withdraw until lock time has passed"
       );
     });
 
@@ -498,7 +498,7 @@ contract("AgoraAuction", (accounts) => {
         this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {
           from: bidder,
         }),
-        "AgoraAuction.withdrawBid: Past auction end"
+        "TenartAuction.withdrawBid: Past auction end"
       );
     });
 
@@ -574,7 +574,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {
             from: bidder,
           }),
-          "AgoraAuction.resultAuction: Sender must be item owner"
+          "TenartAuction.resultAuction: Sender must be item owner"
         );
       });
 
@@ -583,7 +583,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.resultAuction: The auction has not ended"
+          "TenartAuction.resultAuction: The auction has not ended"
         );
       });
 
@@ -597,7 +597,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.resultAuction: reserve not reached"
+          "TenartAuction.resultAuction: reserve not reached"
         );
       });
 
@@ -614,7 +614,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.resultAuction: no open bids"
+          "TenartAuction.resultAuction: no open bids"
         );
       });
 
@@ -635,7 +635,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.resultAuction: Sender must be item owner"
+          "TenartAuction.resultAuction: Sender must be item owner"
         );
       });
     });
@@ -758,7 +758,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {
             from: bidder,
           }),
-          "AgoraAuction.cancelAuction: Sender must be item owner"
+          "TenartAuction.cancelAuction: Sender must be item owner"
         );
       });
 
@@ -777,7 +777,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.cancelAuction: Sender must be item owner"
+          "TenartAuction.cancelAuction: Sender must be item owner"
         );
       });
 
@@ -796,7 +796,7 @@ contract("AgoraAuction", (accounts) => {
           this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {
             from: minter,
           }),
-          "AgoraAuction.cancelAuction: Sender must be item owner"
+          "TenartAuction.cancelAuction: Sender must be item owner"
         );
       });
 

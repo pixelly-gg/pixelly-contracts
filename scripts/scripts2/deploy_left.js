@@ -3,40 +3,40 @@ async function main(network) {
   const [deployer] = await ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   console.log(`Deployer's address: `, deployerAddress);
-  const AGORA_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
+  const TENART_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
 
   const { WRAPPED_ETH_MAINNET } = require("../constants");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("AgoraMarketplace")
+    await ethers.getContractFactory("TenartMarketplace")
   ).attach("0x4Ac3c9Ff510f6D5Dd32FCea929785aE7924A8C26");
 
   const bundleMarketplaceImpl = await (
-    await ethers.getContractFactory("AgoraBundleMarketplace")
+    await ethers.getContractFactory("TenartBundleMarketplace")
   ).attach("0x91014F399E4bd35BDCB340466baBF1a0034Fa1DF");
 
   const auctionImpl = await (
-    await ethers.getContractFactory("AgoraAuction")
+    await ethers.getContractFactory("TenartAuction")
   ).attach("0xFb7190641C5ab98585D9259Ef52Db881066179Ee");
 
   const addressRegistry = await (
-    await ethers.getContractFactory("AgoraAddressRegistry")
+    await ethers.getContractFactory("TenartAddressRegistry")
   ).attach("0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd");
 
   const tokenRegistry = await (
-    await ethers.getContractFactory("AgoraTokenRegistry")
+    await ethers.getContractFactory("TenartTokenRegistry")
   ).attach("0xEC082041260Cc6880A120426f167B228E4955528");
 
-  await marketplaceImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
+  await marketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
   console.log("Marketplace Address Registry updated");
-  await bundleMarketplaceImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
+  await bundleMarketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
   console.log("MarketplaceBundle Address Registry updated");
-  await auctionImpl.updateAddressRegistry(AGORA_ADDRESS_REGISTRY);
+  await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
   console.log("Auction Address Registry updated");
-  await addressRegistry.updateAgoraNFT(
+  await addressRegistry.updateTenartNFT(
     "0x491829466dc1fD03dCFC57EE22933814a5804C7a"
   );
-  console.log("Address Registry AgoraNFT");
+  console.log("Address Registry TenartNFT");
   await addressRegistry.updateAuction(auctionImpl.address);
   console.log("Address Registry Auction");
   await addressRegistry.updateMarketplace(marketplaceImpl.address);

@@ -2,12 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../AgoraAuction.sol";
+import "../TenartAuction.sol";
 
 contract BiddingContractMock {
-    AgoraAuction public auctionContract;
+    TenartAuction public auctionContract;
 
-    constructor(AgoraAuction _auctionContract) public {
+    constructor(TenartAuction _auctionContract) public {
         auctionContract = _auctionContract;
     }
 

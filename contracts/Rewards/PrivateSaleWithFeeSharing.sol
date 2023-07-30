@@ -7,9 +7,9 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.s
 
 /**
  * @title PrivateSaleWithFeeSharing
- * @notice It handles the private sale for AGO tokens (against ETH) and the fee-sharing
+ * @notice It handles the private sale for TART tokens (against ETH) and the fee-sharing
  * mechanism for sale participants. It uses a 3-tier system with different
- * costs (in ETH) to participate. The exchange rate is expressed as the price of 1 ETH in AGO token.
+ * costs (in ETH) to participate. The exchange rate is expressed as the price of 1 ETH in TART token.
  * It is the same for all three tiers.
  */
 contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
@@ -33,24 +33,24 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     // Number of eligible tiers in the private sale
     uint8 public constant NUMBER_TIERS = 3;
 
-    IERC20 public immutable agoraToken;
+    IERC20 public immutable tenartToken;
 
     IERC20 public immutable rewardToken;
 
     // Maximum blocks for withdrawal
     uint256 public immutable MAX_BLOCK_FOR_WITHDRAWAL;
 
-    // Total AGO expected to be distributed
-    uint256 public immutable TOTAL_AGO_DISTRIBUTED;
+    // Total TART expected to be distributed
+    uint256 public immutable TOTAL_TART_DISTRIBUTED;
 
     // Current sale phase (uint8)
     SalePhase public currentPhase;
 
-    // Block where participants can withdraw the AGO tokens
+    // Block where participants can withdraw the TART tokens
     uint256 public blockForWithdrawal;
 
-    // Price of WETH in AGO for the sale
-    uint256 public priceOfETHInAGO;
+    // Price of WETH in TART for the sale
+    uint256 public priceOfETHInTART;
 
     // Total amount committed in the sale (in ETH)
     uint256 public totalAmountCommitted;
@@ -72,20 +72,20 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     event NewSalePhase(SalePhase newSalePhase);
     event NewAllocationCostPerTier(uint8 tier, uint256 allocationCostInETH);
     event NewBlockForWithdrawal(uint256 blockForWithdrawal);
-    event NewPriceOfETHInAGO(uint256 price);
+    event NewPriceOfETHInTART(uint256 price);
     event UsersWhitelisted(address[] users, uint8 tier);
     event UserRemoved(address user);
     event Withdraw(address indexed user, uint8 tier, uint256 amount);
 
     /**
      * @notice Constructor
-     * @param _agoraToken address of the AGO token
+     * @param _tenartToken address of the TART token
      * @param _rewardToken address of the reward token
      * @param _maxBlockForWithdrawal maximum block for withdrawal
-     * @param _totalLooksDistributed total number of AGO tokens to distribute
+     * @param _totalLooksDistributed total number of TART tokens to distribute
      */
     constructor(
-        address _agoraToken,
+        address _tenartToken,
         address _rewardToken,
         uint256 _maxBlockForWithdrawal,
         uint256 _totalLooksDistributed
@@ -95,12 +95,12 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
             "Owner: MaxBlockForWithdrawal must be after block number"
         );
 
-        agoraToken = IERC20(_agoraToken);
+        tenartToken = IERC20(_tenartToken);
         rewardToken = IERC20(_rewardToken);
         blockForWithdrawal = _maxBlockForWithdrawal;
 
         MAX_BLOCK_FOR_WITHDRAWAL = _maxBlockForWithdrawal;
-        TOTAL_AGO_DISTRIBUTED = _totalLooksDistributed;
+        TOTAL_TART_DISTRIBUTED = _totalLooksDistributed;
     }
 
     /**
@@ -159,7 +159,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Withdraw AGO + pending WETH
+     * @notice Withdraw TART + pending WETH
      */
     function withdraw() external nonReentrant {
         require(
@@ -200,18 +200,18 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
         // Update status to withdrawn
         userInfo[msg.sender].hasWithdrawn = true;
 
-        // Calculate amount of AGO to transfer based on the tier
-        uint256 agoraAmountToTransfer = allocationCostPerTier[
+        // Calculate amount of TART to transfer based on the tier
+        uint256 tenartAmountToTransfer = allocationCostPerTier[
             userInfo[msg.sender].tier
-        ] * priceOfETHInAGO;
+        ] * priceOfETHInTART;
 
-        // Transfer AGO token to sender
-        agoraToken.safeTransfer(msg.sender, agoraAmountToTransfer);
+        // Transfer TART token to sender
+        tenartToken.safeTransfer(msg.sender, tenartAmountToTransfer);
 
         emit Withdraw(
             msg.sender,
             userInfo[msg.sender].tier,
-            agoraAmountToTransfer
+            tenartAmountToTransfer
         );
     }
 
@@ -273,8 +273,8 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Update block deadline for withdrawal of AGO
-     * @param _blockForWithdrawal block for withdrawing AGO for sale participants
+     * @notice Update block deadline for withdrawal of TART
+     * @param _blockForWithdrawal block for withdrawing TART for sale participants
      */
     function setBlockForWithdrawal(uint256 _blockForWithdrawal)
         external
@@ -291,17 +291,17 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Set price of 1 ETH in AGO
-     * @param _priceOfETHinAGO price of 1 ETH in AGO
+     * @notice Set price of 1 ETH in TART
+     * @param _priceOfETHinTART price of 1 ETH in TART
      */
-    function setPriceOfETHInAGO(uint256 _priceOfETHinAGO) external onlyOwner {
+    function setPriceOfETHInTART(uint256 _priceOfETHinTART) external onlyOwner {
         require(
             currentPhase == SalePhase.Pending,
             "Owner: Phase must be Pending"
         );
-        priceOfETHInAGO = _priceOfETHinAGO;
+        priceOfETHInTART = _priceOfETHinTART;
 
-        emit NewPriceOfETHInAGO(_priceOfETHinAGO);
+        emit NewPriceOfETHInTART(_priceOfETHinTART);
     }
 
     /**
@@ -316,14 +316,14 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
             );
 
             // Risk checks
-            require(priceOfETHInAGO > 0, "Owner: Exchange rate must be > 0");
+            require(priceOfETHInTART > 0, "Owner: Exchange rate must be > 0");
             require(
-                getMaxAmountAGOToDistribute() == TOTAL_AGO_DISTRIBUTED,
-                "Owner: Wrong amount of AGO"
+                getMaxAmountTARTToDistribute() == TOTAL_TART_DISTRIBUTED,
+                "Owner: Wrong amount of TART"
             );
             require(
-                agoraToken.balanceOf(address(this)) >= TOTAL_AGO_DISTRIBUTED,
-                "Owner: Not enough AGO in the contract"
+                tenartToken.balanceOf(address(this)) >= TOTAL_TART_DISTRIBUTED,
+                "Owner: Not enough TART in the contract"
             );
             require(
                 blockForWithdrawal > block.number,
@@ -345,7 +345,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Withdraw the total commited amount (in ETH) and any AGO surplus.
+     * @notice Withdraw the total commited amount (in ETH) and any TART surplus.
      * It also updates the sale phase to Staking phase.
      */
     function withdrawCommittedAmount() external onlyOwner nonReentrant {
@@ -355,11 +355,11 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
         (bool success, ) = msg.sender.call{value: totalAmountCommitted}("");
         require(success, "Owner: Transfer fail");
 
-        // If some tiered users did not participate, transfer the AGO surplus to contract owner
-        if (totalAmountCommitted * priceOfETHInAGO < (TOTAL_AGO_DISTRIBUTED)) {
-            uint256 tokenAmountToReturnInAGO = TOTAL_AGO_DISTRIBUTED -
-                (totalAmountCommitted * priceOfETHInAGO);
-            agoraToken.safeTransfer(msg.sender, tokenAmountToReturnInAGO);
+        // If some tiered users did not participate, transfer the TART surplus to contract owner
+        if (totalAmountCommitted * priceOfETHInTART < (TOTAL_TART_DISTRIBUTED)) {
+            uint256 tokenAmountToReturnInTART = TOTAL_TART_DISTRIBUTED -
+                (totalAmountCommitted * priceOfETHInTART);
+            tenartToken.safeTransfer(msg.sender, tokenAmountToReturnInTART);
         }
 
         // Update phase status to Staking
@@ -423,9 +423,9 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Retrieve max amount to distribute (in AGO) for sale
+     * @notice Retrieve max amount to distribute (in TART) for sale
      */
-    function getMaxAmountAGOToDistribute()
+    function getMaxAmountTARTToDistribute()
         public
         view
         returns (uint256 maxAmountCollected)
@@ -435,6 +435,6 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
                 numberOfParticipantsForATier[i]);
         }
 
-        return maxAmountCollected * priceOfETHInAGO;
+        return maxAmountCollected * priceOfETHInTART;
     }
 }

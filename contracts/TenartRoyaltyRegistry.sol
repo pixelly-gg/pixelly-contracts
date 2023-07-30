@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./library/IERC2981Royalties.sol";
 import "./library/IERC2981RoyaltySetter.sol";
 
-contract AgoraRoyaltyRegistry is Ownable {
+contract TenartRoyaltyRegistry is Ownable {
     address public royaltyMigrationManager;
 
     struct RoyaltyInfo {

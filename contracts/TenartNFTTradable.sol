@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title AgoraNFTTradable
- * AgoraNFTTradable - ERC721 contract that whitelists a trading address, and has minting functionality.
+ * @title TenartNFTTradable
+ * TenartNFTTradable - ERC721 contract that whitelists a trading address, and has minting functionality.
  */
-contract AgoraNFTTradable is ERC721, Ownable {
+contract TenartNFTTradable is ERC721, Ownable {
     /// @dev Events of the contract
     event Minted(
         uint256 tokenId,
@@ -135,7 +135,7 @@ contract AgoraNFTTradable is ERC721, Ownable {
     }
 
     /**
-     * Override isApprovedForAll to whitelist Agora contracts to enable gas-less listings.
+     * Override isApprovedForAll to whitelist Tenart contracts to enable gas-less listings.
      */
     function isApprovedForAll(address owner, address operator)
         public
@@ -143,7 +143,7 @@ contract AgoraNFTTradable is ERC721, Ownable {
         override
         returns (bool)
     {
-        // Whitelist Agora auction, marketplace, bundle marketplace contracts for easy trading.
+        // Whitelist Tenart auction, marketplace, bundle marketplace contracts for easy trading.
         if (
             auction == operator ||
             marketplace == operator ||
@@ -156,7 +156,7 @@ contract AgoraNFTTradable is ERC721, Ownable {
     }
 
     /**
-     * Override _isApprovedOrOwner to whitelist Agora contracts to enable gas-less listings.
+     * Override _isApprovedOrOwner to whitelist Tenart contracts to enable gas-less listings.
      */
     function _isApprovedOrOwner(address spender, uint256 tokenId)
         internal

@@ -9,14 +9,14 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.s
 
 /**
  * @title TradingRewardsDistributor
- * @notice It distributes AGO tokens with rolling Merkle airdrops.
+ * @notice It distributes TART tokens with rolling Merkle airdrops.
  */
 contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
 
     uint256 public constant BUFFER_ADMIN_WITHDRAW = 3 days;
 
-    IERC20 public immutable agoraToken;
+    IERC20 public immutable tenartToken;
 
     // Current reward round (users can only claim pending rewards for the current round)
     uint256 public currentRewardRound;
@@ -27,7 +27,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
     // Max amount per user in current tree
     uint256 public maximumAmountPerUserInCurrentTree;
 
-    // Total amount claimed by user (in AGO)
+    // Total amount claimed by user (in TART)
     mapping(address => uint256) public amountClaimedByUser;
 
     // Merkle root for a reward round
@@ -50,10 +50,10 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
 
     /**
      * @notice Constructor
-     * @param _agoraToken address of the Agora token
+     * @param _tenartToken address of the Tenart token
      */
-    constructor(address _agoraToken) public {
-        agoraToken = IERC20(_agoraToken);
+    constructor(address _tenartToken) public {
+        tenartToken = IERC20(_tenartToken);
         _pause();
     }
 
@@ -92,7 +92,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
         amountClaimedByUser[msg.sender] += adjustedAmount;
 
         // Transfer adjusted amount
-        agoraToken.safeTransfer(msg.sender, adjustedAmount);
+        tenartToken.safeTransfer(msg.sender, adjustedAmount);
 
         emit RewardsClaim(msg.sender, currentRewardRound, adjustedAmount);
     }
@@ -132,7 +132,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Transfer AGO tokens back to owner
+     * @notice Transfer TART tokens back to owner
      * @dev It is for emergency purposes
      * @param amount amount to withdraw
      */
@@ -145,7 +145,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
             block.timestamp > (lastPausedTimestamp + BUFFER_ADMIN_WITHDRAW),
             "Owner: Too early to withdraw"
         );
-        agoraToken.safeTransfer(msg.sender, amount);
+        tenartToken.safeTransfer(msg.sender, amount);
 
         emit TokenWithdrawnOwner(amount);
     }

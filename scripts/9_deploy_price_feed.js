@@ -1,19 +1,19 @@
 const {
-  AGORA_ADDRESS_REGISTRY,
+  TENART_ADDRESS_REGISTRY,
   WRAPPED_ETH_MAINNET,
   WRAPPED_ETH_TESTNET,
 } = require("./constants");
 
 async function main() {
-  const Contract = await ethers.getContractFactory("AgoraPriceFeed");
+  const Contract = await ethers.getContractFactory("TenartPriceFeed");
   const contract = await Contract.deploy(
-    AGORA_ADDRESS_REGISTRY,
+    TENART_ADDRESS_REGISTRY,
     WRAPPED_ETH_MAINNET
   );
 
   await contract.deployed();
 
-  console.log("AgoraPriceFeed deployed to", contract.address);
+  console.log("TenartPriceFeed deployed to", contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

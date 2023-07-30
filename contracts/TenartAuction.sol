@@ -11,8 +11,8 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-interface IAgoraAddressRegistry {
-    function agoraNFT() external view returns (address);
+interface ITenartAddressRegistry {
+    function tenartNFT() external view returns (address);
 
     function marketplace() external view returns (address);
 
@@ -23,11 +23,11 @@ interface IAgoraAddressRegistry {
     function royaltyRegistry() external view returns (address);
 }
 
-interface IAgoraMarketplace {
+interface ITenartMarketplace {
     function getPrice(address) external view returns (int256);
 }
 
-interface IAgoraBundleMarketplace {
+interface ITenartBundleMarketplace {
     function validateItemSold(
         address,
         uint256,
@@ -35,11 +35,11 @@ interface IAgoraBundleMarketplace {
     ) external;
 }
 
-interface IAgoraTokenRegistry {
+interface ITenartTokenRegistry {
     function enabled(address) external returns (bool);
 }
 
-interface IAgoraRoyaltyRegistry {
+interface ITenartRoyaltyRegistry {
     function royaltyInfo(
         address _collection,
         uint256 _tokenId,
@@ -50,7 +50,7 @@ interface IAgoraRoyaltyRegistry {
 /**
  * @notice Secondary sale auction contract for NFTs
  */
-contract AgoraAuction is
+contract TenartAuction is
     OwnableUpgradeable,
     ReentrancyGuardUpgradeable,
     IERC721Receiver
@@ -60,7 +60,7 @@ contract AgoraAuction is
     using SafeERC20Upgradeable for IERC20;
 
     /// @notice Event emitted only on construction. To be used by indexers
-    event AgoraAuctionContractDeployed();
+    event TenartAuctionContractDeployed();
 
     event PauseToggled(bool isPaused);
 
@@ -167,7 +167,7 @@ contract AgoraAuction is
     address payable public platformFeeRecipient;
 
     /// @notice Address registry
-    IAgoraAddressRegistry public addressRegistry;
+    ITenartAddressRegistry public addressRegistry;
 
     /// @notice for switching off auction creations, bids and withdrawals
     bool public isPaused;
@@ -201,14 +201,14 @@ contract AgoraAuction is
     ) public initializer {
         require(
             _platformFeeRecipient != address(0),
-            "AgoraAuction: Invalid Platform Fee Recipient"
+            "TenartAuction: Invalid Platform Fee Recipient"
         );
 
         platformFeeRecipient = _platformFeeRecipient;
         minBidIncrement = _minBidIncrement;
         bidWithdrawalLockTime = 20 minutes;
         platformFee = 25;
-        emit AgoraAuctionContractDeployed();
+        emit TenartAuctionContractDeployed();
 
         __Ownable_init();
         __ReentrancyGuard_init();
@@ -246,7 +246,7 @@ contract AgoraAuction is
         );
         require(
             (addressRegistry.tokenRegistry() != address(0) &&
-                IAgoraTokenRegistry(addressRegistry.tokenRegistry()).enabled(
+                ITenartTokenRegistry(addressRegistry.tokenRegistry()).enabled(
                     _payToken
                 )),
             "invalid pay token"
@@ -487,7 +487,7 @@ contract AgoraAuction is
             } else {
                 payAmount = _winningBid;
             }
-            IAgoraRoyaltyRegistry royaltyRegistry = IAgoraRoyaltyRegistry(
+            ITenartRoyaltyRegistry royaltyRegistry = ITenartRoyaltyRegistry(
                 addressRegistry.royaltyRegistry()
             );
 
@@ -520,7 +520,7 @@ contract AgoraAuction is
         // Transfer the token to the winner
         IERC721(_nftAddress).safeTransferFrom(address(this), _winner, _tokenId);
 
-        IAgoraBundleMarketplace(addressRegistry.bundleMarketplace())
+        ITenartBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, uint256(1));
 
         emit AuctionResulted(
@@ -529,7 +529,7 @@ contract AgoraAuction is
             _tokenId,
             _winner,
             auction.payToken,
-            IAgoraMarketplace(addressRegistry.marketplace()).getPrice(
+            ITenartMarketplace(addressRegistry.marketplace()).getPrice(
                 auction.payToken
             ),
             _winningBid
@@ -708,11 +708,11 @@ contract AgoraAuction is
     }
 
     /**
-     @notice Update AgoraAddressRegistry contract
+     @notice Update TenartAddressRegistry contract
      @dev Only admin
      */
     function updateAddressRegistry(address _registry) external onlyOwner {
-        addressRegistry = IAgoraAddressRegistry(_registry);
+        addressRegistry = ITenartAddressRegistry(_registry);
     }
 
     ///////////////
@@ -977,7 +977,7 @@ contract AgoraAuction is
         } else {
             payAmount = _winningBid;
         }
-        IAgoraRoyaltyRegistry royaltyRegistry = IAgoraRoyaltyRegistry(
+        ITenartRoyaltyRegistry royaltyRegistry = ITenartRoyaltyRegistry(
             addressRegistry.royaltyRegistry()
         );
 
@@ -1010,7 +1010,7 @@ contract AgoraAuction is
         // Transfer the token to the winner
         IERC721(_nftAddress).safeTransferFrom(auction.owner, _winner, _tokenId);
 
-        IAgoraBundleMarketplace(addressRegistry.bundleMarketplace())
+        ITenartBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, uint256(1));
 
         emit AuctionResulted(
@@ -1019,7 +1019,7 @@ contract AgoraAuction is
             _tokenId,
             _winner,
             auction.payToken,
-            IAgoraMarketplace(addressRegistry.marketplace()).getPrice(
+            ITenartMarketplace(addressRegistry.marketplace()).getPrice(
                 auction.payToken
             ),
             _winningBid

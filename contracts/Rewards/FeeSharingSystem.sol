@@ -10,7 +10,7 @@ import {TokenDistributor} from "./TokenDistributor.sol";
 /**
  * @title FeeSharingSystem
  * @notice It handles the distribution of fees using
- * WCRO along with the auto-compounding of AGO.
+ * WCRO along with the auto-compounding of TART.
  */
 contract FeeSharingSystem is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
@@ -24,7 +24,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
     // Precision factor for calculating rewards and exchange rate
     uint256 public constant PRECISION_FACTOR = 10**18;
 
-    IERC20 public immutable agoraToken;
+    IERC20 public immutable tenartToken;
 
     IERC20 public immutable rewardToken;
 
@@ -69,31 +69,31 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
 
     /**
      * @notice Constructor
-     * @param _agoraToken address of the token staked (AGO)
+     * @param _tenartToken address of the token staked (TARTT)
      * @param _rewardToken address of the reward token
      * @param _tokenDistributor address of the token distributor contract
      */
     constructor(
-        address _agoraToken,
+        address _tenartToken,
         address _rewardToken,
         address _tokenDistributor
     ) public {
         rewardToken = IERC20(_rewardToken);
-        agoraToken = IERC20(_agoraToken);
+        tenartToken = IERC20(_tenartToken);
         tokenDistributor = TokenDistributor(_tokenDistributor);
     }
 
     /**
      * @notice Deposit staked tokens (and collect reward tokens if requested)
-     * @param amount amount to deposit (in AGO)
+     * @param amount amount to deposit (in TART)
      * @param claimRewardToken whether to claim reward tokens
-     * @dev There is a limit of 1 AGO per deposit to prevent potential manipulation of current shares
+     * @dev There is a limit of 1 TART per deposit to prevent potential manipulation of current shares
      */
     function deposit(uint256 amount, bool claimRewardToken)
         external
         nonReentrant
     {
-        require(amount >= PRECISION_FACTOR, "Deposit: Amount must be >= 1 AGO");
+        require(amount >= PRECISION_FACTOR, "Deposit: Amount must be >= 1 TART");
 
         // Auto compounds for everyone
         tokenDistributor.harvestAndCompound();
@@ -106,8 +106,8 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
             address(this)
         );
 
-        // Transfer AGO tokens to this address
-        agoraToken.safeTransferFrom(msg.sender, address(this), amount);
+        // Transfer TARTT tokens to this address
+        tenartToken.safeTransferFrom(msg.sender, address(this), amount);
 
         uint256 currentShares;
 
@@ -136,8 +136,8 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
             }
         }
 
-        // Verify AGO token allowance and adjust if necessary
-        _checkAndAdjustAGOTokenAllowanceIfRequired(
+        // Verify TART token allowance and adjust if necessary
+        _checkAndAdjustTARTTokenAllowanceIfRequired(
             amount,
             address(tokenDistributor)
         );
@@ -239,10 +239,10 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Calculate value of AGO for a user given a number of shares owned
+     * @notice Calculate value of TART for a user given a number of shares owned
      * @param user address of the user
      */
-    function calculateSharesValueInAGO(address user)
+    function calculateSharesValueInTART(address user)
         external
         view
         returns (uint256)
@@ -265,10 +265,10 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Calculate price of one share (in AGO token)
+     * @notice Calculate price of one share (in TART token)
      * Share price is expressed times 1e18
      */
-    function calculateSharePriceInAGO() external view returns (uint256) {
+    function calculateSharePriceInTART() external view returns (uint256) {
         (uint256 totalAmountStaked, ) = tokenDistributor.userInfo(
             address(this)
         );
@@ -311,12 +311,12 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
      * @param _amount amount to transfer
      * @param _to token to transfer
      */
-    function _checkAndAdjustAGOTokenAllowanceIfRequired(
+    function _checkAndAdjustTARTTokenAllowanceIfRequired(
         uint256 _amount,
         address _to
     ) internal {
-        if (agoraToken.allowance(address(this), _to) < _amount) {
-            agoraToken.approve(_to, type(uint256).max);
+        if (tenartToken.allowance(address(this), _to) < _amount) {
+            tenartToken.approve(_to, type(uint256).max);
         }
     }
 
@@ -368,7 +368,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
         // Update reward for user
         _updateReward(msg.sender);
 
-        // Retrieve total amount staked and calculated current amount (in AGO)
+        // Retrieve total amount staked and calculated current amount (in TART)
         (uint256 totalAmountStaked, ) = tokenDistributor.userInfo(
             address(this)
         );
@@ -392,8 +392,8 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
             }
         }
 
-        // Transfer AGO tokens to sender
-        agoraToken.safeTransfer(msg.sender, currentAmount);
+        // Transfer TART tokens to sender
+        tenartToken.safeTransfer(msg.sender, currentAmount);
 
         emit Withdraw(msg.sender, currentAmount, pendingRewards);
     }

@@ -7,7 +7,7 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.s
 
 /**
  * @title TokenSplitter
- * @notice It splits AGO to team/treasury/trading volume reward accounts based on shares.
+ * @notice It splits TART to team/treasury/trading volume reward accounts based on shares.
  */
 contract TokenSplitter is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
@@ -19,9 +19,9 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
 
     uint256 public immutable TOTAL_SHARES;
 
-    IERC20 public immutable agoraToken;
+    IERC20 public immutable tenartToken;
 
-    // Total AGO tokens distributed across all accounts
+    // Total TART tokens distributed across all accounts
     uint256 public totalTokensDistributed;
 
     mapping(address => AccountInfo) public accountInfo;
@@ -36,12 +36,12 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
      * @notice Constructor
      * @param _accounts array of accounts addresses
      * @param _shares array of shares per account
-     * @param _agoraToken address of the AGO token
+     * @param _tenartToken address of the TART token
      */
     constructor(
         address[] memory _accounts,
         uint256[] memory _shares,
-        address _agoraToken
+        address _tenartToken
     ) public {
         require(_accounts.length == _shares.length, "Splitter: Length differ");
         require(_accounts.length > 0, "Splitter: Length must be > 0");
@@ -56,11 +56,11 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         }
 
         TOTAL_SHARES = currentShares;
-        agoraToken = IERC20(_agoraToken);
+        tenartToken = IERC20(_tenartToken);
     }
 
     /**
-     * @notice Release AGO tokens to the account
+     * @notice Release TART tokens to the account
      * @param account address of the account
      */
     function releaseTokens(address account) external nonReentrant {
@@ -70,7 +70,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         );
 
         // Calculate amount to transfer to the account
-        uint256 totalTokensReceived = agoraToken.balanceOf(address(this)) +
+        uint256 totalTokensReceived = tenartToken.balanceOf(address(this)) +
             totalTokensDistributed;
         uint256 pendingRewards = ((totalTokensReceived *
             accountInfo[account].shares) / TOTAL_SHARES) -
@@ -83,7 +83,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         totalTokensDistributed += pendingRewards;
 
         // Transfer funds to account
-        agoraToken.safeTransfer(account, pendingRewards);
+        tenartToken.safeTransfer(account, pendingRewards);
 
         emit TokensTransferred(account, pendingRewards);
     }
@@ -121,7 +121,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Retrieve amount of AGO tokens that can be transferred
+     * @notice Retrieve amount of TART tokens that can be transferred
      * @param account address of the account
      */
     function calculatePendingRewards(address account)
@@ -133,7 +133,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
             return 0;
         }
 
-        uint256 totalTokensReceived = agoraToken.balanceOf(address(this)) +
+        uint256 totalTokensReceived = tenartToken.balanceOf(address(this)) +
             totalTokensDistributed;
         uint256 pendingRewards = ((totalTokensReceived *
             accountInfo[account].shares) / TOTAL_SHARES) -

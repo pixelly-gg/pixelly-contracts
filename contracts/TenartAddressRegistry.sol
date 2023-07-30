@@ -5,56 +5,56 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/introspection/IERC165.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AgoraAddressRegistry is Ownable {
+contract TenartAddressRegistry is Ownable {
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
 
-    /// @notice AgoraNFT contract
-    address public agoraNFT;
+    /// @notice TenartNFT contract
+    address public tenartNFT;
 
-    /// @notice AgoraAuction contract
+    /// @notice TenartAuction contract
     address public auction;
 
-    /// @notice AgoraMarketplace contract
+    /// @notice TenartMarketplace contract
     address public marketplace;
 
-    /// @notice AgoraBundleMarketplace contract
+    /// @notice TenartBundleMarketplace contract
     address public bundleMarketplace;
 
-    /// @notice AgoraNFTFactory contract
+    /// @notice TenartNFTFactory contract
     address public factory;
 
-    /// @notice AgoraNFTFactoryPrivate contract
+    /// @notice TenartNFTFactoryPrivate contract
     address public privateFactory;
 
-    /// @notice AgoraArtFactory contract
+    /// @notice TenartArtFactory contract
     address public artFactory;
 
-    /// @notice AgoraArtFactoryPrivate contract
+    /// @notice TenartArtFactoryPrivate contract
     address public privateArtFactory;
 
-    /// @notice AgoraTokenRegistry contract
+    /// @notice TenartTokenRegistry contract
     address public tokenRegistry;
 
-    /// @notice AgoraPriceFeed contract
+    /// @notice TenartPriceFeed contract
     address public priceFeed;
 
-    /// @notice AgoraRoyaltyRegistry contract
+    /// @notice TenartRoyaltyRegistry contract
     address public royaltyRegistry;
 
     /**
-     @notice Update AgoraNFT contract
+     @notice Update TenartNFT contract
      @dev Only admin
      */
-    function updateAgoraNFT(address _agoraNFT) external onlyOwner {
+    function updateTenartNFT(address _tenartNFT) external onlyOwner {
         require(
-            IERC165(_agoraNFT).supportsInterface(INTERFACE_ID_ERC721),
+            IERC165(_tenartNFT).supportsInterface(INTERFACE_ID_ERC721),
             "Not ERC721"
         );
-        agoraNFT = _agoraNFT;
+        tenartNFT = _tenartNFT;
     }
 
     /**
-     @notice Update AgoraAuction contract
+     @notice Update TenartAuction contract
      @dev Only admin
      */
     function updateAuction(address _auction) external onlyOwner {
@@ -62,7 +62,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraMarketplace contract
+     @notice Update TenartMarketplace contract
      @dev Only admin
      */
     function updateMarketplace(address _marketplace) external onlyOwner {
@@ -70,7 +70,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraBundleMarketplace contract
+     @notice Update TenartBundleMarketplace contract
      @dev Only admin
      */
     function updateBundleMarketplace(address _bundleMarketplace)
@@ -81,7 +81,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraNFTFactory contract
+     @notice Update TenartNFTFactory contract
      @dev Only admin
      */
     function updateNFTFactory(address _factory) external onlyOwner {
@@ -89,7 +89,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraNFTFactoryPrivate contract
+     @notice Update TenartNFTFactoryPrivate contract
      @dev Only admin
      */
     function updateNFTFactoryPrivate(address _privateFactory)
@@ -100,7 +100,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraArtFactory contract
+     @notice Update TenartArtFactory contract
      @dev Only admin
      */
     function updateArtFactory(address _artFactory) external onlyOwner {
@@ -108,7 +108,7 @@ contract AgoraAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update AgoraArtFactoryPrivate contract
+     @notice Update TenartArtFactoryPrivate contract
      @dev Only admin
      */
     function updateArtFactoryPrivate(address _privateArtFactory)

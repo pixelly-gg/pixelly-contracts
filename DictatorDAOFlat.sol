@@ -326,11 +326,11 @@ interface IERC2981RoyaltySetter is IERC165 {
     ) external;
 }
 
-// File contracts/AgoraRoyaltyRegistry.sol
+// File contracts/TenartRoyaltyRegistry.sol
 
 pragma solidity 0.6.12;
 
-contract AgoraRoyaltyRegistry is Ownable {
+contract TenartRoyaltyRegistry is Ownable {
     address public royaltyMigrationManager;
 
     struct RoyaltyInfo {

@@ -5,7 +5,7 @@ const {
 } = require("./constants");
 
 async function main() {
-  const Factory = await ethers.getContractFactory("AgoraArtFactory");
+  const Factory = await ethers.getContractFactory("TenartArtFactory");
   const factory = await Factory.deploy(
     MARKETPLACE,
     BUNDLE_MARKETPLACE,
@@ -14,10 +14,10 @@ async function main() {
     "10000000000000000000"
   );
   await factory.deployed();
-  console.log("AgoraArtFactory deployed to:", factory.address);
+  console.log("TenartArtFactory deployed to:", factory.address);
 
   const PrivateFactory = await ethers.getContractFactory(
-    "AgoraArtFactoryPrivate"
+    "TenartArtFactoryPrivate"
   );
   const privateFactory = await PrivateFactory.deploy(
     MARKETPLACE,
@@ -27,7 +27,7 @@ async function main() {
     "10000000000000000000"
   );
   await privateFactory.deployed();
-  console.log("AgoraArtFactoryPrivate deployed to:", privateFactory.address);
+  console.log("TenartArtFactoryPrivate deployed to:", privateFactory.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

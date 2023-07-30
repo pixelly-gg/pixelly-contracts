@@ -3,17 +3,17 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./AgoraArtTradablePrivate.sol";
+import "./TenartArtTradablePrivate.sol";
 
-contract AgoraArtFactoryPrivate is Ownable {
+contract TenartArtFactoryPrivate is Ownable {
     /// @dev Events of the contract
     event ContractCreated(address creator, address nft);
     event ContractDisabled(address caller, address nft);
 
-    /// @notice Agora marketplace contract address;
+    /// @notice Tenart marketplace contract address;
     address public marketplace;
 
-    /// @notice Agora bundle marketplace contract address;
+    /// @notice Tenart bundle marketplace contract address;
     address public bundleMarketplace;
 
     /// @notice NFT mint fee
@@ -96,7 +96,7 @@ contract AgoraArtFactoryPrivate is Ownable {
         feeRecipient = _feeRecipient;
     }
 
-    /// @notice Method for deploy new AgoraArtTradablePrivate contract
+    /// @notice Method for deploy new TenartArtTradablePrivate contract
     /// @param _name Name of NFT contract
     /// @param _symbol Symbol of NFT contract
     function createNFTContract(string memory _name, string memory _symbol)
@@ -108,7 +108,7 @@ contract AgoraArtFactoryPrivate is Ownable {
         (bool success, ) = feeRecipient.call{value: msg.value}("");
         require(success, "Transfer failed");
 
-        AgoraArtTradablePrivate nft = new AgoraArtTradablePrivate(
+        TenartArtTradablePrivate nft = new TenartArtTradablePrivate(
             _name,
             _symbol,
             mintFee,
@@ -122,7 +122,7 @@ contract AgoraArtFactoryPrivate is Ownable {
         return address(nft);
     }
 
-    /// @notice Method for registering existing AgoraArtTradable contract
+    /// @notice Method for registering existing TenartArtTradable contract
     /// @param  tokenContractAddress Address of NFT contract
     function registerTokenContract(address tokenContractAddress)
         external
@@ -142,7 +142,7 @@ contract AgoraArtFactoryPrivate is Ownable {
         emit ContractCreated(_msgSender(), tokenContractAddress);
     }
 
-    /// @notice Method for disabling existing AgoraArtTradable contract
+    /// @notice Method for disabling existing TenartArtTradable contract
     /// @param  tokenContractAddress Address of NFT contract
     function disableTokenContract(address tokenContractAddress)
         external

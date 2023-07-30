@@ -5,10 +5,10 @@ const {
 } = require("./constants");
 
 async function main() {
-  const Auction = await ethers.getContractFactory("AgoraAuction");
+  const Auction = await ethers.getContractFactory("TenartAuction");
   const auctionImpl = await Auction.deploy();
   await auctionImpl.deployed();
-  console.log("AgoraAuction deployed to:", auctionImpl.address);
+  console.log("TenartAuction deployed to:", auctionImpl.address);
 
   // const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
   //   'AdminUpgradeabilityProxy'
@@ -32,7 +32,7 @@ async function main() {
   // console.log('Auction Proxy deployed at ', auctionProxy.address);
 
   // const auction = await ethers.getContractAt(
-  //   'AgoraAuction',
+  //   'TenartAuction',
   //   auctionProxy.address
   // );
   // await auction.initialize(TREASURY_ADDRESS);

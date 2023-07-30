@@ -4,13 +4,13 @@ pragma solidity 0.6.12;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-import {IAgoraToken} from "./interfaces/IAgoraToken.sol";
+import {ITenartToken} from "./interfaces/ITenartToken.sol";
 
 /**
- * @title AgoraToken (AGO)
+ * @title TenartToken (TART)
  * @notice
  */
-contract AgoraToken is ERC20, Ownable, IAgoraToken {
+contract TenartToken is ERC20, Ownable, ITenartToken {
     uint256 private immutable _SUPPLY_CAP;
 
     /**
@@ -23,10 +23,10 @@ contract AgoraToken is ERC20, Ownable, IAgoraToken {
         address _premintReceiver,
         uint256 _premintAmount,
         uint256 _cap
-    ) public ERC20("Agora Token", "AGO") {
+    ) public ERC20("Tenart Token", "TART") {
         require(
             _cap > _premintAmount,
-            "AGO: Premint amount is greater than cap"
+            "TART: Premint amount is greater than cap"
         );
         // Transfer the sum of the premint to address
         _mint(_premintReceiver, _premintAmount);
@@ -34,7 +34,7 @@ contract AgoraToken is ERC20, Ownable, IAgoraToken {
     }
 
     /**
-     * @notice Mint AGO tokens
+     * @notice Mint TART tokens
      * @param account address to receive tokens
      * @param amount amount to mint
      * @return status true if mint is successful, false if not

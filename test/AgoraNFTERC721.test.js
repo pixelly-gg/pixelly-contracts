@@ -8,9 +8,9 @@ const { ZERO_ADDRESS } = constants;
 
 const { expect } = require("chai");
 
-const AgoraNFT = artifacts.require("AgoraNFT");
+const TenartNFT = artifacts.require("TenartNFT");
 
-contract("Core ERC721 tests for AgoraNFT", function([
+contract("Core ERC721 tests for TenartNFT", function([
   owner,
   minter,
   approved,
@@ -19,7 +19,7 @@ contract("Core ERC721 tests for AgoraNFT", function([
   other,
   artist,
 ]) {
-  const name = "Agora NFT";
+  const name = "Tenart NFT";
   const symbol = "ANFT";
 
   const firstTokenId = new BN("1");
@@ -31,7 +31,7 @@ contract("Core ERC721 tests for AgoraNFT", function([
   const randomTokenURI = "ipfs";
 
   beforeEach(async function() {
-    this.token = await AgoraNFT.new({ from: owner });
+    this.token = await TenartNFT.new({ from: owner });
   });
 
   describe("metadata", function() {

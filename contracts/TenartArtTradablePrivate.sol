@@ -14,12 +14,12 @@ contract ProxyRegistry {
 }
 
 /**
- * @title AgoraArtTradablePrivate
- * AgoraArtTradablePrivate - ERC1155 contract that whitelists an operator address, 
+ * @title TenartArtTradablePrivate
+ * TenartArtTradablePrivate - ERC1155 contract that whitelists an operator address, 
  * has mint functionality, and supports useful standards from OpenZeppelin,
   like _exists(), name(), symbol(), and totalSupply()
  */
-contract AgoraArtTradablePrivate is
+contract TenartArtTradablePrivate is
     ERC1155,
     ERC1155MintBurn,
     ERC1155Metadata,
@@ -41,9 +41,9 @@ contract AgoraArtTradablePrivate is
     uint256 public platformFee;
     // Platform fee receipient
     address payable public feeReceipient;
-    // Agora Marketplace contract
+    // Tenart Marketplace contract
     address marketplace;
-    // Agora Bundle Marketplace contract
+    // Tenart Bundle Marketplace contract
     address bundleMarketplace;
 
     constructor(
@@ -112,7 +112,7 @@ contract AgoraArtTradablePrivate is
     }
 
     /**
-     * Override isApprovedForAll to whitelist Agora contracts to enable gas-less listings.
+     * Override isApprovedForAll to whitelist Tenart contracts to enable gas-less listings.
      */
     function isApprovedForAll(address _owner, address _operator)
         public
@@ -120,7 +120,7 @@ contract AgoraArtTradablePrivate is
         override
         returns (bool isOperator)
     {
-        // Whitelist Agora marketplace, bundle marketplace contracts for easy trading.
+        // Whitelist Tenart marketplace, bundle marketplace contracts for easy trading.
         if (marketplace == _operator || bundleMarketplace == _operator) {
             return true;
         }
