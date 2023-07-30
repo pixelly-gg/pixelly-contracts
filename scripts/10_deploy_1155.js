@@ -22,7 +22,7 @@ async function main() {
   );
   const nftPrivate = await ArtTradablePrivate.deploy(
     "TenartArt",
-    "AART",
+    "TNART",
     "20000000000000000000",
     TREASURY_ADDRESS,
     MARKETPLACE,

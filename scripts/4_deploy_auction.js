@@ -1,7 +1,6 @@
 const {
   TREASURY_ADDRESS,
-  PROXY_ADDRESS_TESTNET,
-  PROXY_ADDRESS_MAINNET,
+  PROXY_ADMIN,
 } = require("./constants");
 
 async function main() {
@@ -10,33 +9,30 @@ async function main() {
   await auctionImpl.deployed();
   console.log("TenartAuction deployed to:", auctionImpl.address);
 
-  // const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
-  //   'AdminUpgradeabilityProxy'
-  // );
+  const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
+    'AdminUpgradeabilityProxy'
+  );
 
-  // // Mainnet
-  // const auctionProxy = await AdminUpgradeabilityProxyFactory.deploy(
-  //   auctionImpl.address,
-  //   PROXY_ADDRESS_MAINNET,
-  //   []
-  // );
 
-  // // Testnet
-  // // const auctionProxy = await AdminUpgradeabilityProxyFactory.deploy(
-  // //   auctionImpl.address,
-  // //   PROXY_ADDRESS_TESTNET,
-  // //   []
-  // // );
+  const auctionProxy = await AdminUpgradeabilityProxyFactory.deploy(
+    auctionImpl.address,
+    PROXY_ADMIN,
+    []
+  );
 
-  // await auctionProxy.deployed();
-  // console.log('Auction Proxy deployed at ', auctionProxy.address);
 
-  // const auction = await ethers.getContractAt(
-  //   'TenartAuction',
-  //   auctionProxy.address
-  // );
-  // await auction.initialize(TREASURY_ADDRESS);
-  // console.log('Auction Proxy initialized');
+  await auctionProxy.deployed();
+  console.log('Auction Proxy deployed at ', auctionProxy.address);
+
+  const auction = await ethers.getContractAt(
+    'TenartAuction',
+    auctionProxy.address
+  );
+
+  const min_bid_increment = 1
+
+  await auction.initialize(TREASURY_ADDRESS, min_bid_increment);
+  console.log('Auction Proxy initialized');
 }
 
 // We recommend this pattern to be able to use async/await everywhere

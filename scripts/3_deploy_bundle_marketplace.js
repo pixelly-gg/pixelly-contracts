@@ -1,8 +1,7 @@
 const {
   TREASURY_ADDRESS,
   PLATFORM_FEE,
-  PROXY_ADDRESS_TESTNET,
-  PROXY_ADDRESS_MAINNET,
+  PROXY_ADMIN,
 } = require("./constants");
 
 async function main() {
@@ -15,19 +14,13 @@ async function main() {
     "AdminUpgradeabilityProxy"
   );
 
-  // Mainnet
+
   const marketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
     marketplaceImpl.address,
-    PROXY_ADDRESS_MAINNET,
+    PROXY_ADMIN,
     []
   );
 
-  // Testnet
-  // const marketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
-  //   marketplaceImpl.address,
-  //   PROXY_ADDRESS_TESTNET,
-  //   []
-  // );
 
   await marketplaceProxy.deployed();
   console.log(

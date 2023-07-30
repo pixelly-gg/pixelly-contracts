@@ -1,8 +1,3 @@
-// SPDX-License-Identifier: NONE
-// code borrowed from https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2#code
-
-// Copyright (C) 2015, 2016, 2017 Dapphub
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,88 +11,69 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.6;
+// SPDX-License-Identifier: MIT
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+pragma solidity 0.6.12;
 
+contract WTENET {
+    string public name     = "Wrapped TENET";
+    string public symbol   = "WTENET";
+    uint8  public decimals = 18;
 
-/**
- * @title IWETH9
- * @author Dapphub
- * @notice [Wrapped Ether](https://weth.io/) smart contract. Extends **ERC20**.
- */
-interface IWETH9 is IERC20Metadata {
+    event  Approval(address indexed src, address indexed guy, uint wad);
+    event  Transfer(address indexed src, address indexed dst, uint wad);
+    event  Deposit(address indexed dst, uint wad);
+    event  Withdrawal(address indexed src, uint wad);
 
-    /// @notice Emitted when **ETH** is wrapped.
-    event Deposit(address indexed dst, uint wad);
-    /// @notice Emitted when **ETH** is unwrapped.
-    event Withdrawal(address indexed src, uint wad);
+    mapping (address => uint)                       public  balanceOf;
+    mapping (address => mapping (address => uint))  public  allowance;
 
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    receive() external payable;
-
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    fallback () external payable;
-
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    function deposit() external payable;
-
-    /**
-     * @notice Unwraps Ether. **ETH** will be returned to the sender at 1 **ETH** : 1 **WETH**.
-     * @param wad Amount to unwrap.
-     */
-    function withdraw(uint wad) external;
-}
-
-/**
- * @title WETH9
- * @author Dapphub
- * @notice [Wrapped Ether](https://weth.io/) smart contract. Extends **ERC20**.
- */
-contract WETH9 is IWETH9, ERC20 {
-
-    /**
-     * @notice Constructs the **WETH** contract.
-     */
-    constructor() ERC20("Wrapped Tenet", "WTENET") {}
-
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    receive() external payable override {
+    receive() external payable {
         deposit();
     }
 
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    fallback () external payable override {
-        deposit();
-    }
-
-    /**
-     * @notice Wraps Ether. **WETH** will be minted to the sender at 1 **ETH** : 1 **WETH**.
-     */
-    function deposit() public payable override {
-        _mint(msg.sender, msg.value);
+    function deposit() public payable {
+        balanceOf[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
     }
-
-    /**
-     * @notice Unwraps Ether. **ETH** will be returned to the sender at 1 **ETH** : 1 **WETH**.
-     * @param wad Amount to unwrap.
-     */
-    function withdraw(uint wad) public override {
-        _burn(msg.sender, wad);
-        payable(msg.sender).transfer(wad);
+    function withdraw(uint wad) public {
+        require(balanceOf[msg.sender] >= wad, "");
+        balanceOf[msg.sender] -= wad;
+        msg.sender.transfer(wad);
         emit Withdrawal(msg.sender, wad);
+    }
+
+    function totalSupply() public view returns (uint) {
+        return address(this).balance;
+    }
+
+    function approve(address guy, uint wad) public returns (bool) {
+        allowance[msg.sender][guy] = wad;
+        emit Approval(msg.sender, guy, wad);
+        return true;
+    }
+
+    function transfer(address dst, uint wad) public returns (bool) {
+        return transferFrom(msg.sender, dst, wad);
+    }
+
+    function transferFrom(address src, address dst, uint wad)
+        public
+        returns (bool)
+    {
+        require(balanceOf[src] >= wad, "");
+
+        if (src != msg.sender && allowance[src][msg.sender] != uint(-1)) {
+            require(allowance[src][msg.sender] >= wad, "");
+            allowance[src][msg.sender] -= wad;
+        }
+
+        balanceOf[src] -= wad;
+        balanceOf[dst] += wad;
+
+        emit Transfer(src, dst, wad);
+
+        return true;
     }
 }
 

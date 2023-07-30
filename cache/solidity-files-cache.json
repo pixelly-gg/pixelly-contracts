@@ -2847,6 +2847,41 @@
       "artifacts": [
         "AdminUpgradeabilityProxy"
       ]
+    },
+    "/workspaces/tenart-contracts/contracts/WTENET.sol": {
+      "lastModificationDate": 1690693647225,
+      "contentHash": "c55374bd5fa677fb05644ee8bba94613",
+      "sourceName": "contracts/WTENET.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "WTENET"
+      ]
     }
   }
 }

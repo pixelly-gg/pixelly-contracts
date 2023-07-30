@@ -2,6 +2,194 @@
   "version": "3.2",
   "log": [
     {
+      "WTENET": {
+        "src": "contracts/WTENET.sol:18",
+        "version": {
+          "withMetadata": "8523d47b0f4f6500df02c551b9bb234154143d60623cd98505d5a26c2da8ded9",
+          "withoutMetadata": "905ce9da8ccc5f980e0a18e62d14bcac887acae9f617f4108e9456482d21c41e",
+          "linkedWithoutMetadata": "905ce9da8ccc5f980e0a18e62d14bcac887acae9f617f4108e9456482d21c41e"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "()",
+          "deposit()",
+          "withdraw(uint256)",
+          "totalSupply()",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "state-variable-assignment",
+            "name": "name",
+            "src": "contracts/WTENET.sol:19"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "symbol",
+            "src": "contracts/WTENET.sol:20"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "decimals",
+            "src": "contracts/WTENET.sol:21"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "WTENET",
+              "label": "name",
+              "type": "t_string_storage",
+              "src": "contracts/WTENET.sol:19"
+            },
+            {
+              "contract": "WTENET",
+              "label": "symbol",
+              "type": "t_string_storage",
+              "src": "contracts/WTENET.sol:20"
+            },
+            {
+              "contract": "WTENET",
+              "label": "decimals",
+              "type": "t_uint8",
+              "src": "contracts/WTENET.sol:21"
+            },
+            {
+              "contract": "WTENET",
+              "label": "balanceOf",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/WTENET.sol:28"
+            },
+            {
+              "contract": "WTENET",
+              "label": "allowance",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts/WTENET.sol:29"
+            }
+          ],
+          "types": {
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      }
+    },
+    {
+      "WTENET": {
+        "src": "contracts/WTENET.sol:16",
+        "version": {
+          "withMetadata": "53e4291e4b9a6d18a4da54cf93c5ea8298233484a10eb517eaed1a383f1dabe9",
+          "withoutMetadata": "905ce9da8ccc5f980e0a18e62d14bcac887acae9f617f4108e9456482d21c41e",
+          "linkedWithoutMetadata": "905ce9da8ccc5f980e0a18e62d14bcac887acae9f617f4108e9456482d21c41e"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "()",
+          "deposit()",
+          "withdraw(uint256)",
+          "totalSupply()",
+          "approve(address,uint256)",
+          "transfer(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "state-variable-assignment",
+            "name": "name",
+            "src": "contracts/WTENET.sol:17"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "symbol",
+            "src": "contracts/WTENET.sol:18"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "decimals",
+            "src": "contracts/WTENET.sol:19"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "WTENET",
+              "label": "name",
+              "type": "t_string_storage",
+              "src": "contracts/WTENET.sol:17"
+            },
+            {
+              "contract": "WTENET",
+              "label": "symbol",
+              "type": "t_string_storage",
+              "src": "contracts/WTENET.sol:18"
+            },
+            {
+              "contract": "WTENET",
+              "label": "decimals",
+              "type": "t_uint8",
+              "src": "contracts/WTENET.sol:19"
+            },
+            {
+              "contract": "WTENET",
+              "label": "balanceOf",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts/WTENET.sol:26"
+            },
+            {
+              "contract": "WTENET",
+              "label": "allowance",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "src": "contracts/WTENET.sol:27"
+            }
+          ],
+          "types": {
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_uint8": {
+              "label": "uint8"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))"
+            }
+          },
+          "layoutVersion": "1.1"
+        }
+      }
+    },
+    {
       "SafeMath": {
         "src": "@openzeppelin/contracts/math/SafeMath.sol:18",
         "version": {
