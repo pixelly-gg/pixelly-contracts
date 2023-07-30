@@ -2810,6 +2810,43 @@
       "artifacts": [
         "Proxy"
       ]
+    },
+    "/workspaces/tenart-contracts/contracts/Upgrades/AdminUpgradeabilityProxy.sol": {
+      "lastModificationDate": 1690692061113,
+      "contentHash": "c79826f58068b6683c83519489744bca",
+      "sourceName": "contracts/Upgrades/AdminUpgradeabilityProxy.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./UpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "AdminUpgradeabilityProxy"
+      ]
     }
   }
 }
