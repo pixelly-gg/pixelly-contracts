@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OwnableDelegateProxy",
+  "sourceName": "contracts/TenartArtTradablePrivate.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212207d215c84f8d8c4118fee99856e2267efbfabb460b5648f7c9a87b08508d51e8864736f6c634300060c0033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212207d215c84f8d8c4118fee99856e2267efbfabb460b5648f7c9a87b08508d51e8864736f6c634300060c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
