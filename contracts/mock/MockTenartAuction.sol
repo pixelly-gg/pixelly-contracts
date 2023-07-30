@@ -2,9 +2,9 @@
 
 pragma solidity 0.6.12;
 
-import "../AgoraAuction.sol";
+import "../TenartAuction.sol";
 
-contract MockAgoraAuction is AgoraAuction {
+contract MockTenartAuction is TenartAuction {
     uint256 public time;
 
     function setTime(uint256 t) public {
