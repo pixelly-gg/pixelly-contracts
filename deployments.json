@@ -1,0 +1,27 @@
+{
+    "WTENET": "0x821A1C06F2C9aAF9Eb4b80A2A7881ae69595Cb10",
+    "TenartNFT": "0x2f81F14b63b8598d6Fc21f72be24aD6061E29b58",
+    "ProxyAdmin": "0xd101a592AAd3B38b0546a308d4D761c5d5b1b4F3",
+    "MarketPlace": {
+        "MarketPlaceImpl": "0x1aefFeb93fb32104A2d8dCe14C910eC4bEea7957",
+        "MarketPlaceProxy": "0x2F0639a5Eb4baf991EF75deBCc67672fc33686ab"
+    },
+    "BundleMarketPlace": {
+        "BMPImpl": "0xE5447760a7EDaf7425D89De3414843ff060d40ae",
+        "BMPProxy": "0x0d906Ded54F9d76Ed2056d306565bcD19BbB48e9"
+    },
+    "Auction": {
+        "AuctionImpl": "0xc7Cf220D16fF7612e38B77B517D02A3A3EdaA0E7",
+        "AuctionProxy": "0x7da3Bd3A36b78972447469f9E88D7aE77285A1cf"
+    },
+    "NFTFactory": "0x98f4dBC9a5b5CeB8a8c75d71F8a86886323fE1C3",
+    "NFTFactoryPrivate": "0x255821508Bdb3afd90C54918486f4f6d6064CDFB",
+    "NFTTradeable": "0xd86B1105D09Ee93DCAb68D279C658e46c5b74904",
+    "NFTTradeablePrivate": "0x1898BecA2cE07A4B8eB20432011e8D4295D3670a",
+    "TokenRegistry": "0xEdaffCDc446DFb10CD27a82A239D401b3b89158a",
+    "AddressRegistry": "0xAc21826b2F68b50C015FDBf48F386b7cCd97dA60",
+    "PriceFeed": "0x50246dA1A253Bc1029BEdcF651560A588fDd50FF",
+    "NFTArtTradeable": "0xd4D414A1372FCB01Fd646219637bb8F6FB217c69",
+    "NFTArtTradeablePrivate": "0xbFC76442A963E0Fd8B2b9B340b25f6ACC1a48212"
+
+}
