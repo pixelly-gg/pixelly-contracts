@@ -9,7 +9,7 @@ async function main() {
   const NFTTradable = await ethers.getContractFactory("TenartNFTTradable");
   const nft = await NFTTradable.deploy(
     "TenartNFT",
-    "ANFT",
+    "TNFT",
     AUCTION,
     MARKETPLACE,
     BUNDLE_MARKETPLACE,
@@ -24,7 +24,7 @@ async function main() {
   );
   const nftPrivate = await NFTTradablePrivate.deploy(
     "ITenartNFT",
-    "IANFT",
+    "ITNFT",
     AUCTION,
     MARKETPLACE,
     BUNDLE_MARKETPLACE,

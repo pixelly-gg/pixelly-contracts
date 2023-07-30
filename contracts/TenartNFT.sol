@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./library/ERC2981PerTokenRoyalties.sol";
 
 contract TenartNFT is
-    ERC721("TenartNFT", "ANFT"),
+    ERC721("TenartNFT", "TNFT"),
     ERC2981PerTokenRoyalties,
     Ownable
 {

@@ -5,8 +5,8 @@ async function main() {
 
   const { TREASURY_ADDRESS } = require("./constants");
 
-  const ANFT = await ethers.getContractFactory("TenartNFT");
-  const contract = await ANFT.deploy(TREASURY_ADDRESS, "2000000000000000000");
+  const TNFT = await ethers.getContractFactory("TenartNFT");
+  const contract = await TNFT.deploy(TREASURY_ADDRESS, "2000000000000000000");
 
   await contract.deployed();
 

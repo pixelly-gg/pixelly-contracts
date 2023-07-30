@@ -108,7 +108,7 @@ async function main(network) {
   const NFTTradable = await ethers.getContractFactory("TenartNFTTradable");
   const nft = await NFTTradable.deploy(
     "TenartNFT",
-    "ANFT",
+    "TNFT",
     AUCTION_PROXY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
@@ -123,7 +123,7 @@ async function main(network) {
   );
   const nftPrivate = await NFTTradablePrivate.deploy(
     "ITenartNFT",
-    "IANFT",
+    "ITNFT",
     AUCTION_PROXY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,

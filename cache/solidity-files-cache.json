@@ -1968,8 +1968,8 @@
       "artifacts": []
     },
     "/workspaces/tenart-contracts/contracts/TenartNFT.sol": {
-      "lastModificationDate": 1690686130417,
-      "contentHash": "b2902e97bae2b0a5a9f8a7f2fcd8fa74",
+      "lastModificationDate": 1690688530421,
+      "contentHash": "7602b6923b329006706e31e37ba9e7c5",
       "sourceName": "contracts/TenartNFT.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -2661,6 +2661,154 @@
       ],
       "artifacts": [
         "TenartArtFactory"
+      ]
+    },
+    "/workspaces/tenart-contracts/contracts/Upgrades/ProxyAdmin.sol": {
+      "lastModificationDate": 1690690423873,
+      "contentHash": "92e10c8212d952f220b8e085a1255c1b",
+      "sourceName": "contracts/Upgrades/ProxyAdmin.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./TransparentUpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "ProxyAdmin"
+      ]
+    },
+    "/workspaces/tenart-contracts/contracts/Upgrades/TransparentUpgradeableProxy.sol": {
+      "lastModificationDate": 1690690367977,
+      "contentHash": "572da86d0eb185b41f85df7d2d75378b",
+      "sourceName": "contracts/Upgrades/TransparentUpgradeableProxy.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./UpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "TransparentUpgradeableProxy"
+      ]
+    },
+    "/workspaces/tenart-contracts/contracts/Upgrades/UpgradeableProxy.sol": {
+      "lastModificationDate": 1690690312717,
+      "contentHash": "81f8c31f27e4cd18c20b2b552e111c93",
+      "sourceName": "contracts/Upgrades/UpgradeableProxy.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/proxy/Proxy.sol",
+        "@openzeppelin/contracts/utils/Address.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "UpgradeableProxy"
+      ]
+    },
+    "/workspaces/tenart-contracts/node_modules/@openzeppelin/contracts/proxy/Proxy.sol": {
+      "lastModificationDate": 1690660036249,
+      "contentHash": "52841a5095656ecbf7bc86cd6c114699",
+      "sourceName": "@openzeppelin/contracts/proxy/Proxy.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Proxy"
       ]
     }
   }
