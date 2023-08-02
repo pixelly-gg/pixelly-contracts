@@ -7,12 +7,12 @@ async function main(network) {
 
   const { WRAPPED_ETH_MAINNET } = require("../constants");
 
-  const art = await (await ethers.getContractFactory("TenartNFTFactory")).attach(
+  const art = await (await ethers.getContractFactory("PixellyNFTFactory")).attach(
     "0xBBefe6432A7A772DB0F282361E3506764d8b8212"
   );
 
   const artPrivate = await (
-    await ethers.getContractFactory("TenartNFTFactoryPrivate")
+    await ethers.getContractFactory("PixellyNFTFactoryPrivate")
   ).attach("0x9FE47b52d17C574EDF4B7F5Aab558287e71bd6a1");
 
   await art.updateMintFee("2000000000000000000");

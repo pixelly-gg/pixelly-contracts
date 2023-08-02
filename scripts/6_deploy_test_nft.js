@@ -6,9 +6,9 @@ const {
 } = require("./constants");
 
 async function main() {
-  const NFTTradable = await ethers.getContractFactory("TenartNFTTradable");
+  const NFTTradable = await ethers.getContractFactory("PixellyNFTTradable");
   const nft = await NFTTradable.deploy(
-    "TenartNFT",
+    "PixellyNFT",
     "TNFT",
     AUCTION,
     MARKETPLACE,
@@ -17,13 +17,13 @@ async function main() {
     TREASURY_ADDRESS
   );
   await nft.deployed();
-  console.log("TenartNFTTradable deployed to:", nft.address);
+  console.log("PixellyNFTTradable deployed to:", nft.address);
 
   const NFTTradablePrivate = await ethers.getContractFactory(
-    "TenartNFTTradablePrivate"
+    "PixellyNFTTradablePrivate"
   );
   const nftPrivate = await NFTTradablePrivate.deploy(
-    "ITenartNFT",
+    "IPixellyNFT",
     "ITNFT",
     AUCTION,
     MARKETPLACE,
@@ -32,7 +32,7 @@ async function main() {
     TREASURY_ADDRESS
   );
   await nftPrivate.deployed();
-  console.log("TenartNFTTradablePrivate deployed to:", nftPrivate.address);
+  console.log("PixellyNFTTradablePrivate deployed to:", nftPrivate.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

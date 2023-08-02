@@ -4,7 +4,7 @@ const {
 } = require("./constants");
 
 async function main() {
-  const Contract = await ethers.getContractFactory("TenartPriceFeed");
+  const Contract = await ethers.getContractFactory("PixellyPriceFeed");
   const contract = await Contract.deploy(
     TENART_ADDRESS_REGISTRY,
     WRAPPED_TENET_TESTNET
@@ -12,7 +12,7 @@ async function main() {
 
   await contract.deployed();
 
-  console.log("TenartPriceFeed deployed to", contract.address);
+  console.log("PixellyPriceFeed deployed to", contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

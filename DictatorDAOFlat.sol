@@ -326,11 +326,11 @@ interface IERC2981RoyaltySetter is IERC165 {
     ) external;
 }
 
-// File contracts/TenartRoyaltyRegistry.sol
+// File contracts/PixellyRoyaltyRegistry.sol
 
 pragma solidity 0.6.12;
 
-contract TenartRoyaltyRegistry is Ownable {
+contract PixellyRoyaltyRegistry is Ownable {
     address public royaltyMigrationManager;
 
     struct RoyaltyInfo {

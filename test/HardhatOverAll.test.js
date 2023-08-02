@@ -11,15 +11,15 @@ const {
 
 const { expect } = require("chai");
 
-const TenartAddressRegistry = artifacts.require("TenartAddressRegistry");
-const TenartNFT = artifacts.require("TenartNFT");
-const TenartAuction = artifacts.require("MockTenartAuction");
-const TenartMarketplace = artifacts.require("TenartMarketplace");
-const TenartBundleMarketplace = artifacts.require("TenartBundleMarketplace");
-const TenartNFTFactory = artifacts.require("TenartNFTFactory");
-const TenartArtFactory = artifacts.require("TenartArtFactory");
-const TenartTokenRegistry = artifacts.require("TenartTokenRegistry");
-const TenartPriceFeed = artifacts.require("TenartPriceFeed");
+const PixellyAddressRegistry = artifacts.require("PixellyAddressRegistry");
+const PixellyNFT = artifacts.require("PixellyNFT");
+const PixellyAuction = artifacts.require("MockPixellyAuction");
+const PixellyMarketplace = artifacts.require("PixellyMarketplace");
+const PixellyBundleMarketplace = artifacts.require("PixellyBundleMarketplace");
+const PixellyNFTFactory = artifacts.require("PixellyNFTFactory");
+const PixellyArtFactory = artifacts.require("PixellyArtFactory");
+const PixellyTokenRegistry = artifacts.require("PixellyTokenRegistry");
+const PixellyPriceFeed = artifacts.require("PixellyPriceFeed");
 const MockERC20 = artifacts.require("MockERC20");
 
 const PLATFORM_FEE = "2";
@@ -44,16 +44,16 @@ contract("Overall Test", function([
   const mintFee = ether(MINT_FEE);
 
   beforeEach(async function() {
-    this.tenartAddressRegistry = await TenartAddressRegistry.new();
-    this.tenartNFT = await TenartNFT.new(platformFeeRecipient, platformFee);
+    this.tenartAddressRegistry = await PixellyAddressRegistry.new();
+    this.tenartNFT = await PixellyNFT.new(platformFeeRecipient, platformFee);
 
-    this.tenartAuction = await TenartAuction.new();
+    this.tenartAuction = await PixellyAuction.new();
     await this.tenartAuction.initialize(platformFeeRecipient);
     await this.tenartAuction.updateAddressRegistry(
       this.tenartAddressRegistry.address
     );
 
-    this.tenartMarketplace = await TenartMarketplace.new();
+    this.tenartMarketplace = await PixellyMarketplace.new();
     await this.tenartMarketplace.initialize(
       platformFeeRecipient,
       marketPlatformFee
@@ -63,7 +63,7 @@ contract("Overall Test", function([
       this.tenartAddressRegistry.address
     );
 
-    this.tenartBundleMarketplace = await TenartBundleMarketplace.new();
+    this.tenartBundleMarketplace = await PixellyBundleMarketplace.new();
     await this.tenartBundleMarketplace.initialize(
       platformFeeRecipient,
       marketPlatformFee
@@ -72,7 +72,7 @@ contract("Overall Test", function([
       this.tenartAddressRegistry.address
     );
 
-    this.tenartNFTFactory = await TenartNFTFactory.new(
+    this.tenartNFTFactory = await PixellyNFTFactory.new(
       this.tenartAuction.address,
       this.tenartMarketplace.address,
       this.tenartBundleMarketplace.address,
@@ -80,18 +80,18 @@ contract("Overall Test", function([
       platformFeeRecipient,
       platformFee
     );
-    this.tenartTokenRegistry = await TenartTokenRegistry.new();
+    this.tenartTokenRegistry = await PixellyTokenRegistry.new();
 
     this.mockERC20 = await MockERC20.new("wETH", "wETH", ether("1000000"));
 
     this.tenartTokenRegistry.add(this.mockERC20.address);
 
-    this.tenartPriceFeed = await TenartPriceFeed.new(
+    this.tenartPriceFeed = await PixellyPriceFeed.new(
       this.tenartAddressRegistry.address,
       this.mockERC20.address
     );
 
-    this.tenartArtFactory = await TenartArtFactory.new(
+    this.tenartArtFactory = await PixellyArtFactory.new(
       this.tenartMarketplace.address,
       this.tenartBundleMarketplace.address,
       mintFee,
@@ -99,7 +99,7 @@ contract("Overall Test", function([
       platformFee
     );
 
-    await this.tenartAddressRegistry.updateTenartNFT(this.tenartNFT.address);
+    await this.tenartAddressRegistry.updatePixellyNFT(this.tenartNFT.address);
     await this.tenartAddressRegistry.updateAuction(this.tenartAuction.address);
     await this.tenartAddressRegistry.updateMarketplace(
       this.tenartMarketplace.address
@@ -231,7 +231,7 @@ contract("Overall Test", function([
       await this.mockERC20.mint(buyer, ether("50"));
 
       console.log(`
-            Buyer approves TenartMarketplace to transfer up to 50 wETH`);
+            Buyer approves PixellyMarketplace to transfer up to 50 wETH`);
       await this.mockERC20.approve(this.tenartMarketplace.address, ether("50"), {
         from: buyer,
       });
@@ -406,7 +406,7 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder1, ether("50"));
 
       console.log(`
-            Bidder1 approves TenartAuction to transfer up to 50 wETH`);
+            Bidder1 approves PixellyAuction to transfer up to 50 wETH`);
       await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder1,
       });
@@ -416,7 +416,7 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder2, ether("50"));
 
       console.log(`
-            Bidder2 approves TenartAuction to transfer up to 50 wETH`);
+            Bidder2 approves PixellyAuction to transfer up to 50 wETH`);
       await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder2,
       });
@@ -426,7 +426,7 @@ contract("Overall Test", function([
       await this.mockERC20.mint(bidder3, ether("50"));
 
       console.log(`
-            Bidder3 approves TenartAuction to transfer up to 50 wETH`);
+            Bidder3 approves PixellyAuction to transfer up to 50 wETH`);
       await this.mockERC20.approve(this.tenartAuction.address, ether("50"), {
         from: bidder3,
       });
@@ -671,7 +671,7 @@ contract("Overall Test", function([
       await this.mockERC20.mint(buyer, ether("50"));
 
       console.log(`
-            The buyer approves TenartBundleMarketplace to transfer up to 50 wETH`);
+            The buyer approves PixellyBundleMarketplace to transfer up to 50 wETH`);
       await this.mockERC20.approve(
         this.tenartBundleMarketplace.address,
         ether("50"),

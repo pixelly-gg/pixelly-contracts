@@ -2,12 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../TenartAuction.sol";
+import "../PixellyAuction.sol";
 
 contract BiddingContractMock {
-    TenartAuction public auctionContract;
+    PixellyAuction public auctionContract;
 
-    constructor(TenartAuction _auctionContract) public {
+    constructor(PixellyAuction _auctionContract) public {
         auctionContract = _auctionContract;
     }
 

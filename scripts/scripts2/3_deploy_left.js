@@ -12,48 +12,48 @@ async function main(network) {
   } = require("../constants");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("TenartMarketplace")
+    await ethers.getContractFactory("PixellyMarketplace")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D"); //Replace by the right address, deployed before
 
   const auctionImpl = await (
-    await ethers.getContractFactory("TenartAuction")
+    await ethers.getContractFactory("PixellyAuction")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D"); //Replace by the right address, deployed before
 
   const bundleMarketplaceImpl = await (
-    await ethers.getContractFactory("TenartBundleMarketplace")
+    await ethers.getContractFactory("PixellyBundleMarketplace")
   ).attach("0xe9391A3253625d0a06973e4Be11D9932ba4F788D");
 
   ////////////
   const RoyaltiesRegistry = await ethers.getContractFactory(
-    "TenartRoyaltyRegistry"
+    "PixellyRoyaltyRegistry"
   );
   const royaltiesRegistry = await RoyaltiesRegistry.deploy();
 
   await royaltiesRegistry.deployed();
-  console.log("TenartRoyaltyRegistry deployed at", royaltiesRegistry.address);
+  console.log("PixellyRoyaltyRegistry deployed at", royaltiesRegistry.address);
   ///////////
 
   ////////
   const AddressRegistry = await ethers.getContractFactory(
-    "TenartAddressRegistry"
+    "PixellyAddressRegistry"
   );
   const addressRegistry = await AddressRegistry.deploy();
 
   await addressRegistry.deployed();
 
-  console.log("TenartAddressRegistry deployed to", addressRegistry.address);
+  console.log("PixellyAddressRegistry deployed to", addressRegistry.address);
   const TENART_ADDRESS_REGISTRY = addressRegistry.address;
   ////////
 
   ////////////
-  const TenartNFT = await ethers.getContractFactory("TenartNFT");
-  const tenartNFT = await TenartNFT.deploy(
+  const PixellyNFT = await ethers.getContractFactory("PixellyNFT");
+  const tenartNFT = await PixellyNFT.deploy(
     TREASURY_ADDRESS,
     "2000000000000000000"
   );
 
   await tenartNFT.deployed();
-  console.log("TenartNFT deployed at", tenartNFT.address);
+  console.log("PixellyNFT deployed at", tenartNFT.address);
   ///////////
 
   ////////
@@ -62,7 +62,7 @@ async function main(network) {
   await bundleMarketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
   await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
 
-  await addressRegistry.updateTenartNFT(tenartNFT.address);
+  await addressRegistry.updatePixellyNFT(tenartNFT.address);
   await addressRegistry.updateAuction(auctionImpl.address);
   await addressRegistry.updateMarketplace(marketplaceImpl.address);
   await addressRegistry.updateBundleMarketplace(

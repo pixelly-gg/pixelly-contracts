@@ -5,7 +5,7 @@ async function main(network) {
   console.log(`Deployer's address: `, deployerAddress);
 
   ////////
-  const auctionV2 = await ethers.getContractFactory("TenartAuction");
+  const auctionV2 = await ethers.getContractFactory("PixellyAuction");
   console.log("Upgrading Auctions...");
   await upgrades.upgradeProxy(
     "0xA84bf88521479A7c4565a0fa2Ca48c7Ce8Ffb404",

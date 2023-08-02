@@ -50,7 +50,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
 
     /**
      * @notice Constructor
-     * @param _tenartToken address of the Tenart token
+     * @param _tenartToken address of the Pixelly token
      */
     constructor(address _tenartToken) public {
         tenartToken = IERC20(_tenartToken);

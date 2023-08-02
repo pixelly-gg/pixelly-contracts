@@ -8,23 +8,23 @@ async function main(network) {
   const { WRAPPED_ETH_MAINNET } = require("../constants");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("TenartMarketplace")
+    await ethers.getContractFactory("PixellyMarketplace")
   ).attach("0x4Ac3c9Ff510f6D5Dd32FCea929785aE7924A8C26");
 
   const bundleMarketplaceImpl = await (
-    await ethers.getContractFactory("TenartBundleMarketplace")
+    await ethers.getContractFactory("PixellyBundleMarketplace")
   ).attach("0x91014F399E4bd35BDCB340466baBF1a0034Fa1DF");
 
   const auctionImpl = await (
-    await ethers.getContractFactory("TenartAuction")
+    await ethers.getContractFactory("PixellyAuction")
   ).attach("0xFb7190641C5ab98585D9259Ef52Db881066179Ee");
 
   const addressRegistry = await (
-    await ethers.getContractFactory("TenartAddressRegistry")
+    await ethers.getContractFactory("PixellyAddressRegistry")
   ).attach("0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd");
 
   const tokenRegistry = await (
-    await ethers.getContractFactory("TenartTokenRegistry")
+    await ethers.getContractFactory("PixellyTokenRegistry")
   ).attach("0xEC082041260Cc6880A120426f167B228E4955528");
 
   await marketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
@@ -33,10 +33,10 @@ async function main(network) {
   console.log("MarketplaceBundle Address Registry updated");
   await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
   console.log("Auction Address Registry updated");
-  await addressRegistry.updateTenartNFT(
+  await addressRegistry.updatePixellyNFT(
     "0x491829466dc1fD03dCFC57EE22933814a5804C7a"
   );
-  console.log("Address Registry TenartNFT");
+  console.log("Address Registry PixellyNFT");
   await addressRegistry.updateAuction(auctionImpl.address);
   console.log("Address Registry Auction");
   await addressRegistry.updateMarketplace(marketplaceImpl.address);

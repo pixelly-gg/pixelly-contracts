@@ -10,7 +10,7 @@ import {TokenDistributor} from "./TokenDistributor.sol";
 /**
  * @title FeeSharingSystem
  * @notice It handles the distribution of fees using
- * WCRO along with the auto-compounding of TART.
+ * WTENET along with the auto-compounding of TART.
  */
 contract FeeSharingSystem is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
@@ -227,7 +227,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Calculate pending rewards (WCRO) for a user
+     * @notice Calculate pending rewards (WTENET) for a user
      * @param user address of the user
      */
     function calculatePendingRewards(address user)

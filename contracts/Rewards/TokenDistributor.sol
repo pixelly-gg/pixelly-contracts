@@ -4,7 +4,7 @@ pragma solidity 0.6.12;
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
-import {ITenartToken} from "./interfaces/ITenartToken.sol";
+import {IPixellyToken} from "./interfaces/IPixellyToken.sol";
 
 /**
  * @title TokenDistributor
@@ -13,7 +13,7 @@ import {ITenartToken} from "./interfaces/ITenartToken.sol";
  */
 contract TokenDistributor is ReentrancyGuard {
     using SafeERC20 for IERC20;
-    using SafeERC20 for ITenartToken;
+    using SafeERC20 for IPixellyToken;
 
     struct StakingPeriod {
         uint256 rewardPerBlockForStaking;
@@ -29,7 +29,7 @@ contract TokenDistributor is ReentrancyGuard {
     // Precision factor for calculating rewards
     uint256 public constant PRECISION_FACTOR = 10**12;
 
-    ITenartToken public immutable tenartToken;
+    IPixellyToken public immutable tenartToken;
 
     address public immutable tokenSplitter;
 
@@ -109,8 +109,8 @@ contract TokenDistributor is ReentrancyGuard {
         );
 
         // 1. Operational checks for supply
-        uint256 nonCirculatingSupply = ITenartToken(_tenartToken).SUPPLY_CAP() -
-            ITenartToken(_tenartToken).totalSupply();
+        uint256 nonCirculatingSupply = IPixellyToken(_tenartToken).SUPPLY_CAP() -
+            IPixellyToken(_tenartToken).totalSupply();
 
         uint256 amountTokensToBeMinted;
 
@@ -131,7 +131,7 @@ contract TokenDistributor is ReentrancyGuard {
         );
 
         // 2. Store values
-        tenartToken = ITenartToken(_tenartToken);
+        tenartToken = IPixellyToken(_tenartToken);
         tokenSplitter = _tokenSplitter;
         rewardPerBlockForStaking = _rewardsPerBlockForStaking[0];
         rewardPerBlockForOthers = _rewardsPerBlockForOthers[0];

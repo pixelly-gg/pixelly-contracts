@@ -5,10 +5,10 @@ const {
 } = require("./constants");
 
 async function main() {
-  const Marketplace = await ethers.getContractFactory("TenartBundleMarketplace");
+  const Marketplace = await ethers.getContractFactory("PixellyBundleMarketplace");
   const marketplaceImpl = await Marketplace.deploy();
   await marketplaceImpl.deployed();
-  console.log("TenartBundleMarketplace deployed to:", marketplaceImpl.address);
+  console.log("PixellyBundleMarketplace deployed to:", marketplaceImpl.address);
 
   const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
     "AdminUpgradeabilityProxy"
@@ -29,7 +29,7 @@ async function main() {
   );
 
   const marketplace = await ethers.getContractAt(
-    "TenartBundleMarketplace",
+    "PixellyBundleMarketplace",
     marketplaceProxy.address
   );
   await marketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);

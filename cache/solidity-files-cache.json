@@ -181,10 +181,10 @@
         "SafeMath"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartArtTradablePrivate.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "77b9482be2d159551103c302b6b7c308",
-      "sourceName": "contracts/TenartArtTradablePrivate.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyArtTradablePrivate.sol": {
+      "lastModificationDate": 1690943558046,
+      "contentHash": "9fd3f866dc19c1143f1418ed4124f4a1",
+      "sourceName": "contracts/PixellyArtTradablePrivate.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -219,8 +219,8 @@
       ],
       "artifacts": [
         "OwnableDelegateProxy",
-        "ProxyRegistry",
-        "TenartArtTradablePrivate"
+        "PixellyArtTradablePrivate",
+        "ProxyRegistry"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -367,10 +367,10 @@
         "Context"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartArtTradable.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "e10c8841c79c137688a119de668282cb",
-      "sourceName": "contracts/TenartArtTradable.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyArtTradable.sol": {
+      "lastModificationDate": 1690943544615,
+      "contentHash": "c8b9107a7240457bc7a8471423ef51ad",
+      "sourceName": "contracts/PixellyArtTradable.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -405,8 +405,8 @@
       ],
       "artifacts": [
         "OwnableDelegateProxy",
-        "ProxyRegistry",
-        "TenartArtTradable"
+        "PixellyArtTradable",
+        "ProxyRegistry"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Upgrades/ProxyAdmin.sol": {
@@ -557,6 +557,377 @@
         "Proxy"
       ]
     },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC20/SafeERC20.sol": {
+      "lastModificationDate": 1690755434274,
+      "contentHash": "33e22842646d746e5c4124c2fdc051aa",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "../../math/SafeMath.sol",
+        "../../utils/Address.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "SafeERC20"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1690755434274,
+      "contentHash": "e0a41531d159d3a32f84b7a3ecf9fabb",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/math/SafeMath.sol": {
+      "lastModificationDate": 1690755430864,
+      "contentHash": "e03e12206057e809eb76c5f681170c32",
+      "sourceName": "@openzeppelin/contracts/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/VestingContractWithFeeSharing.sol": {
+      "lastModificationDate": 1690754925258,
+      "contentHash": "9adbddbdd448f7290b7a4b849dfecfe4",
+      "sourceName": "contracts/Rewards/VestingContractWithFeeSharing.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "VestingContractWithFeeSharing"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+      "lastModificationDate": 1690755430865,
+      "contentHash": "1c60f58cee45c61469e1aea31e4dd879",
+      "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TradingRewardsDistributor.sol": {
+      "lastModificationDate": 1690943479733,
+      "contentHash": "60b444e25610167f2046b4f1caa14afa",
+      "sourceName": "contracts/Rewards/TradingRewardsDistributor.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/Pausable.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/cryptography/MerkleProof.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "TradingRewardsDistributor"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/utils/Pausable.sol": {
+      "lastModificationDate": 1690755430865,
+      "contentHash": "6960b40911542e6004ab95031ef9c3b9",
+      "sourceName": "@openzeppelin/contracts/utils/Pausable.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Context.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Pausable"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/cryptography/MerkleProof.sol": {
+      "lastModificationDate": 1690755430864,
+      "contentHash": "44bd823687d58263d3b1da555235f93e",
+      "sourceName": "@openzeppelin/contracts/cryptography/MerkleProof.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "MerkleProof"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/GSN/Context.sol": {
+      "lastModificationDate": 1690755430863,
+      "contentHash": "a02aa4ae53018d92603a3ead2c365958",
+      "sourceName": "@openzeppelin/contracts/GSN/Context.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": []
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyNFT.sol": {
+      "lastModificationDate": 1690943638440,
+      "contentHash": "c18b4b2ab1d8253b3ff22b392e22a26c",
+      "sourceName": "contracts/PixellyNFT.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/GSN/Context.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./library/ERC2981PerTokenRoyalties.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "PixellyNFT"
+      ]
+    },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
       "lastModificationDate": 1690755434289,
       "contentHash": "2d9804eb2b6f41ea0a65115e154d90eb",
@@ -602,6 +973,43 @@
       ],
       "artifacts": [
         "ERC721"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981PerTokenRoyalties.sol": {
+      "lastModificationDate": 1690754925264,
+      "contentHash": "2fe7cc8b672b2333d79f87d4755f1176",
+      "sourceName": "contracts/library/ERC2981PerTokenRoyalties.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ERC2981.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "ERC2981PerTokenRoyalties"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
@@ -787,41 +1195,6 @@
         "ERC165"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/math/SafeMath.sol": {
-      "lastModificationDate": 1690755430864,
-      "contentHash": "e03e12206057e809eb76c5f681170c32",
-      "sourceName": "@openzeppelin/contracts/math/SafeMath.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "SafeMath"
-      ]
-    },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/utils/EnumerableSet.sol": {
       "lastModificationDate": 1690755430865,
       "contentHash": "db7b1afdb2c204e1e52100b79f0c847e",
@@ -962,10 +1335,201 @@
         "IERC165"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartNFTTradablePrivate.sol": {
-      "lastModificationDate": 1690754925261,
-      "contentHash": "0ca2565f2e73c7d025ef11541e02b2d6",
-      "sourceName": "contracts/TenartNFTTradablePrivate.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981.sol": {
+      "lastModificationDate": 1690754925263,
+      "contentHash": "32f9b845cbd2ed2c5e81c55637aeb19e",
+      "sourceName": "contracts/library/ERC2981.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/introspection/ERC165.sol",
+        "./IERC2981Royalties.sol",
+        "./IERC2981RoyaltySetter.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "ERC2981"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/IERC2981Royalties.sol": {
+      "lastModificationDate": 1690754925264,
+      "contentHash": "96c7ab597af9002eea9e510f1b1e23b4",
+      "sourceName": "contracts/library/IERC2981Royalties.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "IERC2981Royalties"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/IERC2981RoyaltySetter.sol": {
+      "lastModificationDate": 1690754925264,
+      "contentHash": "72414ee34922aef626463ca462a00391",
+      "sourceName": "contracts/library/IERC2981RoyaltySetter.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "IERC2981RoyaltySetter"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyRoyaltyRegistry.sol": {
+      "lastModificationDate": 1690943728064,
+      "contentHash": "7fa6017c3199b75db4db00ff74057a4b",
+      "sourceName": "contracts/PixellyRoyaltyRegistry.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "./library/IERC2981Royalties.sol",
+        "./library/IERC2981RoyaltySetter.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "PixellyRoyaltyRegistry"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981Base.sol": {
+      "lastModificationDate": 1690754925264,
+      "contentHash": "64a13fbf054260708b1429b9b5ee7e7e",
+      "sourceName": "contracts/library/ERC2981Base.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/introspection/ERC165.sol",
+        "./IERC2981Royalties.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "ERC2981Base"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyNFTTradablePrivate.sol": {
+      "lastModificationDate": 1690943707241,
+      "contentHash": "4e8ab40976058cfca0e12e8bcf58d678",
+      "sourceName": "contracts/PixellyNFTTradablePrivate.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -997,13 +1561,13 @@
         "0.6.12"
       ],
       "artifacts": [
-        "TenartNFTTradablePrivate"
+        "PixellyNFTTradablePrivate"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartNFTFactoryPrivate.sol": {
-      "lastModificationDate": 1690754925261,
-      "contentHash": "9c14be22c69da22926948ec116c1ec2e",
-      "sourceName": "contracts/TenartNFTFactoryPrivate.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyNFTFactoryPrivate.sol": {
+      "lastModificationDate": 1690943753417,
+      "contentHash": "72aeb4eb4d1ee06b16b952eefe4af888",
+      "sourceName": "contracts/PixellyNFTFactoryPrivate.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1029,19 +1593,19 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TenartNFTTradablePrivate.sol"
+        "./PixellyNFTTradablePrivate.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartNFTFactoryPrivate"
+        "PixellyNFTFactoryPrivate"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartNFTTradable.sol": {
-      "lastModificationDate": 1690754925261,
-      "contentHash": "fd710cd01c6fdd6413248eeec56432da",
-      "sourceName": "contracts/TenartNFTTradable.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyNFTTradable.sol": {
+      "lastModificationDate": 1690943674707,
+      "contentHash": "7510833d4dac5751f08af465ebba71b0",
+      "sourceName": "contracts/PixellyNFTTradable.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1073,13 +1637,13 @@
         "0.6.12"
       ],
       "artifacts": [
-        "TenartNFTTradable"
+        "PixellyNFTTradable"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartNFTFactory.sol": {
-      "lastModificationDate": 1690754925261,
-      "contentHash": "39c664b710c00116fb52106a6a65eaac",
-      "sourceName": "contracts/TenartNFTFactory.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyNFTFactory.sol": {
+      "lastModificationDate": 1690943749185,
+      "contentHash": "771649a0b9454ffeb57cb174fa9a7bd7",
+      "sourceName": "contracts/PixellyNFTFactory.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1105,19 +1669,19 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TenartNFTTradable.sol"
+        "./PixellyNFTTradable.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartNFTFactory"
+        "PixellyNFTFactory"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartBundleMarketplace.sol": {
-      "lastModificationDate": 1690754925260,
-      "contentHash": "f6de87fad313afca4b2cde0654e4cd96",
-      "sourceName": "contracts/TenartBundleMarketplace.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyBundleMarketplace.sol": {
+      "lastModificationDate": 1690943619006,
+      "contentHash": "1d09287e3f5ecd72f97a155f88821d53",
+      "sourceName": "contracts/PixellyBundleMarketplace.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1157,10 +1721,10 @@
         "0.6.12"
       ],
       "artifacts": [
-        "ITenartAddressRegistry",
-        "ITenartMarketplace",
-        "ITenartTokenRegistry",
-        "TenartBundleMarketplace"
+        "IPixellyAddressRegistry",
+        "IPixellyMarketplace",
+        "IPixellyTokenRegistry",
+        "PixellyBundleMarketplace"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
@@ -1493,10 +2057,10 @@
         "Initializable"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartMarketplace.sol": {
-      "lastModificationDate": 1690754925260,
-      "contentHash": "dc25b144bfc53a42f7c247896552f5d2",
-      "sourceName": "contracts/TenartMarketplace.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyMarketplace.sol": {
+      "lastModificationDate": 1690943628864,
+      "contentHash": "af9af12a2b7c2f73155f1414cf1b8a37",
+      "sourceName": "contracts/PixellyMarketplace.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1535,20 +2099,20 @@
         "0.6.12"
       ],
       "artifacts": [
-        "ITenartAddressRegistry",
-        "ITenartAuction",
-        "ITenartBundleMarketplace",
-        "ITenartNFTFactory",
-        "ITenartPriceFeed",
-        "ITenartRoyaltyRegistry",
-        "ITenartTokenRegistry",
-        "TenartMarketplace"
+        "IPixellyAddressRegistry",
+        "IPixellyAuction",
+        "IPixellyBundleMarketplace",
+        "IPixellyNFTFactory",
+        "IPixellyPriceFeed",
+        "IPixellyRoyaltyRegistry",
+        "IPixellyTokenRegistry",
+        "PixellyMarketplace"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartAuction.sol": {
-      "lastModificationDate": 1690754925260,
-      "contentHash": "56d57e33a2e6df95075dc9b39f8b8c95",
-      "sourceName": "contracts/TenartAuction.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyAuction.sol": {
+      "lastModificationDate": 1690943580777,
+      "contentHash": "caf401008fe8ce8af6c5afdedc78e586",
+      "sourceName": "contracts/PixellyAuction.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1586,53 +2150,18 @@
         "0.6.12"
       ],
       "artifacts": [
-        "ITenartAddressRegistry",
-        "ITenartBundleMarketplace",
-        "ITenartMarketplace",
-        "ITenartRoyaltyRegistry",
-        "ITenartTokenRegistry",
-        "TenartAuction"
+        "IPixellyAddressRegistry",
+        "IPixellyBundleMarketplace",
+        "IPixellyMarketplace",
+        "IPixellyRoyaltyRegistry",
+        "IPixellyTokenRegistry",
+        "PixellyAuction"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1690755434274,
-      "contentHash": "e0a41531d159d3a32f84b7a3ecf9fabb",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/TenartAuctionMock.sol": {
-      "lastModificationDate": 1690754925265,
-      "contentHash": "35c32bdf0892c547bdefda64641e2bea",
-      "sourceName": "contracts/mock/TenartAuctionMock.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/PixellyAuctionMock.sol": {
+      "lastModificationDate": 1690943479733,
+      "contentHash": "901cc5811746c2ac8e243a5da0169a7c",
+      "sourceName": "contracts/mock/PixellyAuctionMock.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1657,19 +2186,19 @@
         }
       },
       "imports": [
-        "../TenartAuction.sol"
+        "../PixellyAuction.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartAuctionMock"
+        "PixellyAuctionMock"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/MockTenartAuction.sol": {
-      "lastModificationDate": 1690754925265,
-      "contentHash": "e35bc5e9ab44c871b335e13880c909c2",
-      "sourceName": "contracts/mock/MockTenartAuction.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/MockPixellyAuction.sol": {
+      "lastModificationDate": 1690943479733,
+      "contentHash": "8d8ceeec3985d847e92f13dce3e6dab8",
+      "sourceName": "contracts/mock/MockPixellyAuction.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1694,133 +2223,19 @@
         }
       },
       "imports": [
-        "../TenartAuction.sol"
+        "../PixellyAuction.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "MockTenartAuction"
+        "MockPixellyAuction"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartRoyaltyRegistry.sol": {
-      "lastModificationDate": 1690754925262,
-      "contentHash": "1f7bdde5395fd62805548e2dc30eab62",
-      "sourceName": "contracts/TenartRoyaltyRegistry.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-        "./library/IERC2981Royalties.sol",
-        "./library/IERC2981RoyaltySetter.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "TenartRoyaltyRegistry"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/IERC2981Royalties.sol": {
-      "lastModificationDate": 1690754925264,
-      "contentHash": "96c7ab597af9002eea9e510f1b1e23b4",
-      "sourceName": "contracts/library/IERC2981Royalties.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "IERC2981Royalties"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/IERC2981RoyaltySetter.sol": {
-      "lastModificationDate": 1690754925264,
-      "contentHash": "72414ee34922aef626463ca462a00391",
-      "sourceName": "contracts/library/IERC2981RoyaltySetter.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "IERC2981RoyaltySetter"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartAddressRegistry.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "05c9d68efbcbb1d42de1649c0eac7c0a",
-      "sourceName": "contracts/TenartAddressRegistry.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyAddressRegistry.sol": {
+      "lastModificationDate": 1690943507690,
+      "contentHash": "7fe42b26f44d53e95ad01380dd1583d2",
+      "sourceName": "contracts/PixellyAddressRegistry.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -1852,548 +2267,13 @@
         "0.6.12"
       ],
       "artifacts": [
-        "TenartAddressRegistry"
+        "PixellyAddressRegistry"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981Base.sol": {
-      "lastModificationDate": 1690754925264,
-      "contentHash": "64a13fbf054260708b1429b9b5ee7e7e",
-      "sourceName": "contracts/library/ERC2981Base.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/introspection/ERC165.sol",
-        "./IERC2981Royalties.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "ERC2981Base"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981.sol": {
-      "lastModificationDate": 1690754925263,
-      "contentHash": "32f9b845cbd2ed2c5e81c55637aeb19e",
-      "sourceName": "contracts/library/ERC2981.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/introspection/ERC165.sol",
-        "./IERC2981Royalties.sol",
-        "./IERC2981RoyaltySetter.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "ERC2981"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/library/ERC2981PerTokenRoyalties.sol": {
-      "lastModificationDate": 1690754925264,
-      "contentHash": "2fe7cc8b672b2333d79f87d4755f1176",
-      "sourceName": "contracts/library/ERC2981PerTokenRoyalties.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./ERC2981.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "ERC2981PerTokenRoyalties"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartNFT.sol": {
-      "lastModificationDate": 1690754925260,
-      "contentHash": "7602b6923b329006706e31e37ba9e7c5",
-      "sourceName": "contracts/TenartNFT.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/GSN/Context.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "./library/ERC2981PerTokenRoyalties.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "TenartNFT"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/GSN/Context.sol": {
-      "lastModificationDate": 1690755430863,
-      "contentHash": "a02aa4ae53018d92603a3ead2c365958",
-      "sourceName": "@openzeppelin/contracts/GSN/Context.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/utils/Pausable.sol": {
-      "lastModificationDate": 1690755430865,
-      "contentHash": "6960b40911542e6004ab95031ef9c3b9",
-      "sourceName": "@openzeppelin/contracts/utils/Pausable.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./Context.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "Pausable"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TradingRewardsDistributor.sol": {
-      "lastModificationDate": 1690754925258,
-      "contentHash": "629041870bf1672cec576aec638e2ae2",
-      "sourceName": "contracts/Rewards/TradingRewardsDistributor.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/Pausable.sol",
-        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/cryptography/MerkleProof.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "TradingRewardsDistributor"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
-      "lastModificationDate": 1690755430865,
-      "contentHash": "1c60f58cee45c61469e1aea31e4dd879",
-      "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "ReentrancyGuard"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/cryptography/MerkleProof.sol": {
-      "lastModificationDate": 1690755430864,
-      "contentHash": "44bd823687d58263d3b1da555235f93e",
-      "sourceName": "@openzeppelin/contracts/cryptography/MerkleProof.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "MerkleProof"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC20/SafeERC20.sol": {
-      "lastModificationDate": 1690755434274,
-      "contentHash": "33e22842646d746e5c4124c2fdc051aa",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC20.sol",
-        "../../math/SafeMath.sol",
-        "../../utils/Address.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.0 <0.8.0"
-      ],
-      "artifacts": [
-        "SafeERC20"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/VestingContractWithFeeSharing.sol": {
-      "lastModificationDate": 1690754925258,
-      "contentHash": "9adbddbdd448f7290b7a4b849dfecfe4",
-      "sourceName": "contracts/Rewards/VestingContractWithFeeSharing.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "VestingContractWithFeeSharing"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TokenSplitter.sol": {
-      "lastModificationDate": 1690754925258,
-      "contentHash": "d0ac00f025d2e5cbcde2b4bed22dd41e",
-      "sourceName": "contracts/Rewards/TokenSplitter.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "TokenSplitter"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TenartStaking.sol": {
-      "lastModificationDate": 1690754925257,
-      "contentHash": "1a8072e5695bf94b9486a658004687bf",
-      "sourceName": "contracts/Rewards/TenartStaking.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/Pausable.sol",
-        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
-        "./TokenDistributor.sol",
-        "./TokenSplitter.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "StakingPoolForUniswapV2Tokens"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TokenDistributor.sol": {
-      "lastModificationDate": 1690754925258,
-      "contentHash": "16df0e8ad76be7de739c2305115f6f79",
-      "sourceName": "contracts/Rewards/TokenDistributor.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
-        "./interfaces/ITenartToken.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "TokenDistributor"
-      ]
-    },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/interfaces/ITenartToken.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "ee5585fc90baca8b58c36593c3cfbdd0",
-      "sourceName": "contracts/Rewards/interfaces/ITenartToken.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/interfaces/IPixellyToken.sol": {
+      "lastModificationDate": 1690943816394,
+      "contentHash": "e161fd78179744575c5d4cf75f6eab92",
+      "sourceName": "contracts/Rewards/interfaces/IPixellyToken.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2424,13 +2304,13 @@
         "0.6.12"
       ],
       "artifacts": [
-        "ITenartToken"
+        "IPixellyToken"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TenartToken.sol": {
-      "lastModificationDate": 1690754925258,
-      "contentHash": "b7ef54e127e539f4b1f44c9764b3eaf3",
-      "sourceName": "contracts/Rewards/TenartToken.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/PIxellyToken.sol": {
+      "lastModificationDate": 1690943982592,
+      "contentHash": "efeae2dac66f0c86570271122538d1fe",
+      "sourceName": "contracts/Rewards/PIxellyToken.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2457,13 +2337,13 @@
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "./interfaces/ITenartToken.sol"
+        "./interfaces/IPixellyToken.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartToken"
+        "PixellyToken"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
@@ -2542,9 +2422,129 @@
         "MockERC20"
       ]
     },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TokenDistributor.sol": {
+      "lastModificationDate": 1690943479733,
+      "contentHash": "94efb0a4e2d60d4167c5c261d4293a6d",
+      "sourceName": "contracts/Rewards/TokenDistributor.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+        "./interfaces/IPixellyToken.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "TokenDistributor"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/PixellyStaking.sol": {
+      "lastModificationDate": 1690943931240,
+      "contentHash": "1a8072e5695bf94b9486a658004687bf",
+      "sourceName": "contracts/Rewards/PixellyStaking.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/Pausable.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+        "./TokenDistributor.sol",
+        "./TokenSplitter.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "StakingPoolForUniswapV2Tokens"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/TokenSplitter.sol": {
+      "lastModificationDate": 1690754925258,
+      "contentHash": "d0ac00f025d2e5cbcde2b4bed22dd41e",
+      "sourceName": "contracts/Rewards/TokenSplitter.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "TokenSplitter"
+      ]
+    },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/FeeSharingSystem.sol": {
-      "lastModificationDate": 1690754925257,
-      "contentHash": "2f203c8043ef282f9b69f496db303479",
+      "lastModificationDate": 1690943306006,
+      "contentHash": "14d2aeed89da1aa6e0139b65af126c2b",
       "sourceName": "contracts/Rewards/FeeSharingSystem.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -2580,6 +2580,43 @@
       ],
       "artifacts": [
         "FeeSharingSystem"
+      ]
+    },
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/BiddingContractMock.sol": {
+      "lastModificationDate": 1690943479733,
+      "contentHash": "492ac54315c31487e6dc9bb1764fa265",
+      "sourceName": "contracts/mock/BiddingContractMock.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../PixellyAuction.sol"
+      ],
+      "versionPragmas": [
+        "0.6.12"
+      ],
+      "artifacts": [
+        "BiddingContractMock"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Rewards/PrivateSaleWithFeeSharing.sol": {
@@ -2621,43 +2658,6 @@
         "PrivateSaleWithFeeSharing"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/mock/BiddingContractMock.sol": {
-      "lastModificationDate": 1690754925265,
-      "contentHash": "8415622254023cf78ae6ebd0f346ca9b",
-      "sourceName": "contracts/mock/BiddingContractMock.sol",
-      "solcConfig": {
-        "version": "0.6.12",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../TenartAuction.sol"
-      ],
-      "versionPragmas": [
-        "0.6.12"
-      ],
-      "artifacts": [
-        "BiddingContractMock"
-      ]
-    },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/Upgrades/AdminUpgradeabilityProxy.sol": {
       "lastModificationDate": 1690754925262,
       "contentHash": "c79826f58068b6683c83519489744bca",
@@ -2695,10 +2695,10 @@
         "AdminUpgradeabilityProxy"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartTokenRegistry.sol": {
-      "lastModificationDate": 1690754925262,
-      "contentHash": "dda70527a33ee14191a220deaef303ff",
-      "sourceName": "contracts/TenartTokenRegistry.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyTokenRegistry.sol": {
+      "lastModificationDate": 1690943739869,
+      "contentHash": "3a68735567c957f4e0521edd67e18435",
+      "sourceName": "contracts/PixellyTokenRegistry.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2729,13 +2729,13 @@
         "0.6.12"
       ],
       "artifacts": [
-        "TenartTokenRegistry"
+        "PixellyTokenRegistry"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartPriceFeed.sol": {
-      "lastModificationDate": 1690754925261,
-      "contentHash": "69edc5ea787d4f6b2d2bf5194ae9f074",
-      "sourceName": "contracts/TenartPriceFeed.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyPriceFeed.sol": {
+      "lastModificationDate": 1690943715050,
+      "contentHash": "fd502317da019e26f91f59672307c4d2",
+      "sourceName": "contracts/PixellyPriceFeed.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2767,15 +2767,15 @@
       ],
       "artifacts": [
         "IOracle",
-        "ITenartAddressRegistry",
-        "ITenartTokenRegistry",
-        "TenartPriceFeed"
+        "IPixellyAddressRegistry",
+        "IPixellyTokenRegistry",
+        "PixellyPriceFeed"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartArtFactoryPrivate.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "00b59f6c81783c545b7cd6f6c0f61234",
-      "sourceName": "contracts/TenartArtFactoryPrivate.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyArtFactoryPrivate.sol": {
+      "lastModificationDate": 1690943568147,
+      "contentHash": "58db67ec1314bc3600a7084c122938ce",
+      "sourceName": "contracts/PixellyArtFactoryPrivate.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2801,19 +2801,19 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TenartArtTradablePrivate.sol"
+        "./PixellyArtTradablePrivate.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartArtFactoryPrivate"
+        "PixellyArtFactoryPrivate"
       ]
     },
-    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/TenartArtFactory.sol": {
-      "lastModificationDate": 1690754925259,
-      "contentHash": "018f852664dc40fcfd98f64c37ac4e6e",
-      "sourceName": "contracts/TenartArtFactory.sol",
+    "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyArtFactory.sol": {
+      "lastModificationDate": 1690943518341,
+      "contentHash": "eca92330d4203d1b12d0961d9f737060",
+      "sourceName": "contracts/PixellyArtFactory.sol",
       "solcConfig": {
         "version": "0.6.12",
         "settings": {
@@ -2839,13 +2839,13 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TenartArtTradable.sol"
+        "./PixellyArtTradable.sol"
       ],
       "versionPragmas": [
         "0.6.12"
       ],
       "artifacts": [
-        "TenartArtFactory"
+        "PixellyArtFactory"
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/WTENET.sol": {

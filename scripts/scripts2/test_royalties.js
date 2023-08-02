@@ -15,19 +15,19 @@ async function main(network) {
   } = require("../constants");
 
   const tokenRegistry = await (
-    await ethers.getContractFactory("TenartTokenRegistry")
+    await ethers.getContractFactory("PixellyTokenRegistry")
   ).attach("0x9B415beb6e7D669431737Dc4E7C9bCc760CA01C3");
 
   const marketplaceImpl = await (
-    await ethers.getContractFactory("TenartMarketplace")
+    await ethers.getContractFactory("PixellyMarketplace")
   ).attach("0x2d42C870AD85D4318887aff39b642C33E9e332c7");
 
   const auctionImpl = await (
-    await ethers.getContractFactory("TenartAuction")
+    await ethers.getContractFactory("PixellyAuction")
   ).attach("0xF0E1Be2656e0d0DaC726f4677d42D4Bd15773A3d");
 
   const royaltiesImpl = await (
-    await ethers.getContractFactory("TenartRoyaltyRegistry")
+    await ethers.getContractFactory("PixellyRoyaltyRegistry")
   ).attach("0x88869D56F0E6BB5C8F89a97390D71E4C413030eD");
 
   console.log(

@@ -4,7 +4,7 @@ async function main() {
   console.log("Deploying nft with address:", deployerAddress);
 
   const royaltiesReg = await (
-    await ethers.getContractFactory("TenartRoyaltyRegistry")
+    await ethers.getContractFactory("PixellyRoyaltyRegistry")
   ).attach("0xd20aAB0F721262b111369351042B65CC4564B0b8");
 
   await royaltiesReg.setDefaultRoyalty(
