@@ -3,7 +3,7 @@ async function main(network) {
   const [deployer] = await ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   console.log(`Deployer's address: `, deployerAddress);
-  const TENART_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
+  const PIXELLY_ADDRESS_REGISTRY = "0xB0660C7BcbC645549F8f52C6B3aE3B2D22f35fDd";
 
   const { WRAPPED_ETH_MAINNET } = require("../constants");
 
@@ -27,11 +27,11 @@ async function main(network) {
     await ethers.getContractFactory("PixellyTokenRegistry")
   ).attach("0xEC082041260Cc6880A120426f167B228E4955528");
 
-  await marketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await marketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
   console.log("Marketplace Address Registry updated");
-  await bundleMarketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await bundleMarketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
   console.log("MarketplaceBundle Address Registry updated");
-  await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await auctionImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
   console.log("Auction Address Registry updated");
   await addressRegistry.updatePixellyNFT(
     "0x491829466dc1fD03dCFC57EE22933814a5804C7a"

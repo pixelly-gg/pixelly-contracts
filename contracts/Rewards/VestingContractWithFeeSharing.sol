@@ -13,7 +13,7 @@ import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.s
 contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    IERC20 public immutable tenartToken;
+    IERC20 public immutable pixellyToken;
 
     // Number of unlock periods
     uint256 public immutable NUMBER_UNLOCK_PERIODS;
@@ -45,14 +45,14 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
      * @param _startBlock block number for start (must be same as TokenDistributor)
      * @param _numberUnlockPeriods number of unlock periods (e.g., 4)
      * @param _maxAmountToWithdraw maximum amount in TART to withdraw per period
-     * @param _tenartToken address of the TART token
+     * @param _pixellyToken address of the TART token
      */
     constructor(
         uint256 _vestingBetweenPeriodsInBlocks,
         uint256 _startBlock,
         uint256 _numberUnlockPeriods,
         uint256 _maxAmountToWithdraw,
-        address _tenartToken
+        address _pixellyToken
     ) public {
         VESTING_BETWEEN_PERIODS_IN_BLOCKS = _vestingBetweenPeriodsInBlocks;
         START_BLOCK = _startBlock;
@@ -62,7 +62,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
         maxAmountToWithdrawForNextPeriod = _maxAmountToWithdraw;
 
         nextBlockForUnlock = _startBlock + _vestingBetweenPeriodsInBlocks;
-        tenartToken = IERC20(_tenartToken);
+        pixellyToken = IERC20(_pixellyToken);
     }
 
     /**
@@ -76,7 +76,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
             "Unlock: Too early"
         );
 
-        uint256 balanceToWithdraw = tenartToken.balanceOf(address(this));
+        uint256 balanceToWithdraw = pixellyToken.balanceOf(address(this));
 
         if (numberPastUnlocks < NUMBER_UNLOCK_PERIODS) {
             // Adjust next block for unlock
@@ -97,7 +97,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
         }
 
         // Transfer TART to owner
-        tenartToken.safeTransfer(msg.sender, balanceToWithdraw);
+        pixellyToken.safeTransfer(msg.sender, balanceToWithdraw);
 
         emit TokensUnlocked(balanceToWithdraw);
     }
@@ -111,7 +111,7 @@ contract VestingContractWithFeeSharing is Ownable, ReentrancyGuard {
         nonReentrant
         onlyOwner
     {
-        require(_currency != address(tenartToken), "Owner: Cannot withdraw TART");
+        require(_currency != address(pixellyToken), "Owner: Cannot withdraw TART");
 
         uint256 balanceToWithdraw = IERC20(_currency).balanceOf(address(this));
 

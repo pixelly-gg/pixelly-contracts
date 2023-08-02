@@ -1,12 +1,12 @@
 const {
-  TENART_ADDRESS_REGISTRY,
+  PIXELLY_ADDRESS_REGISTRY,
   WRAPPED_TENET_TESTNET
 } = require("./constants");
 
 async function main() {
   const Contract = await ethers.getContractFactory("PixellyPriceFeed");
   const contract = await Contract.deploy(
-    TENART_ADDRESS_REGISTRY,
+    PIXELLY_ADDRESS_REGISTRY,
     WRAPPED_TENET_TESTNET
   );
 

@@ -12,7 +12,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 interface IPixellyAddressRegistry {
-    function tenartNFT() external view returns (address);
+    function pixellyNFT() external view returns (address);
 
     function marketplace() external view returns (address);
 

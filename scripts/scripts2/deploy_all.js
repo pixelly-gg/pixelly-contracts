@@ -16,13 +16,13 @@ async function main(network) {
 
   // ////////////
   // const PixellyNFT = await ethers.getContractFactory("PixellyNFT");
-  // const tenartNFT = await PixellyNFT.deploy(
+  // const pixellyNFT = await PixellyNFT.deploy(
   //   TREASURY_ADDRESS,
   //   "2000000000000000000"
   // );
 
-  // await tenartNFT.deployed();
-  // console.log("PixellyNFT deployed at", tenartNFT.address);
+  // await pixellyNFT.deployed();
+  // console.log("PixellyNFT deployed at", pixellyNFT.address);
   // ///////////
 
   /////////
@@ -152,14 +152,14 @@ async function main(network) {
   await addressRegistry.deployed();
 
   console.log("PixellyAddressRegistry deployed to", addressRegistry.address);
-  const TENART_ADDRESS_REGISTRY = addressRegistry.address;
+  const PIXELLY_ADDRESS_REGISTRY = addressRegistry.address;
   ////////
 
   ////////
   const PriceFeed = await ethers.getContractFactory("PixellyPriceFeed");
   const WRAPPED_ETH =
     network.name === "mainnet" ? WRAPPED_ETH_MAINNET : WRAPPED_ETH_TESTNET;
-  const priceFeed = await PriceFeed.deploy(TENART_ADDRESS_REGISTRY, WRAPPED_ETH);
+  const priceFeed = await PriceFeed.deploy(PIXELLY_ADDRESS_REGISTRY, WRAPPED_ETH);
 
   await priceFeed.deployed();
 
@@ -223,12 +223,12 @@ async function main(network) {
   console.log("PixellyArtFactoryPrivate deployed to:", artFactoryPrivate.address);
   ////////
 
-  await marketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
-  await bundleMarketplaceImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await marketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
+  await bundleMarketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
 
-  await auctionImpl.updateAddressRegistry(TENART_ADDRESS_REGISTRY);
+  await auctionImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
 
-  await addressRegistry.updatePixellyNFT(tenartNFT.address);
+  await addressRegistry.updatePixellyNFT(pixellyNFT.address);
   await addressRegistry.updateAuction(auctionImpl.address);
   await addressRegistry.updateMarketplace(marketplaceImpl.address);
   await addressRegistry.updateBundleMarketplace(bundleMarketplaceImpl.address);

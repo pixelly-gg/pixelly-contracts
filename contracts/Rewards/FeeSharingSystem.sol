@@ -24,7 +24,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
     // Precision factor for calculating rewards and exchange rate
     uint256 public constant PRECISION_FACTOR = 10**18;
 
-    IERC20 public immutable tenartToken;
+    IERC20 public immutable pixellyToken;
 
     IERC20 public immutable rewardToken;
 
@@ -69,17 +69,17 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
 
     /**
      * @notice Constructor
-     * @param _tenartToken address of the token staked (TARTT)
+     * @param _pixellyToken address of the token staked (TARTT)
      * @param _rewardToken address of the reward token
      * @param _tokenDistributor address of the token distributor contract
      */
     constructor(
-        address _tenartToken,
+        address _pixellyToken,
         address _rewardToken,
         address _tokenDistributor
     ) public {
         rewardToken = IERC20(_rewardToken);
-        tenartToken = IERC20(_tenartToken);
+        pixellyToken = IERC20(_pixellyToken);
         tokenDistributor = TokenDistributor(_tokenDistributor);
     }
 
@@ -107,7 +107,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
         );
 
         // Transfer TARTT tokens to this address
-        tenartToken.safeTransferFrom(msg.sender, address(this), amount);
+        pixellyToken.safeTransferFrom(msg.sender, address(this), amount);
 
         uint256 currentShares;
 
@@ -315,8 +315,8 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
         uint256 _amount,
         address _to
     ) internal {
-        if (tenartToken.allowance(address(this), _to) < _amount) {
-            tenartToken.approve(_to, type(uint256).max);
+        if (pixellyToken.allowance(address(this), _to) < _amount) {
+            pixellyToken.approve(_to, type(uint256).max);
         }
     }
 
@@ -393,7 +393,7 @@ contract FeeSharingSystem is ReentrancyGuard, Ownable {
         }
 
         // Transfer TART tokens to sender
-        tenartToken.safeTransfer(msg.sender, currentAmount);
+        pixellyToken.safeTransfer(msg.sender, currentAmount);
 
         emit Withdraw(msg.sender, currentAmount, pendingRewards);
     }

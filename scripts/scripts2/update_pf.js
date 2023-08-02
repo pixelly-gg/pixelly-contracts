@@ -3,7 +3,7 @@ async function main(network) {
   const [deployer] = await ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   console.log(`Deployer's address: `, deployerAddress);
-  const TENART_ADDRESS_REGISTRY = "0x55b82Af8E85A17D62F140f01e9b6c457519BD484";
+  const PIXELLY_ADDRESS_REGISTRY = "0x55b82Af8E85A17D62F140f01e9b6c457519BD484";
 
   const { WRAPPED_ETH_MAINNET } = require("../constants");
 

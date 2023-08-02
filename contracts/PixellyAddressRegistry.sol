@@ -9,7 +9,7 @@ contract PixellyAddressRegistry is Ownable {
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
 
     /// @notice PixellyNFT contract
-    address public tenartNFT;
+    address public pixellyNFT;
 
     /// @notice PixellyAuction contract
     address public auction;
@@ -45,12 +45,12 @@ contract PixellyAddressRegistry is Ownable {
      @notice Update PixellyNFT contract
      @dev Only admin
      */
-    function updatePixellyNFT(address _tenartNFT) external onlyOwner {
+    function updatePixellyNFT(address _pixellyNFT) external onlyOwner {
         require(
-            IERC165(_tenartNFT).supportsInterface(INTERFACE_ID_ERC721),
+            IERC165(_pixellyNFT).supportsInterface(INTERFACE_ID_ERC721),
             "Not ERC721"
         );
-        tenartNFT = _tenartNFT;
+        pixellyNFT = _pixellyNFT;
     }
 
     /**

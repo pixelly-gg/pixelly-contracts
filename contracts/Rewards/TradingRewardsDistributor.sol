@@ -16,7 +16,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
 
     uint256 public constant BUFFER_ADMIN_WITHDRAW = 3 days;
 
-    IERC20 public immutable tenartToken;
+    IERC20 public immutable pixellyToken;
 
     // Current reward round (users can only claim pending rewards for the current round)
     uint256 public currentRewardRound;
@@ -50,10 +50,10 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
 
     /**
      * @notice Constructor
-     * @param _tenartToken address of the Pixelly token
+     * @param _pixellyToken address of the Pixelly token
      */
-    constructor(address _tenartToken) public {
-        tenartToken = IERC20(_tenartToken);
+    constructor(address _pixellyToken) public {
+        pixellyToken = IERC20(_pixellyToken);
         _pause();
     }
 
@@ -92,7 +92,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
         amountClaimedByUser[msg.sender] += adjustedAmount;
 
         // Transfer adjusted amount
-        tenartToken.safeTransfer(msg.sender, adjustedAmount);
+        pixellyToken.safeTransfer(msg.sender, adjustedAmount);
 
         emit RewardsClaim(msg.sender, currentRewardRound, adjustedAmount);
     }
@@ -145,7 +145,7 @@ contract TradingRewardsDistributor is Pausable, ReentrancyGuard, Ownable {
             block.timestamp > (lastPausedTimestamp + BUFFER_ADMIN_WITHDRAW),
             "Owner: Too early to withdraw"
         );
-        tenartToken.safeTransfer(msg.sender, amount);
+        pixellyToken.safeTransfer(msg.sender, amount);
 
         emit TokenWithdrawnOwner(amount);
     }

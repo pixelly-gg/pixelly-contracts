@@ -33,7 +33,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
     // Number of eligible tiers in the private sale
     uint8 public constant NUMBER_TIERS = 3;
 
-    IERC20 public immutable tenartToken;
+    IERC20 public immutable pixellyToken;
 
     IERC20 public immutable rewardToken;
 
@@ -79,13 +79,13 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
 
     /**
      * @notice Constructor
-     * @param _tenartToken address of the TART token
+     * @param _pixellyToken address of the TART token
      * @param _rewardToken address of the reward token
      * @param _maxBlockForWithdrawal maximum block for withdrawal
      * @param _totalLooksDistributed total number of TART tokens to distribute
      */
     constructor(
-        address _tenartToken,
+        address _pixellyToken,
         address _rewardToken,
         uint256 _maxBlockForWithdrawal,
         uint256 _totalLooksDistributed
@@ -95,7 +95,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
             "Owner: MaxBlockForWithdrawal must be after block number"
         );
 
-        tenartToken = IERC20(_tenartToken);
+        pixellyToken = IERC20(_pixellyToken);
         rewardToken = IERC20(_rewardToken);
         blockForWithdrawal = _maxBlockForWithdrawal;
 
@@ -201,17 +201,17 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
         userInfo[msg.sender].hasWithdrawn = true;
 
         // Calculate amount of TART to transfer based on the tier
-        uint256 tenartAmountToTransfer = allocationCostPerTier[
+        uint256 pixellyAmountToTransfer = allocationCostPerTier[
             userInfo[msg.sender].tier
         ] * priceOfETHInTART;
 
         // Transfer TART token to sender
-        tenartToken.safeTransfer(msg.sender, tenartAmountToTransfer);
+        pixellyToken.safeTransfer(msg.sender, pixellyAmountToTransfer);
 
         emit Withdraw(
             msg.sender,
             userInfo[msg.sender].tier,
-            tenartAmountToTransfer
+            pixellyAmountToTransfer
         );
     }
 
@@ -322,7 +322,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
                 "Owner: Wrong amount of TART"
             );
             require(
-                tenartToken.balanceOf(address(this)) >= TOTAL_TART_DISTRIBUTED,
+                pixellyToken.balanceOf(address(this)) >= TOTAL_TART_DISTRIBUTED,
                 "Owner: Not enough TART in the contract"
             );
             require(
@@ -359,7 +359,7 @@ contract PrivateSaleWithFeeSharing is Ownable, ReentrancyGuard {
         if (totalAmountCommitted * priceOfETHInTART < (TOTAL_TART_DISTRIBUTED)) {
             uint256 tokenAmountToReturnInTART = TOTAL_TART_DISTRIBUTED -
                 (totalAmountCommitted * priceOfETHInTART);
-            tenartToken.safeTransfer(msg.sender, tokenAmountToReturnInTART);
+            pixellyToken.safeTransfer(msg.sender, tokenAmountToReturnInTART);
         }
 
         // Update phase status to Staking

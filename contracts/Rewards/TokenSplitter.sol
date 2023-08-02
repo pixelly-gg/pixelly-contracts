@@ -19,7 +19,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
 
     uint256 public immutable TOTAL_SHARES;
 
-    IERC20 public immutable tenartToken;
+    IERC20 public immutable pixellyToken;
 
     // Total TART tokens distributed across all accounts
     uint256 public totalTokensDistributed;
@@ -36,12 +36,12 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
      * @notice Constructor
      * @param _accounts array of accounts addresses
      * @param _shares array of shares per account
-     * @param _tenartToken address of the TART token
+     * @param _pixellyToken address of the TART token
      */
     constructor(
         address[] memory _accounts,
         uint256[] memory _shares,
-        address _tenartToken
+        address _pixellyToken
     ) public {
         require(_accounts.length == _shares.length, "Splitter: Length differ");
         require(_accounts.length > 0, "Splitter: Length must be > 0");
@@ -56,7 +56,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         }
 
         TOTAL_SHARES = currentShares;
-        tenartToken = IERC20(_tenartToken);
+        pixellyToken = IERC20(_pixellyToken);
     }
 
     /**
@@ -70,7 +70,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         );
 
         // Calculate amount to transfer to the account
-        uint256 totalTokensReceived = tenartToken.balanceOf(address(this)) +
+        uint256 totalTokensReceived = pixellyToken.balanceOf(address(this)) +
             totalTokensDistributed;
         uint256 pendingRewards = ((totalTokensReceived *
             accountInfo[account].shares) / TOTAL_SHARES) -
@@ -83,7 +83,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
         totalTokensDistributed += pendingRewards;
 
         // Transfer funds to account
-        tenartToken.safeTransfer(account, pendingRewards);
+        pixellyToken.safeTransfer(account, pendingRewards);
 
         emit TokensTransferred(account, pendingRewards);
     }
@@ -133,7 +133,7 @@ contract TokenSplitter is Ownable, ReentrancyGuard {
             return 0;
         }
 
-        uint256 totalTokensReceived = tenartToken.balanceOf(address(this)) +
+        uint256 totalTokensReceived = pixellyToken.balanceOf(address(this)) +
             totalTokensDistributed;
         uint256 pendingRewards = ((totalTokensReceived *
             accountInfo[account].shares) / TOTAL_SHARES) -

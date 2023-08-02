@@ -14,7 +14,7 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 interface IPixellyAddressRegistry {
-    function tenartNFT() external view returns (address);
+    function pixellyNFT() external view returns (address);
 
     function bundleMarketplace() external view returns (address);
 
@@ -917,7 +917,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function _isPixellyNFT(address _nftAddress) internal view returns (bool) {
         return
-            addressRegistry.tenartNFT() == _nftAddress ||
+            addressRegistry.pixellyNFT() == _nftAddress ||
             IPixellyNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
             IPixellyNFTFactory(addressRegistry.privateFactory()).exists(
                 _nftAddress

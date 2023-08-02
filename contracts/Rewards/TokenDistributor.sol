@@ -29,7 +29,7 @@ contract TokenDistributor is ReentrancyGuard {
     // Precision factor for calculating rewards
     uint256 public constant PRECISION_FACTOR = 10**12;
 
-    IPixellyToken public immutable tenartToken;
+    IPixellyToken public immutable pixellyToken;
 
     address public immutable tokenSplitter;
 
@@ -84,7 +84,7 @@ contract TokenDistributor is ReentrancyGuard {
 
     /**
      * @notice Constructor
-     * @param _tenartToken TART token address
+     * @param _pixellyToken TART token address
      * @param _tokenSplitter token splitter contract address (for team and trading rewards)
      * @param _startBlock start block for reward program
      * @param _rewardsPerBlockForStaking array of rewards per block for staking
@@ -93,7 +93,7 @@ contract TokenDistributor is ReentrancyGuard {
      * @param _numberPeriods number of periods with different rewards/lengthes (e.g., if 3 changes --> 4 periods)
      */
     constructor(
-        address _tenartToken,
+        address _pixellyToken,
         address _tokenSplitter,
         uint256 _startBlock,
         uint256[] memory _rewardsPerBlockForStaking,
@@ -109,8 +109,8 @@ contract TokenDistributor is ReentrancyGuard {
         );
 
         // 1. Operational checks for supply
-        uint256 nonCirculatingSupply = IPixellyToken(_tenartToken).SUPPLY_CAP() -
-            IPixellyToken(_tenartToken).totalSupply();
+        uint256 nonCirculatingSupply = IPixellyToken(_pixellyToken).SUPPLY_CAP() -
+            IPixellyToken(_pixellyToken).totalSupply();
 
         uint256 amountTokensToBeMinted;
 
@@ -131,7 +131,7 @@ contract TokenDistributor is ReentrancyGuard {
         );
 
         // 2. Store values
-        tenartToken = IPixellyToken(_tenartToken);
+        pixellyToken = IPixellyToken(_pixellyToken);
         tokenSplitter = _tokenSplitter;
         rewardPerBlockForStaking = _rewardsPerBlockForStaking[0];
         rewardPerBlockForOthers = _rewardsPerBlockForOthers[0];
@@ -156,7 +156,7 @@ contract TokenDistributor is ReentrancyGuard {
         _updatePool();
 
         // Transfer TART tokens to this contract
-        tenartToken.safeTransferFrom(msg.sender, address(this), amount);
+        pixellyToken.safeTransferFrom(msg.sender, address(this), amount);
 
         uint256 pendingRewards;
 
@@ -250,7 +250,7 @@ contract TokenDistributor is ReentrancyGuard {
         totalAmountStaked = totalAmountStaked + pendingRewards - amount;
 
         // Transfer TART tokens to the sender
-        tenartToken.safeTransfer(msg.sender, amount);
+        pixellyToken.safeTransfer(msg.sender, amount);
 
         emit Withdraw(msg.sender, amount, pendingRewards);
     }
@@ -282,7 +282,7 @@ contract TokenDistributor is ReentrancyGuard {
         userInfo[msg.sender].rewardDebt = 0;
 
         // Transfer TART tokens to the sender
-        tenartToken.safeTransfer(msg.sender, amountToTransfer);
+        pixellyToken.safeTransfer(msg.sender, amountToTransfer);
 
         emit Withdraw(msg.sender, amountToTransfer, pendingRewards);
     }
@@ -399,7 +399,7 @@ contract TokenDistributor is ReentrancyGuard {
         // Mint tokens only if token rewards for staking are not null
         if (tokenRewardForStaking > 0) {
             // It allows protection against potential issues to prevent funds from being locked
-            bool mintStatus = tenartToken.mint(
+            bool mintStatus = pixellyToken.mint(
                 address(this),
                 tokenRewardForStaking
             );
@@ -410,7 +410,7 @@ contract TokenDistributor is ReentrancyGuard {
                         totalAmountStaked);
             }
 
-            tenartToken.mint(tokenSplitter, tokenRewardForOthers);
+            pixellyToken.mint(tokenSplitter, tokenRewardForOthers);
         }
 
         // Update last reward block only if it wasn't updated after or at the end block
