@@ -5,7 +5,7 @@ async function main() {
 
   const royaltiesReg = await (
     await ethers.getContractFactory("PixellyRoyaltyRegistry")
-  ).attach("0xd20aAB0F721262b111369351042B65CC4564B0b8");
+  ).attach("0x59FF41d6ccD50C3C89773cc03Ae20E4634e556Bf");
 
   await royaltiesReg.setDefaultRoyalty(
     "0x939b90c529f0e3a2c187e1b190ca966a95881fde",

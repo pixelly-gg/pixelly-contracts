@@ -1,29 +1,29 @@
 {
     "WTENET": "0x821A1C06F2C9aAF9Eb4b80A2A7881ae69595Cb10",
-    "PixellyNFT": "",
-    "ProxyAdmin": "",
+    "PixellyNFT": "0x137eC882FD9a3FD0e1aDBdcE8280BfDF3D2aFe97",
+    "ProxyAdmin": "0x7f2aA9d1df8d2F4CCD91f15a24a0c2CcD19B2174",
     "MarketPlace": {
-        "MarketPlaceImpl": "",
-        "MarketPlaceProxy": ""
+        "MarketPlaceImpl": "0x37824fd8b98F780E4d0AD4A93b7f930a220A072d",
+        "MarketPlaceProxy": "0x02F22e1f07e34c78BCCF0607d8e3B851246637bF"
     },
     "BundleMarketPlace": {
-        "BMPImpl": "",
-        "BMPProxy": ""
+        "BMPImpl": "0x696B98C43ab4c338E2e56732D5481Bc60F48731a",
+        "BMPProxy": "0x7f30F4a7e6B37C46e0aaE84C7FE9703fDF752dda"
     },
     "Auction": {
-        "AuctionImpl": "",
-        "AuctionProxy": ""
+        "AuctionImpl": "0x4dC5BAB34d5F5e291Ee583f43e9AFC296cCdbac5",
+        "AuctionProxy": "0xBDb1f6C14058CA98905d253A7B6BbbBe4Ce8218C"
     },
-    "NFTFactory": "",
-    "NFTFactoryPrivate": "",
-    "NFTTradeable": "",
-    "NFTTradeablePrivate": "",
-    "TokenRegistry": "",
-    "AddressRegistry": "",
-    "PriceFeed": "",
-    "NFTArtTradeable": "",
-    "NFTArtTradeablePrivate": "",
-    "ArtFactory": "",
-    "ArtFactoryPrivate": ""
-
+    "NFTFactory": "0x165D6964213f4044642c2fD77727fF32B49d85cF",
+    "NFTFactoryPrivate": "0x0340bf33D3c7f62deAdf20982C93093dC995628F",
+    "NFTTradeable": "0xCA1F4d4c048Ee9033de9d3414c8EE8Ec05b44273",
+    "NFTTradeablePrivate": "0xDdF724e4F2ADb54ed454255142D7722BBBA7a2E6",
+    "TokenRegistry": "0x4848F8fD9c7F4CF7be2CA3ABb702b1a854E9C439",
+    "AddressRegistry": "0x94F291349A926EbeC5F3B4b0f67Fe8B4b5a74ce1",
+    "PriceFeed": "0x5692F4E1aF3A953B9100C4b18fAc5920d0a5e2D2",
+    "NFTArtTradeable": "0xcfefbee3B643382bAF4a580b96b42363a140A04c",
+    "NFTArtTradeablePrivate": "0x5A1B0C2894b3257B4B7DF77A6336513a8deCaaaA",
+    "ArtFactory": "0x7b6a84c8431B4A9290A300FD65F7EbDB9dC993E2",
+    "ArtFactoryPrivate": "0x536080A5597989f1F43Ca7A803e8f27ede7e453B",
+    "RoyaltyRegistry": "0x59FF41d6ccD50C3C89773cc03Ae20E4634e556Bf"
 }
