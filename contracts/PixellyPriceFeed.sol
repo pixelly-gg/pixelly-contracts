@@ -3,6 +3,7 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./library/IERC20.sol";
 
 interface IPixellyAddressRegistry {
     function tokenRegistry() external view returns (address);
@@ -13,9 +14,7 @@ interface IPixellyTokenRegistry {
 }
 
 interface IOracle {
-    function decimals() external view returns (uint8);
-
-    function latestAnswer() external view returns (int256);
+    function getCurrentPrice(address token) external view returns (uint256 price);
 }
 
 contract PixellyPriceFeed is Ownable {
@@ -69,13 +68,15 @@ contract PixellyPriceFeed is Ownable {
      @dev return current price or if oracle is not registered returns 0
      @param _token ERC20 token address
      */
-    function getPrice(address _token) external view returns (int256, uint8) {
+    function getPrice(address _token) external view returns (uint256, uint8) {
         if (oracles[_token] == address(0)) {
             return (0, 0);
         }
 
         IOracle oracle = IOracle(oracles[_token]);
-        return (oracle.latestAnswer(), oracle.decimals());
+        IERC20 token = IERC20(_token);
+
+        return (oracle.getCurrentPrice(_token), token.decimals());
     }
 
     /**
