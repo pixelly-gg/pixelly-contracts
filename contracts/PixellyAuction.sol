@@ -50,11 +50,7 @@ interface IPixellyRoyaltyRegistry {
 /**
  * @notice Secondary sale auction contract for NFTs
  */
-contract PixellyAuction is
-    OwnableUpgradeable,
-    ReentrancyGuardUpgradeable,
-    IERC721Receiver
-{
+contract PixellyAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable, IERC721Receiver {
     using SafeMath for uint256;
     using AddressUpgradeable for address payable;
     using SafeERC20Upgradeable for IERC20;
@@ -372,7 +368,7 @@ contract PixellyAuction is
         uint256 _endTime = auctions[_nftAddress][_tokenId].endTime;
 
         require(
-            _getNow() > _endTime && (_getNow() - _endTime >= 43200),
+            _getNow() > _endTime && (_getNow() - _endTime >= 86400),
             "can withdraw only after 12 hours (after auction ended)"
         );
 
@@ -406,6 +402,9 @@ contract PixellyAuction is
         // Check the auction to see if it can be resulted
         Auction storage auction = auctions[_nftAddress][_tokenId];
 
+        // Store auction owner
+        address seller = auction.owner;
+
         // Get info on who the highest bidder is
         HighestBid storage highestBid = highestBids[_nftAddress][_tokenId];
         address winner = highestBid.bidder;
@@ -413,7 +412,7 @@ contract PixellyAuction is
 
         // Ensure _msgSender() is either auction winner or seller
         require(
-            _msgSender() == winner || _msgSender() == auction.owner,
+            _msgSender() == winner || _msgSender() == seller || _msgSender() == operator(),
             "_msgSender() must be auction winner or seller"
         );
 
@@ -540,6 +539,60 @@ contract PixellyAuction is
     }
 
     /**
+     @notice Results an auction that failed to meet the auction.reservePrice
+     @dev Only admin or smart contract
+     @dev Auction can only be fail-resulted if the auction has expired and the auction.reservePrice has not been met
+     @dev If there have been no bids, the auction needs to be cancelled instead using `cancelAuction()`
+     @param _nftAddress ERC 721 Address
+     @param _tokenId Token ID of the item being auctioned
+     */
+    function resultFailedAuction(address _nftAddress, uint256 _tokenId)
+        external
+        nonReentrant
+    {
+        // Check the auction to see if it can be resulted
+        Auction storage auction = auctions[_nftAddress][_tokenId];
+
+        // Store auction owner
+        address seller = auction.owner;
+
+        // Ensure this contract is the owner of the item
+        require(
+            IERC721(_nftAddress).ownerOf(_tokenId) == address(this),
+            "address(this) must be the item owner"
+        );
+
+        // Check if the auction exists
+        require(auction.endTime > 0, "no auction exists");
+
+        // Check if the auction has ended
+        require(_getNow() > auction.endTime, "auction not ended");
+
+        // Ensure auction not already resulted
+        require(!auction.resulted, "auction already resulted");
+
+        // Get info on who the highest bidder is
+        HighestBid storage highestBid = highestBids[_nftAddress][_tokenId];
+        address payable topBidder = highestBid.bidder;
+        uint256 topBid = highestBid.bid;
+
+        // Ensure _msgSender() is either auction topBidder or seller
+        require(
+            _msgSender() == topBidder || _msgSender() == seller || _msgSender() == operator(),
+            "_msgSender() must be auction topBidder or seller"
+        );
+
+        // Ensure the topBid is less than the auction.reservePrice
+        require(topBidder != address(0), "no open bids");
+        require(
+            topBid < auction.reservePrice,
+            "highest bid is >= reservePrice"
+        );
+
+        _cancelAuction(_nftAddress, _tokenId, seller);
+    }
+
+    /**
      @notice Cancels and inflight and un-resulted auctions, returning the funds to the top bidder if found
      @dev Only item owner
      @param _nftAddress ERC 721 Address
@@ -552,7 +605,9 @@ contract PixellyAuction is
         // Check valid and not resulted
         Auction memory auction = auctions[_nftAddress][_tokenId];
 
-        require(_msgSender() == auction.owner, "sender must be owner");
+        require(IERC721(_nftAddress).ownerOf(_tokenId) == address(this) && 
+            (_msgSender() == auction.owner || _msgSender() == operator()), "sender must be owner"
+        );
         // Check auction is real
         require(auction.endTime > 0, "no auction exists");
         // Check auction not already resulted
@@ -565,7 +620,7 @@ contract PixellyAuction is
             "Highest bid is currently above reserve price"
         );
 
-        (_nftAddress, _tokenId);
+        _cancelAuction(_nftAddress, _tokenId, _msgSender());
     }
 
     /**
@@ -833,7 +888,7 @@ contract PixellyAuction is
         emit AuctionCreated(_nftAddress, _tokenId, _payToken);
     }
 
-    function _cancelAuction(address _nftAddress, uint256 _tokenId) private {
+    function _cancelAuction(address _nftAddress, uint256 _tokenId, address owner) private {
         // refund existing top bidder if found
         HighestBid storage highestBid = highestBids[_nftAddress][_tokenId];
         if (highestBid.bidder != address(0)) {
@@ -854,7 +909,7 @@ contract PixellyAuction is
         // Transfer the NFT ownership back to _msgSender()
         IERC721(_nftAddress).safeTransferFrom(
             IERC721(_nftAddress).ownerOf(_tokenId),
-            _msgSender(),
+            owner,
             _tokenId
         );
 
@@ -899,6 +954,25 @@ contract PixellyAuction is
         require(token.transfer(_msgSender(), balance), "Transfer failed");
     }
 
+    function operatorSlot() public pure returns (bytes32) {
+        return bytes32(uint256(keccak256('pixelly.auction.operator')) - 1);
+    }
+
+    function operator() public view returns (address opt) {
+        bytes32 slot = operatorSlot();
+        assembly {
+            opt := sload(slot)
+        }
+    }
+
+    function setOperator(address newOpt) external onlyOwner {
+        bytes32 slot = operatorSlot();
+
+        assembly {
+            sstore(slot, newOpt)
+        }
+    }
+
     function onERC721Received(
         address operator,
         address from,
@@ -908,7 +982,7 @@ contract PixellyAuction is
         return this.onERC721Received.selector;
     }
 
-    //Only owner function, to assure a good transition between the two contracts
+    // Only owner function, to assure a good transition between the two contracts
 
     function endAuction(address _nftAddress, uint256 _tokenId)
         external

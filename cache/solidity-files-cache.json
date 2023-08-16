@@ -2058,8 +2058,8 @@
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyMarketplace.sol": {
-      "lastModificationDate": 1690947206454,
-      "contentHash": "2259b30e5a4d1bdf4328c36964296ceb",
+      "lastModificationDate": 1692138865883,
+      "contentHash": "a4d2e08b6df0da39976111e605a16b4e",
       "sourceName": "contracts/PixellyMarketplace.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -2110,8 +2110,8 @@
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyAuction.sol": {
-      "lastModificationDate": 1690947201374,
-      "contentHash": "8a03ce01fb4ae8b84da049870ce2b096",
+      "lastModificationDate": 1692169060177,
+      "contentHash": "75824a952544d1a187f7679a7fe32c73",
       "sourceName": "contracts/PixellyAuction.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -2733,8 +2733,8 @@
       ]
     },
     "/Users/nate/Documents/GitHub/tenart/tenart-contracts/contracts/PixellyPriceFeed.sol": {
-      "lastModificationDate": 1690943715050,
-      "contentHash": "fd502317da019e26f91f59672307c4d2",
+      "lastModificationDate": 1692132480485,
+      "contentHash": "235f7798f2ef20dd3ee1a23ec80c137d",
       "sourceName": "contracts/PixellyPriceFeed.sol",
       "solcConfig": {
         "version": "0.6.12",
@@ -2760,7 +2760,8 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol"
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./library/IERC20.sol"
       ],
       "versionPragmas": [
         "0.6.12"

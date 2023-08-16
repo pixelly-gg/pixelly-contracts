@@ -517,6 +517,118 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         delete (listings[_nftAddress][_tokenId][_owner]);
     }
 
+    /// @notice Method for buying listed NFT
+    /// @param _nftAddress NFT contract address
+    /// @param _tokenId TokenId
+    function buyItemWithQuantity(
+        address _nftAddress,
+        uint256 _tokenId,
+        address _payToken,
+        address _owner,
+        uint256 _quantity
+    )
+        external
+        nonReentrant
+        isListed(_nftAddress, _tokenId, _owner)
+        validListing(_nftAddress, _tokenId, _owner)
+    {
+        _buyItemWithQuantity(_nftAddress, _tokenId, _payToken, _owner, _quantity);
+    }
+
+    function _buyItemWithQuantity(
+        address _nftAddress,
+        uint256 _tokenId,
+        address _payToken,
+        address _owner,
+        uint256 _quantity
+    ) private {
+        Listing storage listedItem = listings[_nftAddress][_tokenId][_owner];
+
+        require(listedItem.payToken == _payToken, "invalid pay token");
+        require(_quantity <= listedItem.quantity, "Out of quantity");
+
+        uint256 price = listedItem.pricePerItem.mul(_quantity);
+        uint256 feeAmount = price.mul(platformFee).div(1e3);
+
+        IERC20Upgradeable(_payToken).safeTransferFrom(
+            _msgSender(),
+            feeReceipient,
+            feeAmount
+        );
+
+        address minter = minters[_nftAddress][_tokenId];
+        uint16 royalty = royalties[_nftAddress][_tokenId];
+        if (minter != address(0) && royalty != 0) {
+            uint256 royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
+
+            IERC20Upgradeable(_payToken).safeTransferFrom(
+                _msgSender(),
+                minter,
+                royaltyFee
+            );
+
+            feeAmount = feeAmount.add(royaltyFee);
+        } else {
+            minter = collectionRoyalties[_nftAddress].feeRecipient;
+            royalty = collectionRoyalties[_nftAddress].royalty;
+            if (minter != address(0) && royalty != 0) {
+                uint256 royaltyFee = price.sub(feeAmount).mul(royalty).div(
+                    10000
+                );
+
+                IERC20Upgradeable(_payToken).safeTransferFrom(
+                    _msgSender(),
+                    minter,
+                    royaltyFee
+                );
+
+                feeAmount = feeAmount.add(royaltyFee);
+            }
+        }
+
+        IERC20Upgradeable(_payToken).safeTransferFrom(
+            _msgSender(),
+            _owner,
+            price.sub(feeAmount)
+        );
+
+        // Transfer NFT to buyer
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721(_nftAddress).safeTransferFrom(
+                _owner,
+                _msgSender(),
+                _tokenId
+            );
+        } else {
+            IERC1155(_nftAddress).safeTransferFrom(
+                _owner,
+                _msgSender(),
+                _tokenId,
+                _quantity,
+                bytes("")
+            );
+        }
+        IPixellyBundleMarketplace(addressRegistry.bundleMarketplace())
+            .validateItemSold(_nftAddress, _tokenId, _quantity);
+
+        emit ItemSold(
+            _owner,
+            _msgSender(),
+            _nftAddress,
+            _tokenId,
+            _quantity,
+            _payToken,
+            getPrice(_payToken),
+            price.div(_quantity)
+        );
+
+        if (_quantity == listedItem.quantity) {
+            delete (listings[_nftAddress][_tokenId][_owner]);
+        } else {
+            listedItem.quantity = listedItem.quantity - _quantity;
+        }
+    }
+
     /// @notice Method for offering item
     /// @param _nftAddress NFT contract address
     /// @param _tokenId TokenId
@@ -1012,7 +1124,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         return block.timestamp;
     }
 
-    function _validPayToken(address _payToken) internal {
+    function _validPayToken(address _payToken) internal view {
         require(
             _payToken == address(0) ||
                 (addressRegistry.tokenRegistry() != address(0) &&
@@ -1027,7 +1139,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint256 _tokenId,
         address _owner,
         uint256 quantity
-    ) internal {
+    ) internal view {
         if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
             IERC721 nft = IERC721(_nftAddress);
             require(nft.ownerOf(_tokenId) == _owner, "not owning item");
@@ -1044,7 +1156,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
     }
 
-    function _noAuctionLive(address _nftAddress, uint256 _tokenId) internal {
+    function _noAuctionLive(address _nftAddress, uint256 _tokenId) internal view {
         IPixellyAuction auction = IPixellyAuction(addressRegistry.auction());
 
         (, , , uint256 startTime, , bool resulted) = auction.auctions(
