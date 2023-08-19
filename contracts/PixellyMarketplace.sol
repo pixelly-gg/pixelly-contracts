@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.6.12;
-pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/introspection/IERC165.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/SafeERC20Upgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
@@ -31,8 +30,6 @@ interface IPixellyAddressRegistry {
     function tokenRegistry() external view returns (address);
 
     function priceFeed() external view returns (address);
-
-    function royaltyRegistry() external view returns (address);
 }
 
 interface IPixellyAuction {
@@ -71,18 +68,10 @@ interface IPixellyPriceFeed {
     function getPrice(address) external view returns (int256, uint8);
 }
 
-interface IPixellyRoyaltyRegistry {
-    function royaltyInfo(
-        address _collection,
-        uint256 _tokenId,
-        uint256 _salePrice
-    ) external view returns (address, uint256);
-}
-
 contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using SafeMath for uint256;
     using AddressUpgradeable for address payable;
-    using SafeERC20Upgradeable for IERC20Upgradeable;
+    using SafeERC20 for IERC20;
 
     /// @notice Events for the contract
     event ItemListed(
@@ -125,32 +114,8 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint256 pricePerItem,
         uint256 deadline
     );
-    event CounterOfferCreated(
-        address indexed creator,
-        address indexed addressee,
-        address indexed nft,
-        uint256 tokenId,
-        Offer counteroffer
-    );
     event OfferCanceled(
         address indexed creator,
-        address indexed nft,
-        uint256 tokenId
-    );
-    event CounterOfferCanceled(
-        address indexed creator,
-        address indexed addressee,
-        address indexed nft,
-        uint256 tokenId
-    );
-    event OfferRefused(
-        address indexed creator,
-        address indexed nft,
-        uint256 tokenId
-    );
-    event CounterOfferRefused(
-        address indexed creator,
-        address indexed addressee,
         address indexed nft,
         uint256 tokenId
     );
@@ -167,7 +132,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     /// @notice Structure for offer
     struct Offer {
-        IERC20Upgradeable payToken;
+        IERC20 payToken;
         uint256 quantity;
         uint256 pricePerItem;
         uint256 deadline;
@@ -196,13 +161,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     mapping(address => mapping(uint256 => mapping(address => Offer)))
         public offers;
 
-    /// @notice NftAddress -> Token ID -> Addressee of the counter offer -> Offer
-    mapping(address => mapping(uint256 => mapping(address => Offer)))
-        public counterOffers;
-
-    /// @notice NFTAddress -> TokenID -> Owner
-    mapping(address => mapping(uint256 => address)) public ownerOfERC1155;
-
     /// @notice Platform fee
     uint16 public platformFee;
 
@@ -217,7 +175,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     modifier onlyMarketplace() {
         require(
-            address(addressRegistry.bundleMarketplace()) == _msgSender(),
+            (address(addressRegistry.bundleMarketplace()) == _msgSender()) || (_msgSender() == operator()),
             "sender must be bundle marketplace"
         );
         _;
@@ -269,21 +227,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         _;
     }
 
-    modifier counterOfferExists(
-        address _nftAddress,
-        uint256 _tokenId,
-        address _addressee
-    ) {
-        Offer memory counterOffer = counterOffers[_nftAddress][_tokenId][
-            _addressee
-        ];
-        require(
-            counterOffer.quantity > 0 && counterOffer.deadline > _getNow(),
-            "counter offer not exists or expired"
-        );
-        _;
-    }
-
     modifier offerNotExists(
         address _nftAddress,
         uint256 _tokenId,
@@ -293,21 +236,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(
             offer.quantity == 0 || offer.deadline <= _getNow(),
             "offer already created"
-        );
-        _;
-    }
-
-    modifier counterOfferNotExists(
-        address _nftAddress,
-        uint256 _tokenId,
-        address _addressee
-    ) {
-        Offer memory counterOffer = counterOffers[_nftAddress][_tokenId][
-            _addressee
-        ];
-        require(
-            counterOffer.quantity == 0 || counterOffer.deadline <= _getNow(),
-            "counter offer already created"
         );
         _;
     }
@@ -451,35 +379,43 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint256 price = listedItem.pricePerItem.mul(listedItem.quantity);
         uint256 feeAmount = price.mul(platformFee).div(1e3);
 
-        IERC20Upgradeable(_payToken).safeTransferFrom(
+        IERC20(_payToken).safeTransferFrom(
             _msgSender(),
             feeReceipient,
             feeAmount
         );
 
-        IPixellyRoyaltyRegistry royaltyRegistry = IPixellyRoyaltyRegistry(
-            addressRegistry.royaltyRegistry()
-        );
+        address minter = minters[_nftAddress][_tokenId];
+        uint16 royalty = royalties[_nftAddress][_tokenId];
+        if (minter != address(0) && royalty != 0) {
+            uint256 royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
 
-        address minter;
-        uint256 royaltyAmount;
-
-        (minter, royaltyAmount) = royaltyRegistry.royaltyInfo(
-            _nftAddress,
-            _tokenId,
-            price.sub(feeAmount)
-        );
-        if (minter != address(0) && royaltyAmount != 0) {
-            IERC20Upgradeable(_payToken).safeTransferFrom(
+            IERC20(_payToken).safeTransferFrom(
                 _msgSender(),
                 minter,
-                royaltyAmount
+                royaltyFee
             );
 
-            feeAmount = feeAmount.add(royaltyAmount);
+            feeAmount = feeAmount.add(royaltyFee);
+        } else {
+            minter = collectionRoyalties[_nftAddress].feeRecipient;
+            royalty = collectionRoyalties[_nftAddress].royalty;
+            if (minter != address(0) && royalty != 0) {
+                uint256 royaltyFee = price.sub(feeAmount).mul(royalty).div(
+                    10000
+                );
+
+                IERC20(_payToken).safeTransferFrom(
+                    _msgSender(),
+                    minter,
+                    royaltyFee
+                );
+
+                feeAmount = feeAmount.add(royaltyFee);
+            }
         }
 
-        IERC20Upgradeable(_payToken).safeTransferFrom(
+        IERC20(_payToken).safeTransferFrom(
             _msgSender(),
             _owner,
             price.sub(feeAmount)
@@ -545,12 +481,13 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         Listing storage listedItem = listings[_nftAddress][_tokenId][_owner];
 
         require(listedItem.payToken == _payToken, "invalid pay token");
+
         require(_quantity <= listedItem.quantity, "Out of quantity");
 
         uint256 price = listedItem.pricePerItem.mul(_quantity);
         uint256 feeAmount = price.mul(platformFee).div(1e3);
 
-        IERC20Upgradeable(_payToken).safeTransferFrom(
+        IERC20(_payToken).safeTransferFrom(
             _msgSender(),
             feeReceipient,
             feeAmount
@@ -561,7 +498,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         if (minter != address(0) && royalty != 0) {
             uint256 royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
 
-            IERC20Upgradeable(_payToken).safeTransferFrom(
+            IERC20(_payToken).safeTransferFrom(
                 _msgSender(),
                 minter,
                 royaltyFee
@@ -576,7 +513,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                     10000
                 );
 
-                IERC20Upgradeable(_payToken).safeTransferFrom(
+                IERC20(_payToken).safeTransferFrom(
                     _msgSender(),
                     minter,
                     royaltyFee
@@ -586,7 +523,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             }
         }
 
-        IERC20Upgradeable(_payToken).safeTransferFrom(
+        IERC20(_payToken).safeTransferFrom(
             _msgSender(),
             _owner,
             price.sub(feeAmount)
@@ -639,7 +576,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     function createOffer(
         address _nftAddress,
         uint256 _tokenId,
-        IERC20Upgradeable _payToken,
+        IERC20 _payToken,
         uint256 _quantity,
         uint256 _pricePerItem,
         uint256 _deadline
@@ -684,53 +621,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         );
     }
 
-    /// @notice Method for creating counter offer
-    /// @param _nftAddress NFT contract address
-    /// @param _tokenId TokenId
-    /// @param counteroffer Terms of the counter offer
-    /// @param _addressee Addressee of the counter offer
-    function createCounterOffer(
-        address _nftAddress,
-        uint256 _tokenId,
-        Offer memory counteroffer,
-        address _addressee
-    )
-        external
-        counterOfferNotExists(_nftAddress, _tokenId, _addressee)
-        offerExists(_nftAddress, _tokenId, _addressee)
-    {
-        require(
-            IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721) ||
-                IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155),
-            "invalid nft address"
-        );
-
-        require(counteroffer.deadline > _getNow(), "invalid expiration");
-
-        _noAuctionLive(_nftAddress, _tokenId);
-
-        _validOwner(_nftAddress, _tokenId, _msgSender(), counteroffer.quantity);
-
-        _validPayToken(address(counteroffer.payToken));
-
-        counterOffers[_nftAddress][_tokenId][_addressee] = Offer(
-            counteroffer.payToken,
-            counteroffer.quantity,
-            counteroffer.pricePerItem,
-            counteroffer.deadline
-        );
-
-        ownerOfERC1155[_nftAddress][_tokenId] = _msgSender();
-
-        emit CounterOfferCreated(
-            _msgSender(),
-            _addressee,
-            _nftAddress,
-            _tokenId,
-            counteroffer
-        );
-    }
-
     /// @notice Method for canceling the offer
     /// @param _nftAddress NFT contract address
     /// @param _tokenId TokenId
@@ -740,61 +630,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     {
         delete (offers[_nftAddress][_tokenId][_msgSender()]);
         emit OfferCanceled(_msgSender(), _nftAddress, _tokenId);
-    }
-
-    /// @notice Method for refusing the offer
-    /// @param _nftAddress NFT contract address
-    /// @param _tokenId TokenId
-    /// @param _creator Creator of the offer
-    /// @param _quantity Quantity of items of the offer
-    function refuseOffer(
-        address _nftAddress,
-        uint256 _tokenId,
-        address _creator,
-        uint256 _quantity
-    ) external offerExists(_nftAddress, _tokenId, _creator) {
-        _validOwner(_nftAddress, _tokenId, _msgSender(), _quantity);
-        delete (offers[_nftAddress][_tokenId][_creator]);
-        emit OfferRefused(_creator, _nftAddress, _tokenId);
-    }
-
-    /// @notice Method for canceling the counter offer
-    /// @param _nftAddress NFT contract address
-    /// @param _tokenId TokenId
-    function cancelCounterOffer(
-        address _nftAddress,
-        uint256 _tokenId,
-        uint256 _quantity,
-        address _addressee
-    ) external counterOfferExists(_nftAddress, _tokenId, _addressee) {
-        _validOwner(_nftAddress, _tokenId, _msgSender(), _quantity);
-        delete (counterOffers[_nftAddress][_tokenId][_addressee]);
-        emit CounterOfferCanceled(
-            _msgSender(),
-            _addressee,
-            _nftAddress,
-            _tokenId
-        );
-    }
-
-    /// @notice Method for refusing the counter offer
-    /// @param _nftAddress NFT contract address
-    /// @param _tokenId TokenId
-    function refuseCounterOffer(address _nftAddress, uint256 _tokenId)
-        external
-        counterOfferExists(_nftAddress, _tokenId, _msgSender())
-    {
-        delete (counterOffers[_nftAddress][_tokenId][_msgSender()]);
-        address _owner;
-        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            IERC721 nft = IERC721(_nftAddress);
-            _owner = nft.ownerOf(_tokenId);
-        } else if (
-            IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155)
-        ) {
-            _owner = ownerOfERC1155[_nftAddress][_tokenId];
-        }
-        emit CounterOfferRefused(_owner, _msgSender(), _nftAddress, _tokenId);
     }
 
     /// @notice Method for accepting the offer
@@ -812,26 +647,25 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         uint256 price = offer.pricePerItem.mul(offer.quantity);
         uint256 feeAmount = price.mul(platformFee).div(1e3);
+        uint256 royaltyFee;
 
         offer.payToken.safeTransferFrom(_creator, feeReceipient, feeAmount);
 
-        IPixellyRoyaltyRegistry royaltyRegistry = IPixellyRoyaltyRegistry(
-            addressRegistry.royaltyRegistry()
-        );
+        address minter = minters[_nftAddress][_tokenId];
+        uint16 royalty = royalties[_nftAddress][_tokenId];
 
-        address minter;
-        uint256 royaltyAmount;
-
-        (minter, royaltyAmount) = royaltyRegistry.royaltyInfo(
-            _nftAddress,
-            _tokenId,
-            price.sub(feeAmount)
-        );
-
-        if (minter != address(0) && royaltyAmount != 0) {
-            offer.payToken.safeTransferFrom(_creator, minter, royaltyAmount);
-
-            feeAmount = feeAmount.add(royaltyAmount);
+        if (minter != address(0) && royalty != 0) {
+            royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
+            offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+            feeAmount = feeAmount.add(royaltyFee);
+        } else {
+            minter = collectionRoyalties[_nftAddress].feeRecipient;
+            royalty = collectionRoyalties[_nftAddress].royalty;
+            if (minter != address(0) && royalty != 0) {
+                royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
+                offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+                feeAmount = feeAmount.add(royaltyFee);
+            }
         }
 
         offer.payToken.safeTransferFrom(
@@ -876,101 +710,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         delete (offers[_nftAddress][_tokenId][_creator]);
     }
 
-    /// @notice Method for accepting the counter offer
-    /// @param _nftAddress NFT contract address
-    /// @param _tokenId TokenId
-    function acceptCounterOffer(address _nftAddress, uint256 _tokenId)
-        external
-        nonReentrant
-        counterOfferExists(_nftAddress, _tokenId, _msgSender())
-    {
-        Offer memory counterOffer = counterOffers[_nftAddress][_tokenId][
-            _msgSender()
-        ];
-
-        address _owner;
-
-        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            IERC721 nft = IERC721(_nftAddress);
-            _owner = nft.ownerOf(_tokenId);
-        } else if (
-            IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155)
-        ) {
-            _owner = ownerOfERC1155[_nftAddress][_tokenId];
-        }
-
-        uint256 price = counterOffer.pricePerItem.mul(counterOffer.quantity);
-        uint256 feeAmount = price.mul(platformFee).div(1e3);
-
-        counterOffer.payToken.safeTransferFrom(
-            _msgSender(),
-            feeReceipient,
-            feeAmount
-        );
-
-        IPixellyRoyaltyRegistry royaltyRegistry = IPixellyRoyaltyRegistry(
-            addressRegistry.royaltyRegistry()
-        );
-
-        address minter;
-        uint256 royaltyAmount;
-
-        (minter, royaltyAmount) = royaltyRegistry.royaltyInfo(
-            _nftAddress,
-            _tokenId,
-            price.sub(feeAmount)
-        );
-
-        if (minter != address(0) && royaltyAmount != 0) {
-            counterOffer.payToken.safeTransferFrom(
-                _msgSender(),
-                minter,
-                royaltyAmount
-            );
-
-            feeAmount = feeAmount.add(royaltyAmount);
-        }
-
-        counterOffer.payToken.safeTransferFrom(
-            _msgSender(),
-            _owner,
-            price.sub(feeAmount)
-        );
-
-        // Transfer NFT to buyer
-        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            IERC721(_nftAddress).safeTransferFrom(
-                _owner,
-                _msgSender(),
-                _tokenId
-            );
-        } else {
-            IERC1155(_nftAddress).safeTransferFrom(
-                _owner,
-                _msgSender(),
-                _tokenId,
-                counterOffer.quantity,
-                bytes("")
-            );
-        }
-
-        emit ItemSold(
-            _owner,
-            _msgSender(),
-            _nftAddress,
-            _tokenId,
-            counterOffer.quantity,
-            address(counterOffer.payToken),
-            getPrice(address(counterOffer.payToken)),
-            counterOffer.pricePerItem
-        );
-
-        emit CounterOfferCanceled(_owner, _msgSender(), _nftAddress, _tokenId);
-
-        delete (listings[_nftAddress][_tokenId][_owner]);
-        delete (counterOffers[_nftAddress][_tokenId][_msgSender()]);
-    }
-
     /// @notice Method for setting royalty
     /// @param _nftAddress NFT contract address
     /// @param _tokenId TokenId
@@ -1001,7 +740,8 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         address _creator,
         uint16 _royalty,
         address _feeRecipient
-    ) external onlyOwner {
+    ) external {
+        require(msg.sender == operator(), "only support operator");
         require(_creator != address(0), "invalid creator address");
         require(_royalty <= 10000, "invalid royalty");
         require(
@@ -1124,7 +864,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         return block.timestamp;
     }
 
-    function _validPayToken(address _payToken) internal view {
+    function _validPayToken(address _payToken) internal {
         require(
             _payToken == address(0) ||
                 (addressRegistry.tokenRegistry() != address(0) &&
@@ -1139,7 +879,7 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint256 _tokenId,
         address _owner,
         uint256 quantity
-    ) internal view {
+    ) internal {
         if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
             IERC721 nft = IERC721(_nftAddress);
             require(nft.ownerOf(_tokenId) == _owner, "not owning item");
@@ -1156,19 +896,6 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
     }
 
-    function _noAuctionLive(address _nftAddress, uint256 _tokenId) internal view {
-        IPixellyAuction auction = IPixellyAuction(addressRegistry.auction());
-
-        (, , , uint256 startTime, , bool resulted) = auction.auctions(
-            _nftAddress,
-            _tokenId
-        );
-        require(
-            startTime == 0 || resulted == true,
-            "cannot place an offer if auction is going on"
-        );
-    }
-
     function _cancelListing(
         address _nftAddress,
         uint256 _tokenId,
@@ -1180,5 +907,24 @@ contract PixellyMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         delete (listings[_nftAddress][_tokenId][_owner]);
         emit ItemCanceled(_owner, _nftAddress, _tokenId);
+    }
+
+    function operatorSlot() public pure returns (bytes32) {
+        return bytes32(uint256(keccak256('pixelly.marketplace.operator')) - 1);
+    }
+
+    function operator() public view returns (address opt) {
+        bytes32 slot = operatorSlot();
+        assembly {
+            opt := sload(slot)
+        }
+    }
+
+    function setOperator(address newOpt) external onlyOwner {
+        bytes32 slot = operatorSlot();
+
+        assembly {
+            sstore(slot, newOpt)
+        }
     }
 }

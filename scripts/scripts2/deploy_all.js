@@ -10,20 +10,31 @@ async function main(network) {
   const {
     TREASURY_ADDRESS,
     PLATFORM_FEE,
-    WRAPPED_ETH_MAINNET,
-    WRAPPED_ETH_TESTNET,
+    WRAPPED_TENET,
   } = require("../constants");
 
   // ////////////
-  // const PixellyNFT = await ethers.getContractFactory("PixellyNFT");
-  // const pixellyNFT = await PixellyNFT.deploy(
-  //   TREASURY_ADDRESS,
-  //   "2000000000000000000"
-  // );
+  const PixellyNFT = await ethers.getContractFactory("PixellyNFT");
+  const pixellyNFT = await PixellyNFT.deploy(
+    TREASURY_ADDRESS,
+    "2000000000000000000"
+  );
 
-  // await pixellyNFT.deployed();
-  // console.log("PixellyNFT deployed at", pixellyNFT.address);
+  await pixellyNFT.deployed();
+  console.log("PixellyNFT deployed at", pixellyNFT.address);
   // ///////////
+
+  ///////////
+
+  const ProxyAdmin = await ethers.getContractFactory('ProxyAdmin');
+  const proxyAdmin = await ProxyAdmin.deploy();
+  await proxyAdmin.deployed();
+
+  const PROXY_ADDRESS = proxyAdmin.address;
+
+  console.log('ProxyAdmin deployed to:', proxyAdmin.address);
+
+  const Tran
 
   /////////
   const Marketplace = await ethers.getContractFactory("PixellyMarketplace");

@@ -5,13 +5,9 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/GSN/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./library/ERC2981PerTokenRoyalties.sol";
 
-contract PixellyNFT is
-    ERC721("PixellyNFT", "TNFT"),
-    ERC2981PerTokenRoyalties,
-    Ownable
-{
+contract PixellyNFT is ERC721("PixellyNFT", "PNFT"), Ownable {
+
     /// @dev Events of the contract
     event Minted(
         uint256 tokenId,
@@ -19,8 +15,12 @@ contract PixellyNFT is
         string tokenUri,
         address minter
     );
-    event UpdatePlatformFee(uint256 platformFee);
-    event UpdatePlatformFeeRecipient(address payable platformFeeRecipient);
+    event UpdatePlatformFee(
+        uint256 platformFee
+    );
+    event UpdatePlatformFeeRecipient(
+        address payable platformFeeRecipient
+    );
 
     /// @dev current max tokenId
     uint256 public tokenIdPointer;
@@ -35,7 +35,10 @@ contract PixellyNFT is
     address payable public feeReceipient;
 
     /// @notice Contract constructor
-    constructor(address payable _feeRecipient, uint256 _platformFee) public {
+    constructor(
+        address payable _feeRecipient,
+        uint256 _platformFee
+    ) public {
         platformFee = _platformFee;
         feeReceipient = _feeRecipient;
     }
@@ -46,12 +49,7 @@ contract PixellyNFT is
      @param _tokenUri URI for the token being minted
      @return uint256 The token ID of the token that was minted
      */
-    function mint(
-        address _beneficiary,
-        string calldata _tokenUri,
-        address _royaltyRecipient,
-        uint256 _royaltyValue
-    ) external payable returns (uint256) {
+    function mint(address _beneficiary, string calldata _tokenUri) external payable returns (uint256) {
         require(msg.value >= platformFee, "Insufficient funds to mint.");
 
         // Valid args
@@ -63,18 +61,13 @@ contract PixellyNFT is
         // Mint token and set token URI
         _safeMint(_beneficiary, tokenId);
         _setTokenURI(tokenId, _tokenUri);
-
-        //set royalty
-        if (_royaltyValue > 0) {
-            _setTokenRoyalty(tokenId, _royaltyRecipient, _royaltyValue);
-        }
-
-        // Send ETH fee to fee recipient
+        
+        // Send FTM fee to fee recipient
         feeReceipient.transfer(msg.value);
 
         // Associate garment designer
         creators[tokenId] = _msgSender();
-
+        
         emit Minted(tokenId, _beneficiary, _tokenUri, _msgSender());
 
         return tokenId;
@@ -87,10 +80,7 @@ contract PixellyNFT is
      */
     function burn(uint256 _tokenId) external {
         address operator = _msgSender();
-        require(
-            ownerOf(_tokenId) == operator || isApproved(_tokenId, operator),
-            "Only garment owner or approved"
-        );
+        require(ownerOf(_tokenId) == operator || isApproved(_tokenId, operator), "Only garment owner or approved");
 
         // Destroy token mappings
         _burn(_tokenId);
@@ -103,9 +93,7 @@ contract PixellyNFT is
         // Extract out the embedded token ID from the sender
         uint256 _receiverTokenId;
         uint256 _index = msg.data.length - 32;
-        assembly {
-            _receiverTokenId := calldataload(_index)
-        }
+        assembly {_receiverTokenId := calldataload(_index)}
         return _receiverTokenId;
     }
 
@@ -121,17 +109,12 @@ contract PixellyNFT is
         return _exists(_tokenId);
     }
 
+
     /**
      * @dev checks the given token ID is approved either for all or the single token ID
      */
-    function isApproved(uint256 _tokenId, address _operator)
-        public
-        view
-        returns (bool)
-    {
-        return
-            isApprovedForAll(ownerOf(_tokenId), _operator) ||
-            getApproved(_tokenId) == _operator;
+    function isApproved(uint256 _tokenId, address _operator) public view returns (bool) {
+        return isApprovedForAll(ownerOf(_tokenId), _operator) || getApproved(_tokenId) == _operator;
     }
 
     /**
@@ -149,10 +132,7 @@ contract PixellyNFT is
      @dev Only admin
      @param _platformFeeRecipient payable address the address to sends the funds to
      */
-    function updatePlatformFeeRecipient(address payable _platformFeeRecipient)
-        external
-        onlyOwner
-    {
+    function updatePlatformFeeRecipient(address payable _platformFeeRecipient) external onlyOwner {
         feeReceipient = _platformFeeRecipient;
         emit UpdatePlatformFeeRecipient(_platformFeeRecipient);
     }
@@ -166,28 +146,8 @@ contract PixellyNFT is
      @param _tokenUri URI supplied on minting
      @param _designer Address supplied on minting
      */
-    function _assertMintingParamsValid(
-        string calldata _tokenUri,
-        address _designer
-    ) internal pure {
-        require(
-            bytes(_tokenUri).length > 0,
-            "_assertMintingParamsValid: Token URI is empty"
-        );
-        require(
-            _designer != address(0),
-            "_assertMintingParamsValid: Designer is zero address"
-        );
-    }
-
-    /// @inheritdoc	ERC165
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC165, ERC2981)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
+    function _assertMintingParamsValid(string calldata _tokenUri, address _designer) pure internal {
+        require(bytes(_tokenUri).length > 0, "_assertMintingParamsValid: Token URI is empty");
+        require(_designer != address(0), "_assertMintingParamsValid: Designer is zero address");
     }
 }
