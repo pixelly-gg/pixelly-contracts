@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract PixellyAddressRegistry is Ownable {
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
 
-    /// @notice PixellyNFT contract
+    /// @notice pixellyNFT contract
     address public pixellyNFT;
 
     /// @notice PixellyAuction contract
@@ -38,14 +38,11 @@ contract PixellyAddressRegistry is Ownable {
     /// @notice PixellyPriceFeed contract
     address public priceFeed;
 
-    /// @notice PixellyRoyaltyRegistry contract
-    address public royaltyRegistry;
-
     /**
-     @notice Update PixellyNFT contract
+     @notice Update pixellyNFT contract
      @dev Only admin
      */
-    function updatePixellyNFT(address _pixellyNFT) external onlyOwner {
+    function updatePixelly(address _pixellyNFT) external onlyOwner {
         require(
             IERC165(_pixellyNFT).supportsInterface(INTERFACE_ID_ERC721),
             "Not ERC721"
@@ -132,16 +129,5 @@ contract PixellyAddressRegistry is Ownable {
      */
     function updatePriceFeed(address _priceFeed) external onlyOwner {
         priceFeed = _priceFeed;
-    }
-
-    /**
-     @notice Update royalty registry contract
-     @dev Only admin
-     */
-    function updateRoyaltyRegistry(address _royaltyRegistry)
-        external
-        onlyOwner
-    {
-        royaltyRegistry = _royaltyRegistry;
     }
 }
