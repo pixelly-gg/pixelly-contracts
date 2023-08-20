@@ -11,6 +11,7 @@ async function main(network) {
     TREASURY_ADDRESS,
     PLATFORM_FEE,
     WRAPPED_TENET,
+    ORACLE,
   } = require("../constants");
 
   // ////////////
@@ -34,56 +35,74 @@ async function main(network) {
 
   console.log('ProxyAdmin deployed to:', proxyAdmin.address);
 
-  const Tran
+  const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory('AdminUpgradeabilityProxy');
+  ///////////////////////
 
   /////////
   const Marketplace = await ethers.getContractFactory("PixellyMarketplace");
-
-  const marketplaceImpl = await upgrades.deployProxy(
-    Marketplace,
-    [TREASURY_ADDRESS, PLATFORM_FEE],
-    {
-      initializer: "initialize",
-    }
-  );
-
-  const MARKETPLACE_PROXY_ADDRESS = marketplaceImpl.address;
+  const marketplaceImpl = await Marketplace.deploy();
+  await marketplaceImpl.deployed();
 
   console.log("PixellyMarketplace deployed to:", marketplaceImpl.address);
+
+  const marketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
+    marketplaceImpl.address,
+    PROXY_ADDRESS,
+    []
+  );
+  await marketplaceProxy.deployed();
+  console.log('PixellyMarketplace Proxy deployed at ', marketplaceProxy.address);
+
+  const MARKETPLACE_PROXY_ADDRESS = marketplaceProxy.address;
+  const marketplace = await ethers.getContractAt('PixellyMarketplace', marketplaceProxy.address);
+
+  await marketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);
+  console.log('Marketplace Proxy initialized');
   /////////
 
   /////////
   const BundleMarketplace = await ethers.getContractFactory(
     "PixellyBundleMarketplace"
   );
-  const bundleMarketplaceImpl = await upgrades.deployProxy(
-    BundleMarketplace,
-    [TREASURY_ADDRESS, PLATFORM_FEE],
-    {
-      initializer: "store",
-    }
-  );
-
-  const BUNDLE_MARKETPLACE_PROXY_ADDRESS = bundleMarketplaceImpl.address;
-
-  console.log(
-    "PixellyBundleMarketplace deployed to:",
-    bundleMarketplaceImpl.address
-  );
+  const bundleMarketplaceImpl = await BundleMarketplace.deploy();
+    await bundleMarketplaceImpl.deployed();
+    console.log('PixellyBundleMarketplace deployed to:', bundleMarketplaceImpl.address);
+    
+    const bundleMarketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
+        bundleMarketplaceImpl.address,
+        PROXY_ADDRESS,
+        []
+      );
+    await bundleMarketplaceProxy.deployed();
+    console.log('Bundle Marketplace Proxy deployed at ', bundleMarketplaceProxy.address);  
+    const BUNDLE_MARKETPLACE_PROXY_ADDRESS = bundleMarketplaceProxy.address;
+    const bundleMarketplace = await ethers.getContractAt('PixellyBundleMarketplace', bundleMarketplaceProxy.address);
+    
+    await bundleMarketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);
+    console.log('Bundle Marketplace Proxy initialized');
 
   ////////
 
   ////////
-  const Auction = await ethers.getContractFactory("PixellyAuction");
-  const auctionImpl = await upgrades.deployProxy(
-    Auction,
-    [TREASURY_ADDRESS, 1],
-    {
-      initializer: "store",
-    }
-  );
-  console.log("PixellyAuction deployed to:", auctionImpl.address);
-  const AUCTION_PROXY_ADDRESS = auctionImpl.address;
+  const Auction = await ethers.getContractFactory('PixellyAuction');
+    const auctionImpl = await Auction.deploy();
+    await auctionImpl.deployed();
+    console.log('PixellyAuction deployed to:', auctionImpl.address);
+
+    const auctionProxy = await AdminUpgradeabilityProxyFactory.deploy(
+        auctionImpl.address,
+        PROXY_ADDRESS,
+        []
+      );
+
+    await auctionProxy.deployed();
+    console.log('Auction Proxy deployed at ', auctionProxy.address);
+
+    const AUCTION_PROXY_ADDRESS = auctionProxy.address;
+    const auction = await ethers.getContractAt('PixellyAuction', auctionProxy.address);
+    
+    await auction.initialize(TREASURY_ADDRESS);
+    console.log('Auction Proxy initialized');
 
   ////////
 
@@ -93,9 +112,9 @@ async function main(network) {
     AUCTION_PROXY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
-    "20000000000000000000",
+    "10000000000000000000",
     TREASURY_ADDRESS,
-    "25000000000000000000"
+    "50000000000000000000"
   );
   await factory.deployed();
   console.log("PixellyNFTFactory deployed to:", factory.address);
@@ -109,7 +128,7 @@ async function main(network) {
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
     "10000000000000000000",
     TREASURY_ADDRESS,
-    "25000000000000000000"
+    "50000000000000000000"
   );
   await privateFactory.deployed();
   console.log("PixellyNFTFactoryPrivate deployed to:", privateFactory.address);
@@ -119,7 +138,7 @@ async function main(network) {
   const NFTTradable = await ethers.getContractFactory("PixellyNFTTradable");
   const nft = await NFTTradable.deploy(
     "PixellyNFT",
-    "TNFT",
+    "PNFT",
     AUCTION_PROXY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
@@ -134,7 +153,7 @@ async function main(network) {
   );
   const nftPrivate = await NFTTradablePrivate.deploy(
     "IPixellyNFT",
-    "ITNFT",
+    "IPNFT",
     AUCTION_PROXY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
@@ -168,9 +187,8 @@ async function main(network) {
 
   ////////
   const PriceFeed = await ethers.getContractFactory("PixellyPriceFeed");
-  const WRAPPED_ETH =
-    network.name === "mainnet" ? WRAPPED_ETH_MAINNET : WRAPPED_ETH_TESTNET;
-  const priceFeed = await PriceFeed.deploy(PIXELLY_ADDRESS_REGISTRY, WRAPPED_ETH);
+  
+  const priceFeed = await PriceFeed.deploy(PIXELLY_ADDRESS_REGISTRY, WRAPPED_TENET);
 
   await priceFeed.deployed();
 
@@ -181,7 +199,7 @@ async function main(network) {
   const ArtTradable = await ethers.getContractFactory("PixellyArtTradable");
   const artTradable = await ArtTradable.deploy(
     "PixellyArt",
-    "AART",
+    "PART",
     "20000000000000000000",
     TREASURY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
@@ -195,7 +213,7 @@ async function main(network) {
   );
   const artTradablePrivate = await ArtTradablePrivate.deploy(
     "PixellyArt",
-    "AART",
+    "PART",
     "20000000000000000000",
     TREASURY_ADDRESS,
     MARKETPLACE_PROXY_ADDRESS,
@@ -213,9 +231,9 @@ async function main(network) {
   const artFactory = await ArtFactory.deploy(
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
-    "20000000000000000000",
+    "10000000000000000000",
     TREASURY_ADDRESS,
-    "25000000000000000000"
+    "50000000000000000000"
   );
   await artFactory.deployed();
   console.log("PixellyArtFactory deployed to:", artFactory.address);
@@ -226,29 +244,31 @@ async function main(network) {
   const artFactoryPrivate = await ArtFactoryPrivate.deploy(
     MARKETPLACE_PROXY_ADDRESS,
     BUNDLE_MARKETPLACE_PROXY_ADDRESS,
-    "20000000000000000000",
+    "10000000000000000000",
     TREASURY_ADDRESS,
-    "25000000000000000000"
+    "50000000000000000000"
   );
   await artFactoryPrivate.deployed();
   console.log("PixellyArtFactoryPrivate deployed to:", artFactoryPrivate.address);
   ////////
 
-  await marketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
-  await bundleMarketplaceImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
+  await marketplace.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
+  await bundleMarketplace.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
 
-  await auctionImpl.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
+  await auction.updateAddressRegistry(PIXELLY_ADDRESS_REGISTRY);
 
   await addressRegistry.updatePixellyNFT(pixellyNFT.address);
-  await addressRegistry.updateAuction(auctionImpl.address);
-  await addressRegistry.updateMarketplace(marketplaceImpl.address);
-  await addressRegistry.updateBundleMarketplace(bundleMarketplaceImpl.address);
+  await addressRegistry.updateAuction(auction.address);
+  await addressRegistry.updateMarketplace(marketplace.address);
+  await addressRegistry.updateBundleMarketplace(bundleMarketplace.address);
   await addressRegistry.updateNFTFactory(factory.address);
   await addressRegistry.updateTokenRegistry(tokenRegistry.address);
   await addressRegistry.updatePriceFeed(priceFeed.address);
   await addressRegistry.updateArtFactory(artFactory.address);
 
-  await tokenRegistry.add(WRAPPED_ETH);
+  await priceFeed.registerOracle(WRAPPED_TENET, ORACLE);
+
+  await tokenRegistry.add(WRAPPED_TENET);
 }
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
